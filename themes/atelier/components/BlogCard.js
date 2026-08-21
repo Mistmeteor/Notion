@@ -80,11 +80,6 @@ const BlogCard = ({ post, showAnimate }) => {
       {post?.summary && (
         <div className='atelier-stream-summary'>{post.summary}</div>
       )}
-
-      {/* Read more（可选）*/}
-      <SmartLink href={post?.href} className='atelier-stream-more' passHref>
-        阅读全文 →
-      </SmartLink>
     </article>
   )
 }
