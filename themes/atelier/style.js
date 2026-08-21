@@ -536,6 +536,11 @@ const Style = () => {
             left: auto;
             right: 14px;
           }
+          /* 手机 + 列表页（主页/归档/分类/标签）：不显示 toggle
+             因为侧栏内容（logo + 近期文章）本来就是页面顶部的自然内容 */
+          #theme-atelier.atelier-list-mode .atelier-sidebar-toggle {
+            display: none;
+          }
         }
 
         /* 桌面：sidebarOpen 时侧栏在位、主内容让位 360px；

@@ -48,7 +48,9 @@ export const useAtelierGlobal = () => useContext(ThemeGlobalAtelier)
  * @constructor
  */
 const LayoutBase = props => (
-  <AtelierLangProvider initialLang={siteConfig('LANG')}>
+  // atelier 主题的默认语言写死 en-US；用户点右下角"中"按钮切换后
+  // 会记住选择在 localStorage 里，下次访问跟随记忆
+  <AtelierLangProvider initialLang='en-US'>
     <LayoutBaseInner {...props} />
   </AtelierLangProvider>
 )
@@ -71,8 +73,8 @@ const LayoutBaseInner = props => {
       if (saved !== null) {
         setSidebarOpen(saved === 'true')
       } else {
-        // 首次访问：桌面默认展开，手机默认收起
-        setSidebarOpen(window.innerWidth >= 1024)
+        // 首次访问：桌面和手机都默认展开
+        setSidebarOpen(true)
       }
     }
   }, [])
@@ -83,22 +85,13 @@ const LayoutBaseInner = props => {
     }
   }, [sidebarOpen, mounted])
 
-  // 手机端进入文章详情页时，无论 localStorage 是什么，都强制关闭侧栏
-  // 避免侧栏（含目录）遮住正文以及带来的滚动跳动问题
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (props.post && window.innerWidth < 1024) {
-      setSidebarOpen(false)
-    }
-  }, [props.post])
-
   const toggleSidebar = () => setSidebarOpen(v => !v)
 
   return (
     <ThemeGlobalAtelier.Provider value={{ searchModal }}>
       <div
         id='theme-atelier'
-        className={`${siteConfig('FONT_STYLE')} dark:bg-black scroll-smooth ${sidebarOpen ? 'atelier-sidebar-open' : 'atelier-sidebar-closed'}`}>
+        className={`${siteConfig('FONT_STYLE')} dark:bg-black scroll-smooth ${sidebarOpen ? 'atelier-sidebar-open' : 'atelier-sidebar-closed'} ${props.post ? 'atelier-post-mode' : 'atelier-list-mode'}`}>
         <Style />
         {/* 桌面：侧栏关闭时显示顶部汉堡包，打开时藏起（footer 里的收起按钮接管）
             手机：任何时候都显示（顶部汉堡包是手机唯一入口）*/}
