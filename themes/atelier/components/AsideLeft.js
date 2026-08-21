@@ -100,7 +100,7 @@ function AsideLeft(props) {
         </div>
       )}
 
-      <div className={`h-full ${isCollapsed ? 'hidden' : 'px-10 py-14'}`}>
+      <div className={`h-full ${isCollapsed ? 'hidden' : 'px-10 pt-8 pb-14'}`}>
         {/* 头像 + 站点标题 + 副标题 */}
         <Logo {...props} />
 
