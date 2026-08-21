@@ -253,11 +253,11 @@ const Style = () => {
         }
         #theme-atelier .atelier-footer-icons > * {
           flex: 0 0 auto !important;
-          width: auto !important;
         }
-        /* SocialButton 内部再套一层 div，也要中和其 w-full */
-        #theme-atelier .atelier-footer-icons > div > div {
+        /* 只中和 SocialButton 外层的 w-full（DarkModeButton 里的 w-5 保持不动） */
+        #theme-atelier .atelier-footer-icons .w-full {
           width: auto !important;
+          flex-grow: 0 !important;
         }
         #theme-atelier .atelier-footer-icons a,
         #theme-atelier .atelier-footer-icons button {
