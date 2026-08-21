@@ -405,18 +405,70 @@ const Style = () => {
           #theme-atelier .atelier-stream-item { margin-bottom: 64px; }
         }
 
-        /* ============= 桌面端：footer 永远固定在视口左下角 ============= */
+        /* ============= 桌面端默认（列表页）：侧栏作为整体模块固定 ============= */
         @media (min-width: 1024px) {
+          /* 侧栏 fix 到视口左侧，成为独立浮层；内容溢出时侧栏内滚 */
           #theme-atelier .sideLeft {
-            align-self: flex-start;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 360px;
+            height: 100vh;
+            overflow-y: auto;
+            background: ${bg};
+            z-index: 20;
+            /* 隐藏侧栏原生滚动条，保持视觉干净 */
+            scrollbar-width: thin;
+            scrollbar-color: ${border} transparent;
           }
-          /* 侧栏内层给底部留出 footer 的高度，避免正常内容被固定 footer 盖住 */
+          .dark #theme-atelier .sideLeft {
+            background: ${bgDark};
+          }
+          #theme-atelier .sideLeft::-webkit-scrollbar {
+            width: 4px;
+          }
+          #theme-atelier .sideLeft::-webkit-scrollbar-thumb {
+            background: ${border};
+            border-radius: 2px;
+          }
+          /* 内层排成 flex 列，底部 footer 用 margin-top:auto 顶到底 */
           #theme-atelier .sideLeft > div {
-            padding-bottom: 200px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
             box-sizing: border-box;
           }
-          /* footer 脱离文档流固定在视口左下角，宽度对齐侧栏 */
+          /* footer 是整体模块的一部分，不再 position:fixed */
           #theme-atelier .sideLeft .atelier-sidebar-footer {
+            position: static;
+            margin-top: auto;
+            width: auto;
+            background: transparent;
+            border-top: 1px solid ${border};
+            padding: 20px 0 8px 0;
+          }
+          /* 侧栏 fix 出流后，主内容左侧留出 360px 空位 */
+          #theme-atelier main#wrapper {
+            padding-left: 360px;
+          }
+        }
+
+        /* ============= 文章详情页：恢复"侧栏跟页面滚"+ Catalog sticky + Footer fixed 底部 ============= */
+        @media (min-width: 1024px) {
+          #theme-atelier.atelier-post-mode .sideLeft {
+            position: static;
+            top: auto;
+            left: auto;
+            height: auto;
+            overflow-y: visible;
+            align-self: flex-start;
+            min-height: 100vh;
+            background: transparent;
+          }
+          #theme-atelier.atelier-post-mode .sideLeft > div {
+            padding-bottom: 200px !important;
+          }
+          #theme-atelier.atelier-post-mode .sideLeft .atelier-sidebar-footer {
             position: fixed;
             bottom: 0;
             left: 0;
@@ -427,24 +479,27 @@ const Style = () => {
             border-top: 1px solid ${border};
             z-index: 15;
           }
-          .dark #theme-atelier .sideLeft .atelier-sidebar-footer {
+          .dark #theme-atelier.atelier-post-mode .sideLeft .atelier-sidebar-footer {
             background: ${bgDark};
             border-top-color: rgba(255,255,255,0.08);
           }
-          /* 文章目录：sticky 到视口顶部，最大高度到 footer 顶为止，超长内部滚 */
-          #theme-atelier .atelier-toc {
+          /* 文章页恢复 flex row 布局，去掉 padding-left */
+          #theme-atelier.atelier-post-mode main#wrapper {
+            padding-left: 0;
+          }
+          /* 文章目录：sticky 顶部，max-height 到 footer 顶为止，超长内部滚 */
+          #theme-atelier.atelier-post-mode .atelier-toc {
             position: sticky;
             top: 24px;
-            max-height: calc(100vh - 230px); /* 200px footer 空间 + 30px 上下留白 */
+            max-height: calc(100vh - 230px);
             overflow-y: auto;
-            /* 内部滚动条低调点 */
             scrollbar-width: thin;
             scrollbar-color: ${border} transparent;
           }
-          #theme-atelier .atelier-toc::-webkit-scrollbar {
+          #theme-atelier.atelier-post-mode .atelier-toc::-webkit-scrollbar {
             width: 4px;
           }
-          #theme-atelier .atelier-toc::-webkit-scrollbar-thumb {
+          #theme-atelier.atelier-post-mode .atelier-toc::-webkit-scrollbar-thumb {
             background: ${border};
             border-radius: 2px;
           }

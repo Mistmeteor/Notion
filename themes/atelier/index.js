@@ -52,7 +52,7 @@ const LayoutBase = props => {
     <ThemeGlobalAtelier.Provider value={{ searchModal }}>
       <div
         id='theme-atelier'
-        className={`${siteConfig('FONT_STYLE')} dark:bg-black scroll-smooth`}>
+        className={`${siteConfig('FONT_STYLE')} dark:bg-black scroll-smooth${props.post ? ' atelier-post-mode' : ''}`}>
         <Style />
         {/* Header 在 atelier 主题里不需要 —— 手机端由 AsideLeft 自身堆叠到顶部代替 */}
 
