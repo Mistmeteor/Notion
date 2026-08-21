@@ -23,8 +23,8 @@ const T = {
     nextPost: '下一篇',
     tocTitle: '目录',
     lastEdited: '最后更新',
-    langLabel: 'EN', // 按钮上显示的目标语言
-    langAriaLabel: '切换到英文'
+    langLabel: '中', // 按钮显示当前语言：正在中文时显示"中"
+    langAriaLabel: '当前中文，点击切换到英文'
   },
   'en-US': {
     latestPosts: 'Latest Posts',
@@ -34,8 +34,8 @@ const T = {
     nextPost: 'Next',
     tocTitle: 'Contents',
     lastEdited: 'Last edited',
-    langLabel: '中',
-    langAriaLabel: 'Switch to Chinese'
+    langLabel: 'EN',
+    langAriaLabel: 'Currently English, click to switch to Chinese'
   }
 }
 

@@ -456,6 +456,48 @@ const Style = () => {
           }
         }
 
+        /* ============= 回到顶部按钮 ============= */
+        #theme-atelier .atelier-back-to-top {
+          position: fixed;
+          right: 20px;
+          bottom: 20px;
+          z-index: 45;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(247, 244, 237, 0.85);
+          -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+          border: 1px solid ${border};
+          border-radius: 4px;
+          color: ${text};
+          cursor: pointer;
+          opacity: 0;
+          transform: translateY(8px);
+          pointer-events: none;
+          transition: opacity 0.25s ease, transform 0.25s ease,
+            background 0.15s ease;
+        }
+        #theme-atelier .atelier-back-to-top.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
+        #theme-atelier .atelier-back-to-top:hover {
+          background: ${bg};
+          transform: translateY(-2px);
+        }
+        .dark #theme-atelier .atelier-back-to-top {
+          background: rgba(20, 16, 11, 0.85);
+          color: ${textDark};
+          border-color: rgba(255,255,255,0.15);
+        }
+        .dark #theme-atelier .atelier-back-to-top:hover {
+          background: ${bgDark};
+        }
+
         /* ============= 侧栏开关按钮 ============= */
         #theme-atelier .atelier-sidebar-toggle {
           position: fixed;
