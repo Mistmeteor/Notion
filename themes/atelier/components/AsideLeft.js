@@ -29,9 +29,9 @@ function AsideLeft(props) {
         {/* 近期文章：只在列表页显示；进入文章后让位给目录 */}
         {!post && <LatestPosts {...props} />}
 
-        {/* 文章目录：只在文章详情页出现 */}
+        {/* 文章目录：只在文章详情页出现；上紧下留白，与 footer 保持距离 */}
         {post && (
-          <section className='atelier-toc mt-8'>
+          <section className='atelier-toc mt-2 mb-10'>
             <Catalog post={post} />
           </section>
         )}

@@ -438,14 +438,17 @@ const Style = () => {
             min-height: 100%;
             box-sizing: border-box;
           }
-          /* footer 是整体模块的一部分，不再 position:fixed */
+          /* footer 是整体模块的一部分，不再 position:fixed
+             margin-top: auto 保底把 footer 顶到侧栏底部；
+             同时 min-margin 保证即使内容很长时，Catalog / LatestPosts 到 footer
+             之间至少留 40px 呼吸空间 —— 用 padding-top 撑出这段空隙 */
           #theme-atelier .sideLeft .atelier-sidebar-footer {
             position: static;
             margin-top: auto;
             width: auto;
             background: transparent;
             border-top: 1px solid ${border};
-            padding: 20px 0 8px 0;
+            padding: 32px 0 8px 0;
           }
           /* 侧栏 fix 出流后，主内容左侧留出 360px 空位 */
           #theme-atelier main#wrapper {
@@ -480,21 +483,20 @@ const Style = () => {
           font-family: ${serif};
         }
         #theme-atelier .atelier-toc-title {
-          font-family: ${sans};
-          font-size: 11px;
+          font-family: ${serif};
+          font-size: 20px;
           font-weight: 600;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: ${muted};
+          letter-spacing: normal;
+          text-transform: none;
+          color: ${text};
           margin-bottom: 14px;
+          cursor: pointer;
+          user-select: none;
         }
         #theme-atelier .atelier-toc-title:hover {
-          color: ${text};
+          opacity: 0.7;
         }
         .dark #theme-atelier .atelier-toc-title {
-          color: ${mutedDark};
-        }
-        .dark #theme-atelier .atelier-toc-title:hover {
           color: ${textDark};
         }
         #theme-atelier .atelier-toc-list {
