@@ -58,7 +58,7 @@ function AsideLeft(props) {
     if (isCollapsed) {
       return isReverse ? 'right-2' : 'left-2'
     }
-    return isReverse ? 'right-80' : 'left-80'
+    return isReverse ? 'right-96' : 'left-96'
   }, [isCollapsed, isReverse])
 
   const toggleOpen = () => setIsCollapse(!isCollapsed)
@@ -87,7 +87,7 @@ function AsideLeft(props) {
 
   return (
     <div
-      className={`sideLeft relative ${isCollapsed ? 'w-0' : 'w-80'} duration-300 transition-all min-h-screen hidden lg:block z-20`}>
+      className={`sideLeft relative ${isCollapsed ? 'w-0' : 'w-96'} duration-300 transition-all min-h-screen hidden lg:block z-20`}>
       {ATELIER_SIDEBAR_COLLAPSE_BUTTON && (
         <div
           className={`${position} hidden lg:block fixed top-0 cursor-pointer hover:scale-110 duration-300 px-3 py-2 dark:text-white`}
