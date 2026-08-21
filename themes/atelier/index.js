@@ -11,12 +11,13 @@ import { Transition } from '@headlessui/react'
 import dynamic from 'next/dynamic'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
-import { createContext, useContext, useEffect, useRef } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import ArticleDetail from './components/ArticleDetail'
 import ArticleLock from './components/ArticleLock'
 import AsideLeft from './components/AsideLeft'
 import AtelierFooter from './components/AtelierFooter'
 import ReadingProgress from './components/ReadingProgress'
+import SidebarToggle from './components/SidebarToggle'
 import BlogListPage from './components/BlogListPage'
 import BlogListScroll from './components/BlogListScroll'
 import BlogArchiveItem from './components/BlogPostArchive'
@@ -49,13 +50,39 @@ const LayoutBase = props => {
   const leftAreaSlot = <Live2D />
   const { onLoading, fullWidth } = useGlobal()
   const searchModal = useRef(null)
+
+  // 侧栏开关状态：桌面默认打开，手机默认关闭；localStorage 记住用户选择
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('atelier-sidebar-open')
+      if (saved !== null) {
+        setSidebarOpen(saved === 'true')
+      } else {
+        // 首次访问：桌面默认展开，手机默认收起
+        setSidebarOpen(window.innerWidth >= 1024)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (mounted && typeof window !== 'undefined') {
+      localStorage.setItem('atelier-sidebar-open', String(sidebarOpen))
+    }
+  }, [sidebarOpen, mounted])
+
+  const toggleSidebar = () => setSidebarOpen(v => !v)
+
   return (
     <ThemeGlobalAtelier.Provider value={{ searchModal }}>
       <div
         id='theme-atelier'
-        className={`${siteConfig('FONT_STYLE')} dark:bg-black scroll-smooth`}>
+        className={`${siteConfig('FONT_STYLE')} dark:bg-black scroll-smooth ${sidebarOpen ? 'atelier-sidebar-open' : 'atelier-sidebar-closed'}`}>
         <Style />
-        {/* Header 在 atelier 主题里不需要 —— 手机端由 AsideLeft 自身堆叠到顶部代替 */}
+        <SidebarToggle open={sidebarOpen} onToggle={toggleSidebar} />
 
         <div
           className={

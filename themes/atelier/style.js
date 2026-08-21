@@ -456,6 +456,63 @@ const Style = () => {
           }
         }
 
+        /* ============= 侧栏开关按钮 ============= */
+        #theme-atelier .atelier-sidebar-toggle {
+          position: fixed;
+          top: 14px;
+          left: 14px;
+          z-index: 50;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(247, 244, 237, 0.85);
+          -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+          border: 1px solid ${border};
+          border-radius: 4px;
+          cursor: pointer;
+          color: ${text};
+          transition: background 0.15s ease, transform 0.15s ease;
+        }
+        #theme-atelier .atelier-sidebar-toggle:hover {
+          background: ${bg};
+          transform: scale(1.05);
+        }
+        .dark #theme-atelier .atelier-sidebar-toggle {
+          background: rgba(20, 16, 11, 0.85);
+          color: ${textDark};
+          border-color: rgba(255,255,255,0.15);
+        }
+        .dark #theme-atelier .atelier-sidebar-toggle:hover {
+          background: ${bgDark};
+        }
+
+        /* 桌面：sidebarOpen 时侧栏在位、主内容让位 360px；
+           sidebarClosed 时侧栏向左滑出、主内容占满全宽（都带过渡动画）*/
+        @media (min-width: 1024px) {
+          #theme-atelier .sideLeft {
+            transition: transform 0.25s ease;
+          }
+          #theme-atelier main#wrapper {
+            transition: padding-left 0.25s ease;
+          }
+          #theme-atelier.atelier-sidebar-closed .sideLeft {
+            transform: translateX(-100%);
+          }
+          #theme-atelier.atelier-sidebar-closed main#wrapper {
+            padding-left: 0;
+          }
+        }
+
+        /* 手机：sidebarOpen 时侧栏堆到顶（现有行为），关闭时隐藏 */
+        @media (max-width: 1023px) {
+          #theme-atelier.atelier-sidebar-closed .sideLeft {
+            display: none;
+          }
+        }
+
         /* ============= 顶部阅读进度条 ============= */
         #theme-atelier .atelier-reading-progress {
           position: fixed;
