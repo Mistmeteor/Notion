@@ -252,7 +252,12 @@ const Style = () => {
           margin-bottom: 4px;
         }
         #theme-atelier .atelier-footer-icons > * {
-          flex: 0 0 auto;
+          flex: 0 0 auto !important;
+          width: auto !important;
+        }
+        /* SocialButton 内部再套一层 div，也要中和其 w-full */
+        #theme-atelier .atelier-footer-icons > div > div {
+          width: auto !important;
         }
         #theme-atelier .atelier-footer-icons a,
         #theme-atelier .atelier-footer-icons button {
@@ -410,11 +415,8 @@ const Style = () => {
             width: 100% !important;
             min-height: 0 !important;
             border-right: 0 !important;
-            border-bottom: 1px solid ${border};
-            padding-bottom: 20px;
-          }
-          .dark #theme-atelier .sideLeft {
-            border-bottom-color: rgba(255,255,255,0.1);
+            border-bottom: 0 !important;
+            padding-bottom: 8px;
           }
           /* 手机端 footer 独立成块，跟正常内容一样占满宽度 */
           #theme-atelier > .atelier-sidebar-footer {

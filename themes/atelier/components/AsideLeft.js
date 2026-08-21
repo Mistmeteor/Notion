@@ -11,7 +11,7 @@ import Logo from './Logo'
 import { MenuList } from './MenuList'
 
 /**
- * Atelier 侧栏（桌面固定 340px 宽 / 手机全宽堆叠）
+ * Atelier 侧栏（桌面固定 360px 宽 / 手机全宽堆叠）
  * 排序：头像 → 站点标题 → 副标题（Logo 内）→ 菜单 → 近期文章 → [文章目录] → [footer]
  * footer 只在桌面（lg+）出现在这里；手机端由 index.js 渲染到内容最下方
  */
@@ -56,7 +56,7 @@ function AsideLeft(props) {
     if (isCollapsed) {
       return isReverse ? 'right-2' : 'left-2'
     }
-    return isReverse ? 'right-[340px]' : 'left-[340px]'
+    return isReverse ? 'right-[360px]' : 'left-[360px]'
   }, [isCollapsed, isReverse])
 
   const toggleOpen = () => setIsCollapse(!isCollapsed)
@@ -85,7 +85,7 @@ function AsideLeft(props) {
 
   return (
     <div
-      className={`sideLeft relative ${isCollapsed ? 'lg:w-0' : 'w-full lg:w-[340px]'} duration-300 transition-all lg:min-h-screen block z-20`}>
+      className={`sideLeft relative ${isCollapsed ? 'lg:w-0' : 'w-full lg:w-[360px]'} duration-300 transition-all lg:min-h-screen block z-20`}>
       {ATELIER_SIDEBAR_COLLAPSE_BUTTON && (
         <div
           className={`${position} hidden lg:block fixed top-0 cursor-pointer hover:scale-110 duration-300 px-3 py-2 dark:text-white`}
