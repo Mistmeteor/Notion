@@ -35,6 +35,13 @@ const Style = () => {
       )}
       <style jsx global>{`
         /* ============= 全站底色与字体 ============= */
+        /* html 层也要设背景，否则页面短/宽比不足时顶部露出浏览器默认白色 */
+        html {
+          background-color: ${bg};
+        }
+        .dark html {
+          background-color: ${bgDark};
+        }
         body {
           background-color: ${bg};
           color: ${text};
@@ -103,6 +110,13 @@ const Style = () => {
         }
 
         /* ============= 侧栏：菜单（小型大写字母）============= */
+        /* 手机端也用 PC 菜单样式，不要用折叠菜单 */
+        #theme-atelier #nav-pc {
+          display: block !important;
+        }
+        #theme-atelier #nav-mobile {
+          display: none !important;
+        }
         #theme-atelier #nav-pc li,
         #theme-atelier #nav-mobile li {
           border: 0 !important;
@@ -340,6 +354,35 @@ const Style = () => {
         @media (max-width: 640px) {
           #theme-atelier .atelier-stream-title { font-size: 30px; }
           #theme-atelier .atelier-stream-item { margin-bottom: 64px; }
+        }
+
+        /* ============= 手机端：侧栏堆到内容上方 ============= */
+        @media (max-width: 1023px) {
+          #theme-atelier .sideLeft {
+            width: 100% !important;
+            min-height: 0 !important;
+            border-right: 0 !important;
+            border-bottom: 1px solid ${border};
+            padding-bottom: 20px;
+          }
+          .dark #theme-atelier .sideLeft {
+            border-bottom-color: rgba(255,255,255,0.1);
+          }
+          #theme-atelier .sideLeft > div {
+            padding: 32px 24px 24px 24px !important;
+          }
+          /* 手机端标题略缩 */
+          #theme-atelier .atelier-logo-title {
+            font-size: 34px;
+          }
+          /* 手机端主内容 padding 收紧 */
+          #theme-atelier main#wrapper {
+            padding-top: 24px !important;
+            padding-bottom: 24px !important;
+          }
+          #theme-atelier .grid-container {
+            padding: 0 24px !important;
+          }
         }
 
         ${themeConsoleStyle('atelier', CONFIG)}

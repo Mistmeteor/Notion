@@ -18,7 +18,6 @@ import AsideLeft from './components/AsideLeft'
 import BlogListPage from './components/BlogListPage'
 import BlogListScroll from './components/BlogListScroll'
 import BlogArchiveItem from './components/BlogPostArchive'
-import Header from './components/Header'
 import TagItemMini from './components/TagItemMini'
 import CONFIG from './config'
 import { Style } from './style'
@@ -54,14 +53,13 @@ const LayoutBase = props => {
         id='theme-atelier'
         className={`${siteConfig('FONT_STYLE')} dark:bg-black scroll-smooth`}>
         <Style />
-        {/* 页头导航，此主题只在移动端生效 */}
-        <Header {...props} />
+        {/* Header 在 atelier 主题里不需要 —— 手机端由 AsideLeft 自身堆叠到顶部代替 */}
 
         <div
           className={
             (JSON.parse(siteConfig('LAYOUT_SIDEBAR_REVERSE'))
-              ? 'flex-row-reverse'
-              : '') + ' flex'
+              ? 'lg:flex-row-reverse'
+              : '') + ' flex flex-col lg:flex-row'
           }>
           {/* 侧边抽屉 */}
           <AsideLeft {...props} slot={leftAreaSlot} />
@@ -117,10 +115,9 @@ const LayoutPostList = props => {
   const POST_LIST_STYLE = siteConfig('POST_LIST_STYLE')
   return (
     <>
-      <div className='w-full p-2'>
-        <WWAds className='w-full' orientation='horizontal' />
-      </div>
-      { POST_LIST_STYLE=== 'page' ? (
+      {/* WWAds 直接渲染：没广告配置时组件返回 null，不留空白撑高 */}
+      <WWAds className='w-full mb-4' orientation='horizontal' />
+      { POST_LIST_STYLE === 'page' ? (
         <BlogListPage {...props} />
       ) : (
         <BlogListScroll {...props} />

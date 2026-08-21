@@ -30,7 +30,7 @@ const CONFIG = {
   ATELIER_SHOW_TAGLINE: true,
   // 侧栏"近期文章"列表条数（0 = 不显示）
   ATELIER_LATEST_POSTS_COUNT: Number(
-    process.env.NEXT_PUBLIC_ATELIER_LATEST_POSTS_COUNT || 6
+    process.env.NEXT_PUBLIC_ATELIER_LATEST_POSTS_COUNT || 5
   ),
   // "近期文章"标题文案
   ATELIER_LATEST_POSTS_TITLE:
