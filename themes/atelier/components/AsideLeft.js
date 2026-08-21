@@ -26,10 +26,10 @@ function AsideLeft(props) {
           <MenuList {...props} />
         </section>
 
-        {/* 近期文章（下划线列表） */}
-        <LatestPosts {...props} />
+        {/* 近期文章：只在列表页显示；进入文章后让位给目录 */}
+        {!post && <LatestPosts {...props} />}
 
-        {/* 文章目录：只在文章详情页出现，桌面 sticky、超长内部滚 */}
+        {/* 文章目录：只在文章详情页出现 */}
         {post && (
           <section className='atelier-toc mt-12 pt-6'>
             <Catalog post={post} />
