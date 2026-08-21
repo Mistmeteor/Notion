@@ -453,68 +453,18 @@ const Style = () => {
           }
         }
 
-        /* ============= 文章详情页：恢复"侧栏跟页面滚"+ Catalog sticky + Footer fixed 底部 ============= */
+        /* ============= 文章正文列宽与首页保持一致（780px）============= */
+        /* 侧栏 fix 出流后，主内容里的 container-inner 用 max-w-4xl（896px），
+           压到 780px 让文章封面和标题的左右边界与首页流式条目对齐 */
         @media (min-width: 1024px) {
-          #theme-atelier.atelier-post-mode .sideLeft {
-            position: static;
-            top: auto;
-            left: auto;
-            width: 360px;
-            flex: 0 0 360px;   /* 关键：锁死宽度，防止被 main 的 w-full 挤压变窄 */
-            height: auto;
-            overflow-y: visible;
-            align-self: flex-start;
-            min-height: 100vh;
-            background: transparent;
-          }
-          /* 文章正文列宽与首页保持一致（780px），左右留白与流式条目统一 */
-          #theme-atelier.atelier-post-mode #container-inner {
+          #theme-atelier #container-inner {
             max-width: 780px !important;
           }
-          /* ArticleDetail 组件默认在 md 以上有 px-32（128px）横向 padding，
-             对齐后正文可读宽度太窄，收紧到 40px 与首页视觉一致 */
-          #theme-atelier.atelier-post-mode article {
+          /* ArticleDetail 原本 md:px-32（128px）内边距太宽，收窄到 24px */
+          #theme-atelier article {
             padding-left: 24px !important;
             padding-right: 24px !important;
             padding-top: 24px !important;
-          }
-          #theme-atelier.atelier-post-mode .sideLeft > div {
-            padding-bottom: 200px !important;
-          }
-          #theme-atelier.atelier-post-mode .sideLeft .atelier-sidebar-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 360px;
-            padding: 20px 40px 24px 40px;
-            margin: 0;
-            background: ${bg};
-            border-top: 1px solid ${border};
-            z-index: 15;
-          }
-          .dark #theme-atelier.atelier-post-mode .sideLeft .atelier-sidebar-footer {
-            background: ${bgDark};
-            border-top-color: rgba(255,255,255,0.08);
-          }
-          /* 文章页恢复 flex row 布局，去掉 padding-left */
-          #theme-atelier.atelier-post-mode main#wrapper {
-            padding-left: 0;
-          }
-          /* 文章目录：sticky 顶部，max-height 到 footer 顶为止，超长内部滚 */
-          #theme-atelier.atelier-post-mode .atelier-toc {
-            position: sticky;
-            top: 24px;
-            max-height: calc(100vh - 230px);
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: ${border} transparent;
-          }
-          #theme-atelier.atelier-post-mode .atelier-toc::-webkit-scrollbar {
-            width: 4px;
-          }
-          #theme-atelier.atelier-post-mode .atelier-toc::-webkit-scrollbar-thumb {
-            background: ${border};
-            border-radius: 2px;
           }
         }
 
