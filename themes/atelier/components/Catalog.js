@@ -147,21 +147,21 @@ const Catalog = ({ post }) => {
       if (currentSectionId !== activeSectionRef.current) {
         setActiveSection(currentSectionId)
 
-        const index = filteredToc.findIndex(
-          obj => uuidToId(obj.id) === currentSectionId
-        )
-        if (index !== -1 && tRef?.current) {
-          const itemHeight = 28
-          const containerHeight = tRef.current.clientHeight
-          const scrollTop = Math.max(
-            0,
-            itemHeight * index - containerHeight / 2 + itemHeight / 2
+        // 让活跃项在侧栏中居中可见 —— 用 scrollIntoView 自动定位到
+        // 最近的可滚动祖先（这里就是 .sideLeft，因为它 overflow-y: auto）
+        // 这样右边文章滑到什么位置，左边侧栏跟着自动滚到对应目录项
+        requestAnimationFrame(() => {
+          const activeAnchor = document.querySelector(
+            `.atelier-toc-item.atelier-toc-active`
           )
-          tRef.current.scrollTo({
-            top: scrollTop,
-            behavior: scrollBehavior
-          })
-        }
+          if (activeAnchor && typeof activeAnchor.scrollIntoView === 'function') {
+            activeAnchor.scrollIntoView({
+              behavior: scrollBehavior,
+              block: 'center',
+              inline: 'nearest'
+            })
+          }
+        })
       }
     }, 100)
 

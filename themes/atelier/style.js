@@ -505,9 +505,9 @@ const Style = () => {
         #theme-atelier .atelier-toc-item {
           display: block;
           font-family: ${serif};
-          font-size: 14px;
-          line-height: 1.5;
-          padding: 4px 0 4px 0;
+          font-size: 16px;
+          line-height: 1.55;
+          padding: 6px 0 6px 0;
           color: ${muted};
           text-decoration: none;
           border-left: 2px solid transparent;
@@ -549,6 +549,29 @@ const Style = () => {
           content: ' · ';
           margin: 0 4px;
           color: ${muted};
+        }
+
+        /* ============= 分享栏居中（覆盖 ShareBar 默认 md:justify-end）============= */
+        #theme-atelier .atelier-article-actions {
+          margin-top: 40px;
+          padding-top: 24px;
+          border-top: 1px solid ${border};
+        }
+        .dark #theme-atelier .atelier-article-actions {
+          border-top-color: rgba(255,255,255,0.1);
+        }
+        #theme-atelier .atelier-article-actions > div > .flex {
+          justify-content: center !important;
+        }
+        /* 分享按钮的圆形彩色底跟 atelier 极简色调冲突，压柔和些 */
+        #theme-atelier .atelier-article-actions button,
+        #theme-atelier .atelier-article-actions a[role='button'] {
+          filter: saturate(0.65);
+          transition: filter 0.2s ease;
+        }
+        #theme-atelier .atelier-article-actions button:hover,
+        #theme-atelier .atelier-article-actions a[role='button']:hover {
+          filter: saturate(1);
         }
 
         /* ============= 上一篇 / 下一篇 ============= */

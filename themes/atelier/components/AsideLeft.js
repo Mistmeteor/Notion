@@ -31,7 +31,7 @@ function AsideLeft(props) {
 
         {/* 文章目录：只在文章详情页出现 */}
         {post && (
-          <section className='atelier-toc mt-12 pt-6'>
+          <section className='atelier-toc mt-8'>
             <Catalog post={post} />
           </section>
         )}

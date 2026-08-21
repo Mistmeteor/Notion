@@ -102,7 +102,7 @@ export default function ArticleDetail(props) {
           {post && <NotionPage post={post} />}
         </section>
 
-        <section>
+        <section className='atelier-article-actions'>
           <AdSlot type='in-article' />
           {/* 分享 */}
           <ShareBar post={post} />
