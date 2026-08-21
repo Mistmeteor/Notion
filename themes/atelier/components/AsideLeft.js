@@ -29,9 +29,9 @@ function AsideLeft(props) {
         {/* 近期文章（下划线列表） */}
         <LatestPosts {...props} />
 
-        {/* 文章目录：只在文章详情页出现 */}
+        {/* 文章目录：只在文章详情页出现，桌面 sticky、超长内部滚 */}
         {post && (
-          <section className='sticky top-0 mt-12 pt-6 flex flex-col max-h-screen'>
+          <section className='atelier-toc mt-12 pt-6 flex flex-col'>
             <Catalog toc={post?.toc} />
           </section>
         )}

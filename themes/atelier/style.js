@@ -405,21 +405,48 @@ const Style = () => {
           #theme-atelier .atelier-stream-item { margin-bottom: 64px; }
         }
 
-        /* ============= 桌面端：侧栏 footer 顶到初始视口底部 ============= */
+        /* ============= 桌面端：footer 永远固定在视口左下角 ============= */
         @media (min-width: 1024px) {
           #theme-atelier .sideLeft {
             align-self: flex-start;
-            min-height: 100vh;
           }
+          /* 侧栏内层给底部留出 footer 的高度，避免正常内容被固定 footer 盖住 */
           #theme-atelier .sideLeft > div {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            padding-bottom: 200px;
             box-sizing: border-box;
           }
-          /* 关键：footer 之前所有内容自然排列，footer 用 auto margin 顶到最底 */
+          /* footer 脱离文档流固定在视口左下角，宽度对齐侧栏 */
           #theme-atelier .sideLeft .atelier-sidebar-footer {
-            margin-top: auto;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 360px;
+            padding: 20px 40px 24px 40px;
+            margin: 0;
+            background: ${bg};
+            border-top: 1px solid ${border};
+            z-index: 15;
+          }
+          .dark #theme-atelier .sideLeft .atelier-sidebar-footer {
+            background: ${bgDark};
+            border-top-color: rgba(255,255,255,0.08);
+          }
+          /* 文章目录：sticky 到视口顶部，最大高度到 footer 顶为止，超长内部滚 */
+          #theme-atelier .atelier-toc {
+            position: sticky;
+            top: 24px;
+            max-height: calc(100vh - 230px); /* 200px footer 空间 + 30px 上下留白 */
+            overflow-y: auto;
+            /* 内部滚动条低调点 */
+            scrollbar-width: thin;
+            scrollbar-color: ${border} transparent;
+          }
+          #theme-atelier .atelier-toc::-webkit-scrollbar {
+            width: 4px;
+          }
+          #theme-atelier .atelier-toc::-webkit-scrollbar-thumb {
+            background: ${border};
+            border-radius: 2px;
           }
         }
 
