@@ -456,11 +456,11 @@ const Style = () => {
           }
         }
 
-        /* ============= 回到顶部按钮 ============= */
-        #theme-atelier .atelier-back-to-top {
+        /* ============= 回到顶部 / 回到底部 按钮组（右下角）============= */
+        #theme-atelier .atelier-back-to-top,
+        #theme-atelier .atelier-back-to-bottom {
           position: fixed;
           right: 20px;
-          bottom: 20px;
           z-index: 45;
           width: 40px;
           height: 40px;
@@ -480,21 +480,32 @@ const Style = () => {
           transition: opacity 0.25s ease, transform 0.25s ease,
             background 0.15s ease;
         }
-        #theme-atelier .atelier-back-to-top.is-visible {
+        /* 回顶在上、回底在下（按钮组视觉栈）*/
+        #theme-atelier .atelier-back-to-top {
+          bottom: 68px;
+        }
+        #theme-atelier .atelier-back-to-bottom {
+          bottom: 20px;
+        }
+        #theme-atelier .atelier-back-to-top.is-visible,
+        #theme-atelier .atelier-back-to-bottom.is-visible {
           opacity: 1;
           transform: translateY(0);
           pointer-events: auto;
         }
-        #theme-atelier .atelier-back-to-top:hover {
+        #theme-atelier .atelier-back-to-top:hover,
+        #theme-atelier .atelier-back-to-bottom:hover {
           background: ${bg};
           transform: translateY(-2px);
         }
-        .dark #theme-atelier .atelier-back-to-top {
+        .dark #theme-atelier .atelier-back-to-top,
+        .dark #theme-atelier .atelier-back-to-bottom {
           background: rgba(20, 16, 11, 0.85);
           color: ${textDark};
           border-color: rgba(255,255,255,0.15);
         }
-        .dark #theme-atelier .atelier-back-to-top:hover {
+        .dark #theme-atelier .atelier-back-to-top:hover,
+        .dark #theme-atelier .atelier-back-to-bottom:hover {
           background: ${bgDark};
         }
 

@@ -16,6 +16,7 @@ import ArticleDetail from './components/ArticleDetail'
 import ArticleLock from './components/ArticleLock'
 import AsideLeft from './components/AsideLeft'
 import AtelierFooter from './components/AtelierFooter'
+import BackToBottom from './components/BackToBottom'
 import BackToTop from './components/BackToTop'
 import ReadingProgress from './components/ReadingProgress'
 import SidebarToggle from './components/SidebarToggle'
@@ -148,8 +149,9 @@ const LayoutBaseInner = props => {
         {/* 手机端 footer：桌面时侧栏底部已有一份，这里只在 <lg 时出现 */}
         <AtelierFooter className='flex lg:hidden' onToggleLang={toggleLang} />
 
-        {/* 回顶按钮：滑过 500px 才出现 */}
+        {/* 右下角浮动按钮组：回顶 + 回底 */}
         <BackToTop />
+        <BackToBottom />
 
         <AlgoliaSearchModal cRef={searchModal} {...props} />
       </div>
