@@ -704,6 +704,12 @@ const Style = () => {
         #theme-atelier .atelier-article-actions a.rounded-full i {
           color: inherit !important;
         }
+        /* 隐藏 LinkedIn + 分享栏最后两个图标（Cocuro / 深链聚合等国内小众服务） */
+        #theme-atelier .atelier-article-actions button[aria-label='linkedin'],
+        #theme-atelier .atelier-article-actions a[aria-label='linkedin'],
+        #theme-atelier .atelier-article-actions .flex > *:nth-last-child(-n+2) {
+          display: none !important;
+        }
 
         /* ============= 上一篇 / 下一篇 ============= */
         #theme-atelier .atelier-around {
