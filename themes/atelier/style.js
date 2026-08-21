@@ -459,11 +459,24 @@ const Style = () => {
             position: static;
             top: auto;
             left: auto;
+            width: 360px;
+            flex: 0 0 360px;   /* 关键：锁死宽度，防止被 main 的 w-full 挤压变窄 */
             height: auto;
             overflow-y: visible;
             align-self: flex-start;
             min-height: 100vh;
             background: transparent;
+          }
+          /* 文章正文列宽与首页保持一致（780px），左右留白与流式条目统一 */
+          #theme-atelier.atelier-post-mode #container-inner {
+            max-width: 780px !important;
+          }
+          /* ArticleDetail 组件默认在 md 以上有 px-32（128px）横向 padding，
+             对齐后正文可读宽度太窄，收紧到 40px 与首页视觉一致 */
+          #theme-atelier.atelier-post-mode article {
+            padding-left: 24px !important;
+            padding-right: 24px !important;
+            padding-top: 24px !important;
           }
           #theme-atelier.atelier-post-mode .sideLeft > div {
             padding-bottom: 200px !important;
