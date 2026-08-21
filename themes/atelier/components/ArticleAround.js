@@ -1,12 +1,11 @@
 import SmartLink from '@/components/SmartLink'
+import { tr, useAtelierLang } from '../lib/i18n'
 
 /**
- * 上一篇 / 下一篇导航
- * atelier 极简风：左右两列，无卡片背景、无阴影
- * 顶部小写字母标签 + 下面衬线体标题带下划线
- * 如果只有一侧存在，另一侧留空但保持栅格
+ * 上一篇 / 下一篇（跟随语言切换）
  */
 export default function ArticleAround({ prev, next }) {
+  const { lang } = useAtelierLang()
   if (!prev && !next) return null
 
   return (
@@ -17,7 +16,7 @@ export default function ArticleAround({ prev, next }) {
             href={`/${prev.slug}`}
             passHref
             className='atelier-around-link'>
-            <div className='atelier-around-label'>← 上一篇</div>
+            <div className='atelier-around-label'>← {tr(lang, 'prevPost')}</div>
             <div className='atelier-around-title'>{prev.title}</div>
           </SmartLink>
         )}
@@ -28,7 +27,7 @@ export default function ArticleAround({ prev, next }) {
             href={`/${next.slug}`}
             passHref
             className='atelier-around-link'>
-            <div className='atelier-around-label'>下一篇 →</div>
+            <div className='atelier-around-label'>{tr(lang, 'nextPost')} →</div>
             <div className='atelier-around-title'>{next.title}</div>
           </SmartLink>
         )}

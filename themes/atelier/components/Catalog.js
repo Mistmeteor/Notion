@@ -1,9 +1,9 @@
-import { useGlobal } from '@/lib/global'
 import { siteConfig } from '@/lib/config'
 import throttle from 'lodash.throttle'
 import { uuidToId } from 'notion-utils'
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import CONFIG from '../config'
+import { tr, useAtelierLang } from '../lib/i18n'
 
 /**
  * Atelier 目录（借鉴 claude 的活跃章节高亮 + 层级折叠）
@@ -18,7 +18,7 @@ import CONFIG from '../config'
  * 样式类前缀 .atelier-toc-*，具体视觉在 style.js 里定义
  */
 const Catalog = ({ post }) => {
-  const { locale } = useGlobal()
+  const { lang } = useAtelierLang()
   const tRef = useRef(null)
   const clickLockRef = useRef(false)
   const [activeSection, setActiveSection] = useState(null)
@@ -189,7 +189,7 @@ const Catalog = ({ post }) => {
         onClick={handleTitleClick}
         role='button'
         tabIndex={0}>
-        {locale.COMMON.TABLE_OF_CONTENTS}
+        {tr(lang, 'tocTitle')}
       </div>
 
       <div className='atelier-toc-list' ref={tRef}>

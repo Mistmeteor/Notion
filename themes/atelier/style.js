@@ -519,7 +519,8 @@ const Style = () => {
         }
 
         /* ============= Footer 里的"收起侧栏"按钮 ============= */
-        #theme-atelier .atelier-footer-collapse {
+        #theme-atelier .atelier-footer-collapse,
+        #theme-atelier .atelier-footer-lang {
           background: transparent;
           border: 0;
           padding: 0;
@@ -531,15 +532,27 @@ const Style = () => {
           justify-content: center;
           transition: color 0.15s ease, transform 0.15s ease;
         }
-        #theme-atelier .atelier-footer-collapse:hover {
+        #theme-atelier .atelier-footer-collapse:hover,
+        #theme-atelier .atelier-footer-lang:hover {
           color: ${text};
           transform: scale(1.1);
         }
-        .dark #theme-atelier .atelier-footer-collapse {
+        .dark #theme-atelier .atelier-footer-collapse,
+        .dark #theme-atelier .atelier-footer-lang {
           color: ${mutedDark};
         }
-        .dark #theme-atelier .atelier-footer-collapse:hover {
+        .dark #theme-atelier .atelier-footer-collapse:hover,
+        .dark #theme-atelier .atelier-footer-lang:hover {
           color: ${textDark};
+        }
+        /* 语言按钮的字形样式：小号无衬线，模拟"图标"的紧凑观感 */
+        #theme-atelier .atelier-footer-lang {
+          font-family: ${sans};
+          font-size: 13px;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+          min-width: 20px;
+          height: 20px;
         }
 
         /* ============= 评论区容器：清空装饰，避免空白块 ============= */

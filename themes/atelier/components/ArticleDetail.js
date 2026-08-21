@@ -13,6 +13,7 @@ import ArticleAround from './ArticleAround'
 import ReadingTime from './ReadingTime'
 import RecommendPosts from './RecommendPosts'
 import TagItemMini from './TagItemMini'
+import { tr, useAtelierLang } from '../lib/i18n'
 
 /**
  *
@@ -21,7 +22,8 @@ import TagItemMini from './TagItemMini'
  */
 export default function ArticleDetail(props) {
   const { post, prev, next } = props
-  const { locale, fullWidth } = useGlobal()
+  const { fullWidth } = useGlobal()
+  const { lang } = useAtelierLang()
 
   if (!post) {
     return <></>
@@ -75,7 +77,7 @@ export default function ArticleDetail(props) {
                   </SmartLink>
                   <span className='mr-2'>|</span>
                   <span className='mx-2 text-gray-400 dark:text-gray-500'>
-                    {locale.COMMON.LAST_EDITED_TIME}: {post.lastEditedDay}
+                    {tr(lang, 'lastEdited')}: {post.lastEditedDay}
                   </span>
                   <span className='mr-2'>|</span>
                   <ReadingTime post={post} />

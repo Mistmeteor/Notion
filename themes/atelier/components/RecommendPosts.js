@@ -1,13 +1,14 @@
 import SmartLink from '@/components/SmartLink'
 import { siteConfig } from '@/lib/config'
 import CONFIG from '../config'
+import { tr, useAtelierLang } from '../lib/i18n'
 
 /**
- * 文章底部相关推荐
- * 由 NotionNext 依据同分类/同标签计算并传入 recommendPosts
- * atelier 风：无衬线小写字母标题 + 下划线链接列表，视觉与 LatestPosts 一致
+ * 文章底部相关推荐（跟随语言切换）
  */
 const RecommendPosts = ({ recommendPosts }) => {
+  const { lang } = useAtelierLang()
+
   if (
     !siteConfig('ATELIER_ARTICLE_RECOMMEND_POSTS', true, CONFIG) ||
     !Array.isArray(recommendPosts) ||
@@ -23,7 +24,7 @@ const RecommendPosts = ({ recommendPosts }) => {
 
   return (
     <section className='atelier-recommend'>
-      <div className='atelier-recommend-title'>相关阅读</div>
+      <div className='atelier-recommend-title'>{tr(lang, 'relatedPosts')}</div>
       <div className='atelier-recommend-list'>
         {items.map(post => (
           <SmartLink

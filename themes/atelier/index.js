@@ -18,6 +18,7 @@ import AsideLeft from './components/AsideLeft'
 import AtelierFooter from './components/AtelierFooter'
 import ReadingProgress from './components/ReadingProgress'
 import SidebarToggle from './components/SidebarToggle'
+import { AtelierLangProvider, useAtelierLang } from './lib/i18n'
 import BlogListPage from './components/BlogListPage'
 import BlogListScroll from './components/BlogListScroll'
 import BlogArchiveItem from './components/BlogPostArchive'
@@ -45,11 +46,18 @@ export const useAtelierGlobal = () => useContext(ThemeGlobalAtelier)
  * @returns {JSX.Element}
  * @constructor
  */
-const LayoutBase = props => {
+const LayoutBase = props => (
+  <AtelierLangProvider initialLang={siteConfig('LANG')}>
+    <LayoutBaseInner {...props} />
+  </AtelierLangProvider>
+)
+
+const LayoutBaseInner = props => {
   const { children, headerSlot } = props
   const leftAreaSlot = <Live2D />
   const { onLoading, fullWidth } = useGlobal()
   const searchModal = useRef(null)
+  const { toggleLang } = useAtelierLang()
 
   // 侧栏开关状态：桌面默认打开，手机默认关闭；localStorage 记住用户选择
   const [sidebarOpen, setSidebarOpen] = useState(true)
@@ -108,7 +116,12 @@ const LayoutBase = props => {
               : '') + ' flex flex-col lg:flex-row'
           }>
           {/* 侧边抽屉 */}
-          <AsideLeft {...props} slot={leftAreaSlot} onToggleSidebar={toggleSidebar} />
+          <AsideLeft
+            {...props}
+            slot={leftAreaSlot}
+            onToggleSidebar={toggleSidebar}
+            onToggleLang={toggleLang}
+          />
 
           <main
             id='wrapper'
@@ -139,7 +152,7 @@ const LayoutBase = props => {
         </div>
 
         {/* 手机端 footer：桌面时侧栏底部已有一份，这里只在 <lg 时出现 */}
-        <AtelierFooter className='flex lg:hidden' />
+        <AtelierFooter className='flex lg:hidden' onToggleLang={toggleLang} />
 
         <AlgoliaSearchModal cRef={searchModal} {...props} />
       </div>

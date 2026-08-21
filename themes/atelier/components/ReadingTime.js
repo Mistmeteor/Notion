@@ -1,12 +1,13 @@
 import { siteConfig } from '@/lib/config'
 import CONFIG from '../config'
+import { tr, useAtelierLang } from '../lib/i18n'
 
 /**
- * 预估阅读时长
- * 优先用 post.wordCount（NotionNext 计算），否则用 blockCount 粗估
- * 中文按 300 字/分钟，可通过 ATELIER_READING_WORDS_PER_MINUTE 覆盖
+ * 预估阅读时长（跟随语言切换：X 分钟阅读 / X min read）
  */
 export default function ReadingTime({ post, className = '' }) {
+  const { lang } = useAtelierLang()
+
   if (!siteConfig('ATELIER_READING_TIME', true, CONFIG)) return null
   if (!post) return null
 
@@ -15,10 +16,9 @@ export default function ReadingTime({ post, className = '' }) {
     Number(siteConfig('ATELIER_READING_WORDS_PER_MINUTE', 300, CONFIG))
   )
 
-  // NotionNext 的 post 对象上通常有 wordCount；没有就用 blockCount 兜底
   const words =
     Number(post.wordCount) ||
-    Number(post.blockCount) * 30 || // 每 block 粗估 30 字
+    Number(post.blockCount) * 30 ||
     0
 
   if (!words) return null
@@ -26,7 +26,7 @@ export default function ReadingTime({ post, className = '' }) {
   const minutes = Math.max(1, Math.round(words / wpm))
   return (
     <span className={`atelier-reading-time ${className}`}>
-      {minutes} 分钟阅读
+      {tr(lang, 'readingTime', { n: minutes })}
     </span>
   )
 }

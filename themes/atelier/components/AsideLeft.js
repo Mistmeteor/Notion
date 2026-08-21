@@ -13,7 +13,7 @@ import { MenuList } from './MenuList'
  * 保证首页与文章详情页宽度完全一致。
  */
 function AsideLeft(props) {
-  const { post, slot, onToggleSidebar } = props
+  const { post, slot, onToggleSidebar, onToggleLang } = props
 
   return (
     <div className='sideLeft relative w-full lg:w-[360px] lg:min-h-screen block z-20'>
@@ -41,6 +41,7 @@ function AsideLeft(props) {
         <AtelierFooter
           className='hidden lg:flex'
           onToggleSidebar={onToggleSidebar}
+          onToggleLang={onToggleLang}
         />
 
         {/* 主题预留插槽（如 Live2D 之类）*/}
