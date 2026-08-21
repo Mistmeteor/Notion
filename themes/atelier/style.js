@@ -504,6 +504,11 @@ const Style = () => {
           #theme-atelier.atelier-sidebar-closed main#wrapper {
             padding-left: 0;
           }
+          /* 桌面只在侧栏可见时用 footer 里的按钮收起 —— 顶部汉堡包这里隐藏，
+             改用 index.js 的条件渲染控制何时显示 */
+          #theme-atelier .atelier-toggle-mobile-only {
+            display: none;
+          }
         }
 
         /* 手机：sidebarOpen 时侧栏堆到顶（现有行为），关闭时隐藏 */
@@ -511,6 +516,40 @@ const Style = () => {
           #theme-atelier.atelier-sidebar-closed .sideLeft {
             display: none;
           }
+        }
+
+        /* ============= Footer 里的"收起侧栏"按钮 ============= */
+        #theme-atelier .atelier-footer-collapse {
+          background: transparent;
+          border: 0;
+          padding: 0;
+          margin: 0;
+          cursor: pointer;
+          color: ${muted};
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          transition: color 0.15s ease, transform 0.15s ease;
+        }
+        #theme-atelier .atelier-footer-collapse:hover {
+          color: ${text};
+          transform: scale(1.1);
+        }
+        .dark #theme-atelier .atelier-footer-collapse {
+          color: ${mutedDark};
+        }
+        .dark #theme-atelier .atelier-footer-collapse:hover {
+          color: ${textDark};
+        }
+
+        /* ============= 评论区容器：清空装饰，避免空白块 ============= */
+        #theme-atelier .atelier-comment-wrapper {
+          margin-top: 40px;
+        }
+        /* Comment 组件返回空时，wrapper 里没有元素 → :empty 匹配 → 塌陷 */
+        #theme-atelier .atelier-comment-wrapper:empty {
+          display: none;
+          margin: 0;
         }
 
         /* ============= 顶部阅读进度条 ============= */
@@ -682,9 +721,13 @@ const Style = () => {
           #theme-atelier .atelier-around {
             grid-template-columns: 1fr;
             gap: 24px;
+            padding-left: 24px;
+            padding-right: 24px;
+            text-align: center;
           }
+          #theme-atelier .atelier-around-prev,
           #theme-atelier .atelier-around-next {
-            text-align: left;
+            text-align: center;
           }
         }
 
@@ -742,6 +785,23 @@ const Style = () => {
             padding-left: 24px !important;
             padding-right: 24px !important;
             padding-top: 24px !important;
+          }
+        }
+
+        /* ============= 文章内 H2/H3 依次缩进（H1 不缩）============= */
+        /* Notion 一级标题（H1）保持左对齐；二级 20px；三级 40px */
+        #theme-atelier article .notion-h2 {
+          padding-left: 20px;
+        }
+        #theme-atelier article .notion-h3 {
+          padding-left: 40px;
+        }
+        @media (max-width: 640px) {
+          #theme-atelier article .notion-h2 {
+            padding-left: 12px;
+          }
+          #theme-atelier article .notion-h3 {
+            padding-left: 24px;
           }
         }
 

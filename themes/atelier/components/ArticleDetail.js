@@ -116,8 +116,9 @@ export default function ArticleDetail(props) {
         <RecommendPosts recommendPosts={props.recommendPosts} />
       )}
 
-      {/* 评论互动 */}
-      <div className='duration-200 shadow py-6 px-12 w-screen md:w-full overflow-x-auto dark:border-gray-700 bg-white dark:bg-hexo-black-gray'>
+      {/* 评论互动：容器无装饰；如果 Comment 组件没启用任何评论插件、返回空，
+          CSS 里 :empty 规则会让整块塌陷不显示白块 */}
+      <div className='atelier-comment-wrapper w-full overflow-x-auto'>
         <Comment frontMatter={post} />
       </div>
     </div>

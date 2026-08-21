@@ -6,11 +6,11 @@
  * 图标：X（关闭）/ 三横线（打开）
  * 由 index.js 传入 open / toggle
  */
-export default function SidebarToggle({ open, onToggle }) {
+export default function SidebarToggle({ open, onToggle, className = '' }) {
   return (
     <button
       type='button'
-      className='atelier-sidebar-toggle'
+      className={`atelier-sidebar-toggle ${className}`}
       onClick={onToggle}
       aria-label={open ? '隐藏侧栏' : '显示侧栏'}
       title={open ? '隐藏侧栏' : '显示侧栏'}>

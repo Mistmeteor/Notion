@@ -74,6 +74,15 @@ const LayoutBase = props => {
     }
   }, [sidebarOpen, mounted])
 
+  // 手机端进入文章详情页时，无论 localStorage 是什么，都强制关闭侧栏
+  // 避免侧栏（含目录）遮住正文以及带来的滚动跳动问题
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (props.post && window.innerWidth < 1024) {
+      setSidebarOpen(false)
+    }
+  }, [props.post])
+
   const toggleSidebar = () => setSidebarOpen(v => !v)
 
   return (
@@ -82,7 +91,15 @@ const LayoutBase = props => {
         id='theme-atelier'
         className={`${siteConfig('FONT_STYLE')} dark:bg-black scroll-smooth ${sidebarOpen ? 'atelier-sidebar-open' : 'atelier-sidebar-closed'}`}>
         <Style />
-        <SidebarToggle open={sidebarOpen} onToggle={toggleSidebar} />
+        {/* 桌面：侧栏关闭时显示顶部汉堡包，打开时藏起（footer 里的收起按钮接管）
+            手机：任何时候都显示（顶部汉堡包是手机唯一入口）*/}
+        {(!sidebarOpen || !mounted) && (
+          <SidebarToggle open={sidebarOpen} onToggle={toggleSidebar} className='atelier-toggle-top' />
+        )}
+        {/* 手机端：无论侧栏开关都保留顶部汉堡包 */}
+        {sidebarOpen && mounted && (
+          <SidebarToggle open={sidebarOpen} onToggle={toggleSidebar} className='atelier-toggle-top atelier-toggle-mobile-only' />
+        )}
 
         <div
           className={
@@ -91,7 +108,7 @@ const LayoutBase = props => {
               : '') + ' flex flex-col lg:flex-row'
           }>
           {/* 侧边抽屉 */}
-          <AsideLeft {...props} slot={leftAreaSlot} />
+          <AsideLeft {...props} slot={leftAreaSlot} onToggleSidebar={toggleSidebar} />
 
           <main
             id='wrapper'

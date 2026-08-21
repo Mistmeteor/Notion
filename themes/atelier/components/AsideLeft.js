@@ -13,7 +13,7 @@ import { MenuList } from './MenuList'
  * 保证首页与文章详情页宽度完全一致。
  */
 function AsideLeft(props) {
-  const { post, slot } = props
+  const { post, slot, onToggleSidebar } = props
 
   return (
     <div className='sideLeft relative w-full lg:w-[360px] lg:min-h-screen block z-20'>
@@ -36,8 +36,12 @@ function AsideLeft(props) {
           </section>
         )}
 
-        {/* 桌面版 footer：margin-top: auto 顶到侧栏底部 = 初始视口底部 */}
-        <AtelierFooter className='hidden lg:flex' />
+        {/* 桌面版 footer：margin-top: auto 顶到侧栏底部 = 初始视口底部
+            带 onToggleSidebar 使 footer 里出现"收起侧栏"按钮 */}
+        <AtelierFooter
+          className='hidden lg:flex'
+          onToggleSidebar={onToggleSidebar}
+        />
 
         {/* 主题预留插槽（如 Live2D 之类）*/}
         {slot && <div className='mt-4'>{slot}</div>}
