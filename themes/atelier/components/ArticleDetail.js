@@ -10,6 +10,8 @@ import { useGlobal } from '@/lib/global'
 import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
 import ArticleAround from './ArticleAround'
+import ReadingTime from './ReadingTime'
+import RecommendPosts from './RecommendPosts'
 import TagItemMini from './TagItemMini'
 
 /**
@@ -75,6 +77,8 @@ export default function ArticleDetail(props) {
                   <span className='mx-2 text-gray-400 dark:text-gray-500'>
                     {locale.COMMON.LAST_EDITED_TIME}: {post.lastEditedDay}
                   </span>
+                  <span className='mr-2'>|</span>
+                  <ReadingTime post={post} />
                 </>
               )}
 
@@ -106,6 +110,11 @@ export default function ArticleDetail(props) {
       </article>
 
       {post?.type === 'Post' && <ArticleAround prev={prev} next={next} />}
+
+      {/* 相关推荐（由 NotionNext 依据同分类/同标签计算传入）*/}
+      {post?.type === 'Post' && (
+        <RecommendPosts recommendPosts={props.recommendPosts} />
+      )}
 
       {/* 评论互动 */}
       <div className='duration-200 shadow py-6 px-12 w-screen md:w-full overflow-x-auto dark:border-gray-700 bg-white dark:bg-hexo-black-gray'>

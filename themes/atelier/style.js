@@ -453,6 +453,201 @@ const Style = () => {
           }
         }
 
+        /* ============= 顶部阅读进度条 ============= */
+        #theme-atelier .atelier-reading-progress {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: transparent;
+          z-index: 40;
+          pointer-events: none;
+        }
+        #theme-atelier .atelier-reading-progress-bar {
+          height: 100%;
+          background: ${text};
+          transition: width 60ms linear;
+        }
+        .dark #theme-atelier .atelier-reading-progress-bar {
+          background: ${textDark};
+        }
+
+        /* ============= 目录（Catalog）活跃高亮 ============= */
+        #theme-atelier .atelier-catalog {
+          display: flex;
+          flex-direction: column;
+          font-family: ${serif};
+        }
+        #theme-atelier .atelier-toc-title {
+          font-family: ${sans};
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: ${muted};
+          margin-bottom: 14px;
+        }
+        #theme-atelier .atelier-toc-title:hover {
+          color: ${text};
+        }
+        .dark #theme-atelier .atelier-toc-title {
+          color: ${mutedDark};
+        }
+        .dark #theme-atelier .atelier-toc-title:hover {
+          color: ${textDark};
+        }
+        #theme-atelier .atelier-toc-list {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        #theme-atelier .atelier-toc-item {
+          display: block;
+          font-family: ${serif};
+          font-size: 14px;
+          line-height: 1.5;
+          padding: 4px 0 4px 0;
+          color: ${muted};
+          text-decoration: none;
+          border-left: 2px solid transparent;
+          margin-left: -8px;
+          padding-left: 8px !important;
+          transition: color 0.15s ease, border-color 0.15s ease;
+          word-break: break-word;
+        }
+        #theme-atelier .atelier-toc-item.atelier-toc-inactive:hover {
+          color: ${text};
+        }
+        #theme-atelier .atelier-toc-item.atelier-toc-highlighted {
+          color: ${text};
+        }
+        #theme-atelier .atelier-toc-item.atelier-toc-active {
+          color: ${text};
+          font-weight: 600;
+          border-left-color: ${text};
+        }
+        .dark #theme-atelier .atelier-toc-item.atelier-toc-highlighted {
+          color: ${textDark};
+        }
+        .dark #theme-atelier .atelier-toc-item.atelier-toc-active {
+          color: ${textDark};
+          border-left-color: ${textDark};
+        }
+
+        /* ============= 阅读时长小字 ============= */
+        #theme-atelier .atelier-reading-time {
+          font-family: ${sans};
+          font-size: 13px;
+          color: ${muted};
+          letter-spacing: 0.02em;
+        }
+        .dark #theme-atelier .atelier-reading-time {
+          color: ${mutedDark};
+        }
+        #theme-atelier .atelier-stream-date-sep::before {
+          content: ' · ';
+          margin: 0 4px;
+          color: ${muted};
+        }
+
+        /* ============= 上一篇 / 下一篇 ============= */
+        #theme-atelier .atelier-around {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
+          margin: 64px 0 40px 0;
+          padding-top: 32px;
+          border-top: 1px solid ${border};
+        }
+        .dark #theme-atelier .atelier-around {
+          border-top-color: rgba(255,255,255,0.1);
+        }
+        #theme-atelier .atelier-around-next {
+          text-align: right;
+        }
+        #theme-atelier .atelier-around-link {
+          display: block;
+          text-decoration: none;
+          color: ${text};
+        }
+        .dark #theme-atelier .atelier-around-link {
+          color: ${textDark};
+        }
+        #theme-atelier .atelier-around-label {
+          font-family: ${sans};
+          font-size: 11px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: ${muted};
+          margin-bottom: 8px;
+        }
+        .dark #theme-atelier .atelier-around-label {
+          color: ${mutedDark};
+        }
+        #theme-atelier .atelier-around-title {
+          font-family: ${serif};
+          font-size: 17px;
+          line-height: 1.4;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-thickness: 1px;
+        }
+        #theme-atelier .atelier-around-link:hover .atelier-around-title {
+          opacity: 0.6;
+        }
+        @media (max-width: 640px) {
+          #theme-atelier .atelier-around {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+          #theme-atelier .atelier-around-next {
+            text-align: left;
+          }
+        }
+
+        /* ============= 相关推荐 ============= */
+        #theme-atelier .atelier-recommend {
+          margin: 40px 0 32px 0;
+          padding-top: 32px;
+          border-top: 1px solid ${border};
+        }
+        .dark #theme-atelier .atelier-recommend {
+          border-top-color: rgba(255,255,255,0.1);
+        }
+        #theme-atelier .atelier-recommend-title {
+          font-family: ${sans};
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: ${muted};
+          margin-bottom: 20px;
+        }
+        .dark #theme-atelier .atelier-recommend-title {
+          color: ${mutedDark};
+        }
+        #theme-atelier .atelier-recommend-list {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        #theme-atelier .atelier-recommend-list a {
+          font-family: ${serif};
+          font-size: 17px;
+          line-height: 1.45;
+          color: ${text};
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-thickness: 1px;
+        }
+        .dark #theme-atelier .atelier-recommend-list a {
+          color: ${textDark};
+        }
+        #theme-atelier .atelier-recommend-list a:hover {
+          opacity: 0.6;
+        }
+
         /* ============= 文章正文列宽与首页保持一致（780px）============= */
         /* 侧栏 fix 出流后，主内容里的 container-inner 用 max-w-4xl（896px），
            压到 780px 让文章封面和标题的左右边界与首页流式条目对齐 */

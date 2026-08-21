@@ -31,8 +31,8 @@ function AsideLeft(props) {
 
         {/* 文章目录：只在文章详情页出现，桌面 sticky、超长内部滚 */}
         {post && (
-          <section className='atelier-toc mt-12 pt-6 flex flex-col'>
-            <Catalog toc={post?.toc} />
+          <section className='atelier-toc mt-12 pt-6'>
+            <Catalog post={post} />
           </section>
         )}
 

@@ -16,6 +16,7 @@ import ArticleDetail from './components/ArticleDetail'
 import ArticleLock from './components/ArticleLock'
 import AsideLeft from './components/AsideLeft'
 import AtelierFooter from './components/AtelierFooter'
+import ReadingProgress from './components/ReadingProgress'
 import BlogListPage from './components/BlogListPage'
 import BlogListScroll from './components/BlogListScroll'
 import BlogArchiveItem from './components/BlogPostArchive'
@@ -157,8 +158,10 @@ const LayoutSlug = props => {
       )
     }
   }, [post])
+  const showProgress = siteConfig('ATELIER_READING_PROGRESS', true, CONFIG)
   return (
     <>
+      {post && showProgress && <ReadingProgress />}
       {lock ? (
         <ArticleLock validPassword={validPassword} />
       ) : post && (

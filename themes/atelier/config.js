@@ -47,14 +47,28 @@ const CONFIG = {
   ATELIER_POST_LIST_PREVIEW: false,
   ATELIER_POST_LIST_ANIMATION: false,
 
-  // ================= 侧栏行为（继承自 fukasawa）=================
-  // atelier 是编辑器/杂志风格，默认不显示折叠按钮
-  ATELIER_SIDEBAR_COLLAPSE_BUTTON: false,
-  ATELIER_SIDEBAR_COLLAPSE_SATUS_DEFAULT: false,
-  ATELIER_SIDEBAR_COLLAPSE_ON_SCROLL: false,
+  // ================= 阅读体验 =================
+  // 顶部阅读进度条（仅文章页显示）
+  ATELIER_READING_PROGRESS: true,
+  // 显示预估阅读时长（"X 分钟阅读"）
+  ATELIER_READING_TIME: true,
+  // 每分钟阅读字数（中文 300~350 较合理，英文 200~250）
+  ATELIER_READING_WORDS_PER_MINUTE: Number(
+    process.env.NEXT_PUBLIC_ATELIER_READING_WORDS_PER_MINUTE || 300
+  ),
+  // 目录：是否显示到第 3 级（关闭则只显示 L1+L2）
+  ATELIER_TOC_SHOW_LEVEL3:
+    process.env.NEXT_PUBLIC_ATELIER_TOC_SHOW_LEVEL3 !== 'false',
+  // 目录滚动行为：'smooth' 或 'instant'
+  ATELIER_TOC_SCROLL_BEHAVIOR:
+    process.env.NEXT_PUBLIC_ATELIER_TOC_SCROLL_BEHAVIOR || 'smooth',
 
-  // ================= 其他 =================
-  ATELIER_MAILCHIMP_FORM: false // 邮件订阅表单
+  // ================= 相关推荐 =================
+  // 文章底部显示相关推荐（同分类/同标签匹配）
+  ATELIER_ARTICLE_RECOMMEND_POSTS: true,
+  ATELIER_ARTICLE_RECOMMEND_POSTS_COUNT: Number(
+    process.env.NEXT_PUBLIC_ATELIER_ARTICLE_RECOMMEND_POSTS_COUNT || 4
+  )
 }
 
 export default CONFIG

@@ -4,6 +4,7 @@ import SmartLink from '@/components/SmartLink'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import CONFIG from '../config'
+import ReadingTime from './ReadingTime'
 
 /**
  * Atelier 首页文章条目 —— 编辑器/画册风格的单栏流
@@ -67,9 +68,12 @@ const BlogCard = ({ post, showAnimate }) => {
         </SmartLink>
       </h2>
 
-      {/* 日期（小号无衬线体） */}
+      {/* 日期 + 阅读时长（小号无衬线体） */}
       {dateText && (
-        <div className='atelier-stream-date'>{dateText}</div>
+        <div className='atelier-stream-date'>
+          {dateText}
+          <ReadingTime post={post} className='atelier-stream-date-sep' />
+        </div>
       )}
 
       {/* 摘要 */}

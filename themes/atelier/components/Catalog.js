@@ -1,92 +1,250 @@
 import { useGlobal } from '@/lib/global'
+import { siteConfig } from '@/lib/config'
 import throttle from 'lodash.throttle'
 import { uuidToId } from 'notion-utils'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react'
+import CONFIG from '../config'
 
 /**
- * 目录导航组件
- * @param toc
- * @returns {JSX.Element}
- * @constructor
+ * Atelier 目录（借鉴 claude 的活跃章节高亮 + 层级折叠）
+ *
+ * 行为：
+ * 1. 默认显示 L1 + L2；配置 ATELIER_TOC_SHOW_LEVEL3 = true 时滚动到 L2
+ *    自动展开其下 L3 子级
+ * 2. 滚动窗口时用 scroll spy 高亮当前 section，同时高亮其祖先链
+ * 3. 点击目录项平滑滚动到对应位置
+ * 4. 点击顶部标题回到文章顶部
+ *
+ * 样式类前缀 .atelier-toc-*，具体视觉在 style.js 里定义
  */
-const Catalog = ({ toc }) => {
+const Catalog = ({ post }) => {
   const { locale } = useGlobal()
-
-  // 同步选中目录事件
+  const tRef = useRef(null)
+  const clickLockRef = useRef(false)
   const [activeSection, setActiveSection] = useState(null)
+  const activeSectionRef = useRef(activeSection)
 
-  // 监听滚动事件
   useEffect(() => {
-    const throttleMs = 200
+    activeSectionRef.current = activeSection
+  }, [activeSection])
+
+  const showLevel3 = siteConfig('ATELIER_TOC_SHOW_LEVEL3', true, CONFIG)
+  const scrollBehavior = siteConfig('ATELIER_TOC_SCROLL_BEHAVIOR', 'smooth', CONFIG)
+  const maxDepth = showLevel3 ? 3 : 2
+
+  const filteredToc = useMemo(() => {
+    if (!post?.toc) return []
+    return post.toc.filter(item => item.indentLevel < maxDepth)
+  }, [post?.toc, maxDepth])
+
+  const tocHierarchy = useMemo(() => {
+    const hierarchy = new Map()
+    const parentStack = []
+
+    filteredToc.forEach((item, index) => {
+      const id = uuidToId(item.id)
+
+      while (
+        parentStack.length > 0 &&
+        parentStack[parentStack.length - 1].level >= item.indentLevel
+      ) {
+        parentStack.pop()
+      }
+
+      const parentId =
+        parentStack.length > 0
+          ? parentStack[parentStack.length - 1].id
+          : null
+
+      hierarchy.set(id, {
+        item,
+        index,
+        parentId,
+        children: [],
+        indentLevel: item.indentLevel
+      })
+
+      if (parentId) {
+        hierarchy.get(parentId)?.children.push(id)
+      }
+
+      parentStack.push({ id, level: item.indentLevel })
+    })
+
+    return hierarchy
+  }, [filteredToc])
+
+  const getAncestorChain = useCallback(
+    targetId => {
+      const chain = new Set()
+      let current = targetId
+      while (current) {
+        chain.add(current)
+        const node = tocHierarchy.get(current)
+        current = node?.parentId
+      }
+      return chain
+    },
+    [tocHierarchy]
+  )
+
+  const activeL2Id = useMemo(() => {
+    if (!activeSection) return null
+    const node = tocHierarchy.get(activeSection)
+    if (!node) return null
+    if (node.indentLevel === 1) return activeSection
+    if (node.indentLevel === 2) return node.parentId
+    return null
+  }, [activeSection, tocHierarchy])
+
+  const highlightedIds = useMemo(() => {
+    if (!activeSection) return new Set()
+    return getAncestorChain(activeSection)
+  }, [activeSection, getAncestorChain])
+
+  const shouldShowItem = useCallback(
+    (id, indentLevel) => {
+      if (indentLevel === 0) return true
+      if (indentLevel === 1) return true
+      if (indentLevel === 2) {
+        if (!showLevel3) return false
+        const node = tocHierarchy.get(id)
+        if (!node) return false
+        return node.parentId === activeL2Id
+      }
+      return false
+    },
+    [showLevel3, tocHierarchy, activeL2Id]
+  )
+
+  // Scroll spy：atelier 主内容跟 window 滚动
+  useEffect(() => {
+    if (!post || !filteredToc || filteredToc.length < 1) return
+
     const actionSectionScrollSpy = throttle(() => {
+      if (clickLockRef.current) return
+
       const sections = document.getElementsByClassName('notion-h')
-      let prevBBox = null
-      let currentSectionId = activeSection
+      if (!sections || sections.length === 0) return
+
+      let currentSectionId = null
+      const threshold = 80
       for (let i = 0; i < sections.length; ++i) {
         const section = sections[i]
         if (!section || !(section instanceof Element)) continue
-        if (!currentSectionId) {
-          currentSectionId = section.getAttribute('data-id')
-        }
         const bbox = section.getBoundingClientRect()
-        const prevHeight = prevBBox ? bbox.top - prevBBox.bottom : 0
-        const offset = Math.max(150, prevHeight / 4)
-        // GetBoundingClientRect returns values relative to viewport
-        if (bbox.top - offset < 0) {
+        if (bbox.top <= threshold) {
           currentSectionId = section.getAttribute('data-id')
-          prevBBox = bbox
-          continue
+        } else {
+          break
         }
-        // No need to continue loop, if last element has been detected
-        break
       }
-      setActiveSection(currentSectionId)
-      const index = toc?.findIndex(obj => uuidToId(obj.id) === currentSectionId)
-      tRef?.current?.scrollTo({ top: 28 * index, behavior: 'smooth' })
-    }, throttleMs)
 
-    actionSectionScrollSpy()
+      if (!currentSectionId && sections.length > 0) {
+        currentSectionId = sections[0].getAttribute('data-id')
+      }
+
+      if (currentSectionId !== activeSectionRef.current) {
+        setActiveSection(currentSectionId)
+
+        const index = filteredToc.findIndex(
+          obj => uuidToId(obj.id) === currentSectionId
+        )
+        if (index !== -1 && tRef?.current) {
+          const itemHeight = 28
+          const containerHeight = tRef.current.clientHeight
+          const scrollTop = Math.max(
+            0,
+            itemHeight * index - containerHeight / 2 + itemHeight / 2
+          )
+          tRef.current.scrollTo({
+            top: scrollTop,
+            behavior: scrollBehavior
+          })
+        }
+      }
+    }, 100)
+
     window.addEventListener('scroll', actionSectionScrollSpy, { passive: true })
+    setTimeout(() => actionSectionScrollSpy(), 300)
+
     return () => {
       window.removeEventListener('scroll', actionSectionScrollSpy)
+      actionSectionScrollSpy.cancel?.()
     }
-  }, [toc])
+  }, [post, filteredToc, tocHierarchy, scrollBehavior])
 
-  // 目录自动滚动
-  const tRef = useRef(null)
-  // 无目录就直接返回空
-  if (!toc || toc?.length < 1) {
-    return <></>
+  const handleTitleClick = () => {
+    window.scrollTo({ top: 0, behavior: scrollBehavior })
   }
+
+  if (!post || !filteredToc || filteredToc.length < 1) {
+    return null
+  }
+
   return (
-    <div id='catalog' className='flex-1 flex-col flex overflow-hidden'>
-      <div className='w-full dark:text-gray-300 mb-2'>
-        <i className='mr-1 fas fa-stream' />
+    <div className='atelier-catalog'>
+      <div
+        className='atelier-toc-title'
+        onClick={handleTitleClick}
+        role='button'
+        tabIndex={0}>
         {locale.COMMON.TABLE_OF_CONTENTS}
       </div>
-      <nav
-        ref={tRef}
-        className='flex-1 overflow-auto  overscroll-none scroll-hidden   text-black mb-6'>
-        {toc.map(tocItem => {
+
+      <div className='atelier-toc-list' ref={tRef}>
+        {filteredToc.map(tocItem => {
           const id = uuidToId(tocItem.id)
+          const isHighlighted = highlightedIds.has(id)
+          const isActive = activeSection === id
+          const show = shouldShowItem(id, tocItem.indentLevel)
+
+          if (!show) return null
+
+          const paddingLeft =
+            tocItem.indentLevel === 0
+              ? 0
+              : tocItem.indentLevel === 1
+                ? 16
+                : 32
+
           return (
             <a
               key={id}
               href={`#${id}`}
-              className={`${activeSection === id && 'dark:border-white border-gray-800 text-gray-800 font-bold'} hover:font-semibold border-l pl-4 block hover:text-gray-800 border-lduration-300 transform dark:text-gray-400 dark:border-gray-400
-        notion-table-of-contents-item-indent-level-${tocItem.indentLevel} catalog-item `}>
-              <span
-                style={{
-                  display: 'inline-block',
-                  marginLeft: tocItem.indentLevel * 16
-                }}
-                className={`truncate ${activeSection === id ? ' font-bold text-black dark:text-white underline' : ''}`}>
-                {tocItem.text}
-              </span>
+              onClick={e => {
+                e.preventDefault()
+                clickLockRef.current = true
+
+                const target = document.querySelector(`[data-id="${id}"]`)
+                if (target) {
+                  const targetRect = target.getBoundingClientRect()
+                  const scrollOffset = window.scrollY + targetRect.top - 40
+                  window.scrollTo({
+                    top: scrollOffset,
+                    behavior: scrollBehavior
+                  })
+                }
+
+                const delay = scrollBehavior === 'smooth' ? 500 : 50
+                setTimeout(() => {
+                  setActiveSection(id)
+                  clickLockRef.current = false
+                }, delay)
+              }}
+              className={`atelier-toc-item ${
+                isActive
+                  ? 'atelier-toc-active'
+                  : isHighlighted
+                    ? 'atelier-toc-highlighted'
+                    : 'atelier-toc-inactive'
+              }`}
+              style={{ paddingLeft: `${paddingLeft}px` }}>
+              {tocItem.text}
             </a>
           )
         })}
-      </nav>
+      </div>
     </div>
   )
 }
