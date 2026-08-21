@@ -231,6 +231,20 @@ const Style = () => {
           border-bottom-color: rgba(255, 255, 255, 0.1) !important;
         }
 
+        /* ============= 文章详情页：白底改成同底色 ============= */
+        /* ArticleDetail 的 article 和评论区都写死了 bg-white，一并覆盖 */
+        #theme-atelier .bg-white {
+          background-color: ${bg} !important;
+        }
+        .dark #theme-atelier .bg-white,
+        .dark #theme-atelier .dark\\:bg-hexo-black-gray {
+          background-color: ${bgDark} !important;
+        }
+        /* 文章框也去掉阴影 */
+        #theme-atelier article {
+          box-shadow: none !important;
+        }
+
         /* ============= 页脚：图标 + 版权，居中排版 ============= */
         #theme-atelier .atelier-sidebar-footer {
           flex-direction: column;
