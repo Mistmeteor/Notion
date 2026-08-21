@@ -704,6 +704,13 @@ const Style = () => {
         #theme-atelier .atelier-article-actions a.rounded-full i {
           color: inherit !important;
         }
+        /* 精准隐藏三个不需要的分享服务（用 aria-label 定位单个按钮，
+           不影响相邻 icon 的 flex 布局，因此不会像 nth-last-child 那样带副作用）*/
+        #theme-atelier button[aria-label='linkedin'],
+        #theme-atelier button[aria-label='csdn'],
+        #theme-atelier button[aria-label='juejin'] {
+          display: none !important;
+        }
 
         /* ============= 上一篇 / 下一篇 ============= */
         #theme-atelier .atelier-around {
