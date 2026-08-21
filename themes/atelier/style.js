@@ -663,16 +663,46 @@ const Style = () => {
         }
         #theme-atelier .atelier-article-actions > div > .flex {
           justify-content: center !important;
+          gap: 6px;
         }
-        /* 分享按钮的圆形彩色底跟 atelier 极简色调冲突，压柔和些 */
-        #theme-atelier .atelier-article-actions button,
-        #theme-atelier .atelier-article-actions a[role='button'] {
-          filter: saturate(0.65);
-          transition: filter 0.2s ease;
+        /* ------- 分享按钮：性冷淡 ghost 圆形 --------
+           覆盖上游 ShareButtons 的品牌彩色底和白色图标；
+           保留原有的 FontAwesome 字体图标（<i class="fab fa-...">）
+           因为它们本身就是矢量、单色，跟 atelier 极简调完全兼容 */
+        #theme-atelier .atelier-article-actions button.rounded-full,
+        #theme-atelier .atelier-article-actions a.rounded-full {
+          background: transparent !important;
+          background-color: transparent !important;
+          color: ${muted} !important;
+          border: 1px solid ${border};
+          width: 34px !important;
+          height: 34px !important;
+          margin: 0 !important;
+          transition: background-color 0.2s ease, color 0.2s ease,
+            border-color 0.2s ease, transform 0.2s ease;
         }
-        #theme-atelier .atelier-article-actions button:hover,
-        #theme-atelier .atelier-article-actions a[role='button']:hover {
-          filter: saturate(1);
+        #theme-atelier .atelier-article-actions button.rounded-full:hover,
+        #theme-atelier .atelier-article-actions a.rounded-full:hover {
+          background-color: ${text} !important;
+          color: ${bg} !important;
+          border-color: ${text};
+          transform: translateY(-1px);
+        }
+        .dark #theme-atelier .atelier-article-actions button.rounded-full,
+        .dark #theme-atelier .atelier-article-actions a.rounded-full {
+          color: ${mutedDark} !important;
+          border-color: rgba(255,255,255,0.15);
+        }
+        .dark #theme-atelier .atelier-article-actions button.rounded-full:hover,
+        .dark #theme-atelier .atelier-article-actions a.rounded-full:hover {
+          background-color: ${textDark} !important;
+          color: ${bgDark} !important;
+          border-color: ${textDark};
+        }
+        /* 内部图标继承父级 color；不要再被 text-white 强制染白 */
+        #theme-atelier .atelier-article-actions button.rounded-full i,
+        #theme-atelier .atelier-article-actions a.rounded-full i {
+          color: inherit !important;
         }
 
         /* ============= 上一篇 / 下一篇 ============= */
