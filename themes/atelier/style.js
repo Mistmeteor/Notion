@@ -229,29 +229,117 @@ const Style = () => {
           color: ${mutedDark};
         }
 
-        /* ============= 首页文章瀑布流（继承 atelier 的响应式列数）============= */
+        /* ============= 首页：单栏流（覆盖 fukasawa 的 3 列 masonry）============= */
+        #theme-atelier .grid-container {
+          column-count: initial !important;
+          column-gap: initial !important;
+          display: block;
+          max-width: 780px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
         #theme-atelier .grid-item {
+          display: block !important;
+          width: 100%;
+          break-inside: auto;
+          margin-bottom: 0;
+          justify-content: flex-start !important;
+        }
+
+        /* ---- 单条流式文章条目 ---- */
+        #theme-atelier .atelier-stream-item {
+          max-width: 100%;
+          margin: 0 auto 96px auto;
+          background: transparent;
+          box-shadow: none;
+          border: 0;
+          padding: 0;
+        }
+        #theme-atelier .atelier-stream-item:last-child {
+          margin-bottom: 40px;
+        }
+        #theme-atelier .atelier-stream-cover-wrap {
+          display: block;
+          width: 100%;
+          overflow: hidden;
+          margin-bottom: 32px;
+          background: #eee;
+        }
+        .dark #theme-atelier .atelier-stream-cover-wrap {
+          background: #262019;
+        }
+        #theme-atelier .atelier-stream-cover {
+          width: 100%;
           height: auto;
-          break-inside: avoid-column;
-          margin-bottom: 1rem;
+          aspect-ratio: 16 / 10;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.6s ease;
         }
-        @media (min-width: 1024px) {
-          #theme-atelier .grid-container {
-            column-count: 3;
-            column-gap: 1rem;
-          }
+        #theme-atelier .atelier-stream-cover-wrap:hover .atelier-stream-cover {
+          transform: scale(1.03);
         }
-        @media (min-width: 640px) and (max-width: 1023px) {
-          #theme-atelier .grid-container {
-            column-count: 2;
-            column-gap: 1rem;
-          }
+        #theme-atelier .atelier-stream-title {
+          font-family: ${serif};
+          font-size: 40px;
+          font-weight: 500;
+          line-height: 1.15;
+          letter-spacing: -0.005em;
+          margin: 0 0 14px 0;
         }
-        @media (max-width: 639px) {
-          #theme-atelier .grid-container {
-            column-count: 1;
-            column-gap: 0;
-          }
+        #theme-atelier .atelier-stream-title a {
+          color: ${text};
+          text-decoration: none;
+        }
+        #theme-atelier .atelier-stream-title a:hover {
+          color: ${muted};
+        }
+        .dark #theme-atelier .atelier-stream-title a {
+          color: ${textDark};
+        }
+        #theme-atelier .atelier-stream-date {
+          font-family: ${sans};
+          color: ${muted};
+          font-size: 15px;
+          letter-spacing: 0.02em;
+          margin-bottom: 24px;
+        }
+        .dark #theme-atelier .atelier-stream-date {
+          color: ${mutedDark};
+        }
+        #theme-atelier .atelier-stream-summary {
+          font-family: ${serif};
+          font-size: 17px;
+          line-height: 1.75;
+          color: ${text};
+          margin-bottom: 20px;
+        }
+        .dark #theme-atelier .atelier-stream-summary {
+          color: ${textDark};
+        }
+        #theme-atelier .atelier-stream-more {
+          display: inline-block;
+          font-family: ${serif};
+          font-size: 14px;
+          color: ${muted};
+          text-decoration: none;
+          border-bottom: 1px solid ${muted};
+          padding-bottom: 2px;
+          letter-spacing: 0.02em;
+        }
+        #theme-atelier .atelier-stream-more:hover {
+          color: ${text};
+          border-bottom-color: ${text};
+        }
+        .dark #theme-atelier .atelier-stream-more {
+          color: ${mutedDark};
+          border-bottom-color: ${mutedDark};
+        }
+
+        /* 小屏幕：略微缩小标题 */
+        @media (max-width: 640px) {
+          #theme-atelier .atelier-stream-title { font-size: 30px; }
+          #theme-atelier .atelier-stream-item { margin-bottom: 64px; }
         }
 
         ${themeConsoleStyle('atelier', CONFIG)}

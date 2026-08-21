@@ -1,21 +1,19 @@
 import LazyImage from '@/components/LazyImage'
 import NotionIcon from '@/components/NotionIcon'
+import SmartLink from '@/components/SmartLink'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
-import SmartLink from '@/components/SmartLink'
 import CONFIG from '../config'
-import TagItemMini from './TagItemMini'
 
 /**
- * 文章列表卡片
- * @param {*} param0
- * @returns
+ * Atelier 首页文章条目 —— 编辑器/画册风格的单栏流
+ * 无卡片、无阴影、无边框，纯排版：封面图 + 大标题 + 日期 + 摘要
+ * 一整条占满右主内容区宽度（由父容器约束），条目之间用大留白隔开
  */
-const BlogCard = ({ showAnimate, post, showSummary }) => {
-const {siteInfo} =useGlobal()
-  const showPreview =
-    siteConfig('ATELIER_POST_LIST_PREVIEW', null, CONFIG) && post.blockMap
-  // atelier 强制显示图片
+const BlogCard = ({ post, showAnimate }) => {
+  const { siteInfo } = useGlobal()
+
+  // 封面强制回退到站点默认背景
   if (
     siteConfig('ATELIER_POST_LIST_COVER_FORCE', null, CONFIG) &&
     post &&
@@ -23,86 +21,66 @@ const {siteInfo} =useGlobal()
   ) {
     post.pageCoverThumbnail = siteInfo?.pageCover
   }
-  const showPageCover =
+  const showCover =
     siteConfig('ATELIER_POST_LIST_COVER', null, CONFIG) &&
     post?.pageCoverThumbnail
-    
-  const ATELIER_POST_LIST_ANIMATION = siteConfig(
-    'ATELIER_POST_LIST_ANIMATION',
-    null,
-    CONFIG
-  ) || showAnimate 
 
-  // 动画样式  首屏卡片不用，后面翻出来的加动画
-  const aosProps = ATELIER_POST_LIST_ANIMATION
+  // 日期：优先 publishDay，退回到 date.start_date / lastEditedDay
+  const dateText =
+    post?.publishDay ||
+    post?.date?.start_date ||
+    post?.lastEditedDay ||
+    ''
+
+  const animate = siteConfig('ATELIER_POST_LIST_ANIMATION', null, CONFIG) || showAnimate
+  const aosProps = animate
     ? {
         'data-aos': 'fade-up',
-        'data-aos-duration': '300',
+        'data-aos-duration': '400',
         'data-aos-once': 'true',
         'data-aos-anchor-placement': 'top-bottom'
       }
     : {}
 
   return (
-    <article
-      {...aosProps}
-      style={{ maxHeight: '60rem' }}
-      className='w-full lg:max-w-sm p-3 shadow mb-4 mx-2 bg-white dark:bg-hexo-black-gray hover:shadow-lg duration-200'>
-      <div className='flex flex-col justify-between h-full'>
-        {/* 封面图 */}
-        {showPageCover && (
-          <SmartLink href={post?.href} passHref legacyBehavior>
-            <div className='flex-grow mb-3 w-full duration-200 cursor-pointer transform overflow-hidden'>
-              <LazyImage
-                src={post?.pageCoverThumbnail}
-                alt={post?.title || siteConfig('TITLE')}
-                className='object-cover w-full h-full hover:scale-125 transform duration-500'
-              />
-            </div>
-          </SmartLink>
-        )}
-
-        {/* 文字部分 */}
-        <div className='flex flex-col w-full'>
-          <h2>
-            <SmartLink
-              passHref
-              href={post?.href}
-              className={`break-words cursor-pointer font-bold hover:underline text-xl ${showPreview ? 'justify-center' : 'justify-start'} leading-tight text-gray-700 dark:text-gray-100 hover:text-blue-500 dark:hover:text-blue-400`}>
-              {siteConfig('POST_TITLE_ICON') && (
-                <NotionIcon icon={post.pageIcon} />
-              )}{' '}
-              {post.title}
-            </SmartLink>
-          </h2>
-
-          {(!showPreview || showSummary) && (
-            <main className='my-2 tracking-wide line-clamp-3 text-gray-800 dark:text-gray-300 text-md font-light leading-6'>
-              {post.summary}
-            </main>
-          )}
-
-          {/* 分类标签 */}
-          <div className='mt-auto justify-between flex'>
-            {post.category && (
-              <SmartLink
-                href={`/category/${post.category}`}
-                passHref
-                className='cursor-pointer dark:text-gray-300 font-light text-sm hover:underline hover:text-indigo-700 dark:hover:text-indigo-400 transform'>
-                <i className='mr-1 far fa-folder' />
-                {post.category}
-              </SmartLink>
-            )}
-            <div className='md:flex-nowrap flex-wrap md:justify-start inline-block'>
-              <div>
-                {post.tagItems?.map(tag => (
-                  <TagItemMini key={tag.name} tag={tag} />
-                ))}
-              </div>
-            </div>
+    <article {...aosProps} className='atelier-stream-item'>
+      {/* 封面图（占满宽度，点击进入文章） */}
+      {showCover && (
+        <SmartLink href={post?.href} passHref legacyBehavior>
+          <div className='atelier-stream-cover-wrap cursor-pointer'>
+            <LazyImage
+              src={post?.pageCoverThumbnail}
+              alt={post?.title || siteConfig('TITLE')}
+              className='atelier-stream-cover'
+            />
           </div>
-        </div>
-      </div>
+        </SmartLink>
+      )}
+
+      {/* 标题（大号衬线体，点击进入文章） */}
+      <h2 className='atelier-stream-title'>
+        <SmartLink href={post?.href} passHref>
+          {siteConfig('POST_TITLE_ICON') && (
+            <NotionIcon icon={post.pageIcon} />
+          )}
+          {post.title}
+        </SmartLink>
+      </h2>
+
+      {/* 日期（小号无衬线体） */}
+      {dateText && (
+        <div className='atelier-stream-date'>{dateText}</div>
+      )}
+
+      {/* 摘要 */}
+      {post?.summary && (
+        <div className='atelier-stream-summary'>{post.summary}</div>
+      )}
+
+      {/* Read more（可选）*/}
+      <SmartLink href={post?.href} className='atelier-stream-more' passHref>
+        阅读全文 →
+      </SmartLink>
     </article>
   )
 }
