@@ -1,21 +1,19 @@
-import DarkModeButton from '@/components/DarkModeButton'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { isBrowser } from '@/lib/utils'
 import { debounce } from '@/lib/utils/debounce'
 import CONFIG from '@/themes/atelier/config'
 import { useEffect, useMemo, useState } from 'react'
+import AtelierFooter from './AtelierFooter'
 import Catalog from './Catalog'
 import LatestPosts from './LatestPosts'
 import Logo from './Logo'
 import { MenuList } from './MenuList'
-import SiteInfo from './SiteInfo'
-import SocialButton from './SocialButton'
 
 /**
- * Atelier 侧栏（左固定 320px）
- * 排序：头像 + 站点标题 + 副标题（Logo 内） → 菜单 → 近期文章 → [文章目录] → 社交/暗色/页脚
- * 侧栏折叠功能保留但默认关闭（编辑器风格不需要）
+ * Atelier 侧栏（桌面固定 340px 宽 / 手机全宽堆叠）
+ * 排序：头像 → 站点标题 → 副标题（Logo 内）→ 菜单 → 近期文章 → [文章目录] → [footer]
+ * footer 只在桌面（lg+）出现在这里；手机端由 index.js 渲染到内容最下方
  */
 function AsideLeft(props) {
   const { post, slot } = props
@@ -58,7 +56,7 @@ function AsideLeft(props) {
     if (isCollapsed) {
       return isReverse ? 'right-2' : 'left-2'
     }
-    return isReverse ? 'right-96' : 'left-96'
+    return isReverse ? 'right-[340px]' : 'left-[340px]'
   }, [isCollapsed, isReverse])
 
   const toggleOpen = () => setIsCollapse(!isCollapsed)
@@ -87,7 +85,7 @@ function AsideLeft(props) {
 
   return (
     <div
-      className={`sideLeft relative ${isCollapsed ? 'lg:w-0' : 'w-full lg:w-96'} duration-300 transition-all lg:min-h-screen block z-20`}>
+      className={`sideLeft relative ${isCollapsed ? 'lg:w-0' : 'w-full lg:w-[340px]'} duration-300 transition-all lg:min-h-screen block z-20`}>
       {ATELIER_SIDEBAR_COLLAPSE_BUTTON && (
         <div
           className={`${position} hidden lg:block fixed top-0 cursor-pointer hover:scale-110 duration-300 px-3 py-2 dark:text-white`}
@@ -100,11 +98,11 @@ function AsideLeft(props) {
         </div>
       )}
 
-      <div className={`h-full ${isCollapsed ? 'hidden' : 'px-10 pt-8 pb-14'}`}>
+      <div className={`${isCollapsed ? 'hidden' : 'px-10 pt-12 pb-14'}`}>
         {/* 头像 + 站点标题 + 副标题 */}
         <Logo {...props} />
 
-        {/* 菜单：KONTAKT / ÜBER MICH 等，样式在 style.js 里做 uppercase + letter-spacing */}
+        {/* 菜单：KONTAKT / ÜBER MICH 等 */}
         <section className='mt-2'>
           <MenuList {...props} />
         </section>
@@ -119,16 +117,10 @@ function AsideLeft(props) {
           </section>
         )}
 
-        {/* 底部：社交按钮 + 暗色开关 + 版权信息 */}
-        <section className='mt-16 pt-6' style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
-          <div className='flex items-center gap-3 mb-4'>
-            <SocialButton />
-            <DarkModeButton />
-          </div>
-          <SiteInfo />
-        </section>
+        {/* 桌面版 footer：margin-top: auto 顶到侧栏底部 = 初始视口底部 */}
+        <AtelierFooter className='hidden lg:flex' />
 
-        {/* 主题预留插槽（如 Live2D 之类） */}
+        {/* 主题预留插槽（如 Live2D 之类）*/}
         {slot && <div className='mt-4'>{slot}</div>}
       </div>
     </div>

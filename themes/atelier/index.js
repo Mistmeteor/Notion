@@ -15,6 +15,7 @@ import { createContext, useContext, useEffect, useRef } from 'react'
 import ArticleDetail from './components/ArticleDetail'
 import ArticleLock from './components/ArticleLock'
 import AsideLeft from './components/AsideLeft'
+import AtelierFooter from './components/AtelierFooter'
 import BlogListPage from './components/BlogListPage'
 import BlogListScroll from './components/BlogListScroll'
 import BlogArchiveItem from './components/BlogPostArchive'
@@ -66,7 +67,7 @@ const LayoutBase = props => {
 
           <main
             id='wrapper'
-            className='relative flex w-full py-8 justify-center bg-day dark:bg-night'>
+            className='relative flex w-full pt-12 pb-8 justify-center bg-day dark:bg-night'>
             <div
               id='container-inner'
               className={`${fullWidth ? '' : '2xl:max-w-6xl md:max-w-4xl'} w-full relative z-10`}>
@@ -91,6 +92,9 @@ const LayoutBase = props => {
             </div>
           </main>
         </div>
+
+        {/* 手机端 footer：桌面时侧栏底部已有一份，这里只在 <lg 时出现 */}
+        <AtelierFooter className='flex lg:hidden' />
 
         <AlgoliaSearchModal cRef={searchModal} {...props} />
       </div>

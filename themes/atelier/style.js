@@ -231,15 +231,45 @@ const Style = () => {
           border-bottom-color: rgba(255, 255, 255, 0.1) !important;
         }
 
-        /* ============= 页脚 SiteInfo：柔和小字 ============= */
-        #theme-atelier .siteInfo,
-        #theme-atelier .siteInfo * {
+        /* ============= 页脚：图标 + 版权，居中排版 ============= */
+        #theme-atelier .atelier-sidebar-footer {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          padding: 24px 8px 8px 8px;
+          border-top: 1px solid ${border};
+          gap: 12px;
+        }
+        .dark #theme-atelier .atelier-sidebar-footer {
+          border-top-color: rgba(255,255,255,0.08);
+        }
+        #theme-atelier .atelier-footer-icons {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 24px;
+          width: 100%;
+          margin-bottom: 4px;
+        }
+        #theme-atelier .atelier-footer-icons > * {
+          flex: 0 0 auto;
+        }
+        #theme-atelier .atelier-footer-icons a,
+        #theme-atelier .atelier-footer-icons button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #theme-atelier .atelier-sidebar-footer .siteInfo,
+        #theme-atelier .atelier-sidebar-footer .siteInfo * {
           font-family: ${sans};
           font-size: 12px;
           color: ${muted};
+          text-align: center;
+          width: auto;
         }
-        .dark #theme-atelier .siteInfo,
-        .dark #theme-atelier .siteInfo * {
+        .dark #theme-atelier .atelier-sidebar-footer .siteInfo,
+        .dark #theme-atelier .atelier-sidebar-footer .siteInfo * {
           color: ${mutedDark};
         }
 
@@ -356,6 +386,24 @@ const Style = () => {
           #theme-atelier .atelier-stream-item { margin-bottom: 64px; }
         }
 
+        /* ============= 桌面端：侧栏 footer 顶到初始视口底部 ============= */
+        @media (min-width: 1024px) {
+          #theme-atelier .sideLeft {
+            align-self: flex-start;
+            min-height: 100vh;
+          }
+          #theme-atelier .sideLeft > div {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            box-sizing: border-box;
+          }
+          /* 关键：footer 之前所有内容自然排列，footer 用 auto margin 顶到最底 */
+          #theme-atelier .sideLeft .atelier-sidebar-footer {
+            margin-top: auto;
+          }
+        }
+
         /* ============= 手机端：侧栏堆到内容上方 ============= */
         @media (max-width: 1023px) {
           #theme-atelier .sideLeft {
@@ -364,6 +412,19 @@ const Style = () => {
             border-right: 0 !important;
             border-bottom: 1px solid ${border};
             padding-bottom: 20px;
+          }
+          .dark #theme-atelier .sideLeft {
+            border-bottom-color: rgba(255,255,255,0.1);
+          }
+          /* 手机端 footer 独立成块，跟正常内容一样占满宽度 */
+          #theme-atelier > .atelier-sidebar-footer {
+            width: 100%;
+            padding: 40px 24px 32px 24px;
+            border-top: 1px solid ${border};
+            margin: 40px 0 0 0;
+          }
+          .dark #theme-atelier > .atelier-sidebar-footer {
+            border-top-color: rgba(255,255,255,0.1);
           }
           .dark #theme-atelier .sideLeft {
             border-bottom-color: rgba(255,255,255,0.1);
