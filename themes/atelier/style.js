@@ -488,6 +488,13 @@ const Style = () => {
         .dark #theme-atelier .atelier-sidebar-toggle:hover {
           background: ${bgDark};
         }
+        /* 手机端切到屏幕右上角 —— 桌面保持左上（侧栏出没的位置）*/
+        @media (max-width: 1023px) {
+          #theme-atelier .atelier-sidebar-toggle {
+            left: auto;
+            right: 14px;
+          }
+        }
 
         /* 桌面：sidebarOpen 时侧栏在位、主内容让位 360px；
            sidebarClosed 时侧栏向左滑出、主内容占满全宽（都带过渡动画）*/

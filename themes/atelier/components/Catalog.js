@@ -147,9 +147,11 @@ const Catalog = ({ post }) => {
       if (currentSectionId !== activeSectionRef.current) {
         setActiveSection(currentSectionId)
 
-        // 让活跃项在侧栏中居中可见 —— 用 scrollIntoView 自动定位到
-        // 最近的可滚动祖先（这里就是 .sideLeft，因为它 overflow-y: auto）
-        // 这样右边文章滑到什么位置，左边侧栏跟着自动滚到对应目录项
+        // 只在桌面自动把活跃项滚到侧栏中间 —— 手机端侧栏是全宽堆叠块，
+        // 触发 scrollIntoView 会把 window scroll 也带走，跟用户手动
+        // 下滑打架，出现"来回拉扯"的观感，所以手机端只做高亮不做滚动
+        if (window.innerWidth < 1024) return
+
         requestAnimationFrame(() => {
           const activeAnchor = document.querySelector(
             `.atelier-toc-item.atelier-toc-active`
