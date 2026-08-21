@@ -605,12 +605,15 @@ const Style = () => {
           font-family: ${serif};
           font-size: 16px;
           line-height: 1.55;
-          padding: 6px 0 6px 0;
+          padding-top: 6px;
+          padding-bottom: 6px;
+          padding-right: 0;
+          /* padding-left 由 Catalog.js inline 决定，按 indentLevel 递进：
+             H1=8px、H2=24px、H3=40px。这里不用 !important 让 inline 生效 */
           color: ${muted};
           text-decoration: none;
           border-left: 2px solid transparent;
           margin-left: -8px;
-          padding-left: 8px !important;
           transition: color 0.15s ease, border-color 0.15s ease;
           word-break: break-word;
         }

@@ -201,12 +201,9 @@ const Catalog = ({ post }) => {
 
           if (!show) return null
 
-          const paddingLeft =
-            tocItem.indentLevel === 0
-              ? 0
-              : tocItem.indentLevel === 1
-                ? 16
-                : 32
+          // 8px 起底给 border-left 指示条留位置，每深一级 +18px
+          // H1 -> 8px，H2 -> 26px，H3 -> 44px
+          const paddingLeft = 8 + tocItem.indentLevel * 18
 
           return (
             <a

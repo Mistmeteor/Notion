@@ -15,8 +15,6 @@ import SocialButton from './SocialButton'
 const AtelierFooter = ({ className = '', onToggleSidebar }) => (
   <section className={`atelier-sidebar-footer ${className}`}>
     <div className='atelier-footer-icons'>
-      <SocialButton />
-      <DarkModeButton />
       {onToggleSidebar && (
         <button
           type='button'
@@ -40,6 +38,8 @@ const AtelierFooter = ({ className = '', onToggleSidebar }) => (
           </svg>
         </button>
       )}
+      <SocialButton />
+      <DarkModeButton />
     </div>
     <SiteInfo />
   </section>
