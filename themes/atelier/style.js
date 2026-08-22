@@ -473,49 +473,29 @@ const Style = () => {
           #theme-atelier .sideLeft:focus-within::-webkit-scrollbar-thumb {
             background: ${border};
           }
-          /* 内层排成 flex 列, top / middle 保持自然堆叠。
-             底部 footer 单独拉出 flex 流, 用 position:fixed 咬死视口
-             左下角 —— 不管 Catalog 有多长, footer 位置恒定, 目录随
-             侧栏内部 overflow-y:auto 自己上下滚。
-             早前用 sticky 时, flex 列超过容器高度会让 sticky 元素
-             不稳; 直接 fixed 是最稳的方案。 */
+          /* 内层 flex 列: top / middle / bottom 都是自然流式布局,
+             和 Logo 走同一套 non-positioned 规则。
+             footer 不再 position:fixed / sticky / GPU 层——那些方案
+             各自有 iOS 副作用 (地址栏抖 / 亚像素漂移 / 层间跳)。
+             代价: 目录很长时 footer 会跟着 sidebar 内滚出视口, 但
+             位置永远和 Logo 一样"钉"死在 sidebar 里, 不受任何浏览器
+             viewport 动画影响。
+             用 margin-top:auto 让 footer 在内容不满时贴到 sidebar 底,
+             这是 flex 布局而非 position, 不引入合成层。 */
           #theme-atelier .sideLeft > div {
             display: flex;
             flex-direction: column;
             min-height: 100%;
             box-sizing: border-box;
-            /* 给底部 fixed footer 预留空间, 避免 Catalog 的最后几条
-               永远藏在 footer 底下滚不到 */
-            padding-bottom: 200px;
           }
           #theme-atelier .sideLeft .atelier-sidebar-top,
           #theme-atelier .sideLeft .atelier-sidebar-middle {
             flex: 0 0 auto;
           }
-          /* footer: 桌面端锁死视口左下角, 与侧栏同宽 (360px) */
           #theme-atelier .sideLeft .atelier-sidebar-bottom {
-            position: fixed;
-            /* 旧浏览器: bottom:0 直接贴视口底沿 */
-            bottom: 0;
-            /* 新浏览器 (支持 svh): bottom = 视口和小视口的差值,
-               恒定停在小视口底沿, 不受地址栏动画影响 */
-            bottom: calc(100vh - 100svh);
-            left: 0;
-            width: 360px;
-            box-sizing: border-box;
-            padding: 0 40px;              /* 与侧栏 px-10 对齐 */
-            background: ${bg};
-            z-index: 21;                  /* 高于侧栏内容 (z-index: 20) */
-            /* 早前用 transform:translateZ(0) 想做 GPU 层加速, 结果
-               iOS 在滚动/动画时 GPU 层会亚像素漂移, footer 横向抖。
-               Logo 和 sidebar 内其它元素稳, 是因为都在同一 non-
-               composited 层。这里保持 non-composited, 才能横向也
-               和 Logo 一样纹丝不动。 */
+            flex: 0 0 auto;
+            margin-top: auto;    /* 内容不满时推到 sidebar 底部 */
           }
-          .dark #theme-atelier .sideLeft .atelier-sidebar-bottom {
-            background: ${bgDark};
-          }
-          /* footer 里的图标条 + SiteInfo 板块本身样式 */
           #theme-atelier .sideLeft .atelier-sidebar-footer {
             position: static;
             width: auto;
@@ -648,6 +628,15 @@ const Style = () => {
           /* 桌面只在侧栏可见时用 footer 里的按钮收起 —— 顶部汉堡包这里隐藏，
              改用 index.js 的条件渲染控制何时显示 */
           #theme-atelier .atelier-toggle-mobile-only {
+            display: none;
+          }
+          /* 桌面 + sidebar-open 状态下强制隐藏顶部 toggle。
+             fix: 首次进页面 React 未 hydrate 完, mounted=false, index.js
+             会强渲一次 toggle, 桌面上就会闪一下 X。这里 CSS 兜底: 只要
+             wrapper 有 atelier-sidebar-open 类, 就不显示 toggle;
+             用户真的通过 footer 收起时会切成 atelier-sidebar-closed,
+             toggle 才出现。 */
+          #theme-atelier.atelier-sidebar-open .atelier-toggle-top:not(.atelier-toggle-mobile-only) {
             display: none;
           }
         }
