@@ -496,6 +496,14 @@ const Style = () => {
             padding: 0 40px;              /* 与侧栏 px-10 对齐 */
             background: ${bg};
             z-index: 21;                  /* 高于侧栏内容 (z-index: 20) */
+            /* iOS Safari fix: 提到独立 GPU 合成层, 防止动量滚动/
+               橡皮筋回弹时 fixed 元素跟着主滚轴短暂位移。桌面
+               Chrome/FF 也顺便走 compositor, 无副作用 */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
           }
           .dark #theme-atelier .sideLeft .atelier-sidebar-bottom {
             background: ${bgDark};
