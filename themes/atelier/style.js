@@ -146,14 +146,17 @@ const Style = () => {
            字号与文章页的 Catalog (目录) 保持一致:
              heading  = toc-title  (20px / weight 600)
              list item = toc-item  (16px / line-height 1.55)
-           下划线是 LatestPosts 的视觉标记, 保留. */
+           下划线是 LatestPosts 的视觉标记, 保留.
+           title 顶部不再加 margin: 桌面端 middle 段用 justify-content: center
+           居中, 任何内部 margin 都会破坏 "上下等距" 的视觉平衡. 与顶部/菜单
+           的间距交给 sidebar 布局的 flex 自动分配. */
         #theme-atelier .atelier-latest-title {
           font-family: ${serif};
           color: ${text};
           font-size: 20px;
           font-weight: 600;
           letter-spacing: normal;
-          margin: 44px 0 14px 0;
+          margin: 0 0 14px 0;
         }
         .dark #theme-atelier .atelier-latest-title {
           color: ${textDark};
@@ -475,25 +478,31 @@ const Style = () => {
           #theme-atelier .sideLeft:focus-within::-webkit-scrollbar-thumb {
             background: ${border};
           }
-          /* 内层 flex 列: top / middle / bottom 都是自然流式布局,
-             和 Logo 走同一套 non-positioned 规则, 不引入 GPU 层。
-             justify-content: space-between 让三段在 sidebar 内自动
-             等距分布 —— top 顶到最上, bottom 顶到最下, middle 恰好
-             在中间; 换到 iPad 等不同视口比例也自动保持上下等距。
-             内容超过一屏时 (文章页长 Catalog), space-between 无剩余
-             空间可分配, 自然回退到顺序堆叠, sidebar 用 overflow-y:auto
-             独立滚, 不出问题。 */
+          /* 内层 flex 列: top 顶到最上, bottom 顶到最下, middle 拉伸
+             填满中间的剩余空间, 内部再 justify-content: center 把 Latest
+             Posts 视觉居中 —— 这样无论 top / bottom 内容量差多少, middle
+             到 top 和 middle 到 bottom 的视觉距离始终相等。
+             用 100svh 而不是 100% (原来依赖父级 height, 在 iOS fixed +
+             overflow-y:auto 上下文里不稳定, 会导致 middle 被挤到底部)。
+             内容超过一屏时 (文章页长 Catalog), middle 因 flex-grow 也不
+             会溢出兄弟, sidebar 用 overflow-y:auto 独立滚, 不出问题。 */
           #theme-atelier .sideLeft > div {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 100%;
+            min-height: 100vh;
+            min-height: 100svh;
             box-sizing: border-box;
           }
           #theme-atelier .sideLeft .atelier-sidebar-top,
-          #theme-atelier .sideLeft .atelier-sidebar-middle,
           #theme-atelier .sideLeft .atelier-sidebar-bottom {
             flex: 0 0 auto;
+          }
+          #theme-atelier .sideLeft .atelier-sidebar-middle {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
           }
           #theme-atelier .sideLeft .atelier-sidebar-footer {
             position: static;
@@ -1064,6 +1073,11 @@ const Style = () => {
           /* 手机端标题略缩 */
           #theme-atelier .atelier-logo-title {
             font-size: 34px;
+          }
+          /* 手机端 sidebar 是自然堆叠 (没有 flex-center), Latest Posts
+             需要一段顶部 margin 与上面菜单/tagline 拉开距离 */
+          #theme-atelier .atelier-latest-title {
+            margin-top: 40px;
           }
           /* 手机端主内容 padding 收紧 */
           #theme-atelier main#wrapper {
