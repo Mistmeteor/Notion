@@ -645,6 +645,25 @@ const Style = () => {
         #theme-atelier .atelier-footer-icons a[title='RSS']:not(.atelier-footer-rss) {
           display: none !important;
         }
+        /* 若 SocialButton 里其实只启用了 RSS (被上面那条隐掉), 它剩下
+           一个空 wrapper 仍占 flex 位, 会让周围多出一份 24px gap。
+           用 :has 把"内部唯一子项就是 RSS 且被我们隐了"这种情况整体
+           收掉。如果以后启用 GitHub/ORCID 等, :only-child 不成立,
+           wrapper 自然恢复显示。 */
+        #theme-atelier .atelier-footer-icons > div:has(> div > a[title='RSS']:only-child) {
+          display: none !important;
+        }
+        /* 图标视觉尺寸对齐: 所有 svg / FA <i> 强制 20px, 避免 stroke
+           SVG 和填充 icon 因字号继承漂移出视觉不齐 */
+        #theme-atelier .atelier-footer-icons svg {
+          width: 20px;
+          height: 20px;
+          display: block;
+        }
+        #theme-atelier .atelier-footer-icons i {
+          font-size: 20px;
+          line-height: 1;
+        }
         #theme-atelier .atelier-footer-collapse,
         #theme-atelier .atelier-footer-home,
         #theme-atelier .atelier-footer-lang,
@@ -679,14 +698,15 @@ const Style = () => {
         .dark #theme-atelier .atelier-footer-rss:hover {
           color: ${textDark};
         }
-        /* 语言按钮的字形样式：小号无衬线，模拟"图标"的紧凑观感 */
+        /* 语言按钮的字形样式：无衬线加粗, 尺寸和高度与相邻 SVG 图标对齐 */
         #theme-atelier .atelier-footer-lang {
           font-family: ${sans};
-          font-size: 13px;
+          font-size: 15px;
           font-weight: 600;
           letter-spacing: 0.02em;
-          min-width: 20px;
+          min-width: 24px;
           height: 20px;
+          line-height: 1;
         }
 
         /* ============= 评论区容器：清空装饰，避免空白块 ============= */
