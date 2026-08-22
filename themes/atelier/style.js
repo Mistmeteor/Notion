@@ -143,15 +143,17 @@ const Style = () => {
         }
 
         /* ============= 侧栏：近期文章 =============
-           层级: heading 17px bold ≥ 下面列表标题 15px 常规;
-           heading 不超过 Logo 下 tagline (17px), 靠加粗做分量差. */
+           字号与文章页的 Catalog (目录) 保持一致:
+             heading  = toc-title  (20px / weight 600)
+             list item = toc-item  (16px / line-height 1.55)
+           下划线是 LatestPosts 的视觉标记, 保留. */
         #theme-atelier .atelier-latest-title {
           font-family: ${serif};
           color: ${text};
-          font-size: 17px;
-          font-weight: 700;
-          letter-spacing: -0.005em;
-          margin: 44px 0 18px 0;
+          font-size: 20px;
+          font-weight: 600;
+          letter-spacing: normal;
+          margin: 44px 0 14px 0;
         }
         .dark #theme-atelier .atelier-latest-title {
           color: ${textDark};
@@ -160,12 +162,12 @@ const Style = () => {
           display: block;
           font-family: ${serif};
           color: ${text};
-          font-size: 15px;
-          line-height: 1.45;
+          font-size: 16px;
+          line-height: 1.55;
           text-decoration: underline;
           text-underline-offset: 3px;
           text-decoration-thickness: 1px;
-          margin-bottom: 14px;
+          margin-bottom: 10px;
         }
         .dark #theme-atelier .atelier-latest-list a {
           color: ${textDark};
