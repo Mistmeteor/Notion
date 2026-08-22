@@ -321,18 +321,18 @@ const Style = () => {
         #theme-atelier .atelier-stream-item:last-child {
           margin-bottom: 40px;
         }
-        /* 条目之间用居中的三点做"呼吸标点"，比横线柔和 */
+        /* 条目之间用两端淡出的细线做分隔：明确"新章节开始"但避免硬线的死板感 */
         #theme-atelier .atelier-stream-item:not(:last-child)::after {
-          content: '· · ·';
+          content: '';
           display: block;
-          text-align: center;
-          color: ${muted};
-          font-size: 14px;
-          letter-spacing: 0.6em;
-          margin: 90px 0;
+          width: 60%;
+          max-width: 320px;
+          height: 1px;
+          margin: 90px auto;
+          background: linear-gradient(to right, transparent, ${border}, transparent);
         }
         .dark #theme-atelier .atelier-stream-item:not(:last-child)::after {
-          color: ${mutedDark};
+          background: linear-gradient(to right, transparent, rgba(255,255,255,0.14), transparent);
         }
         #theme-atelier .atelier-stream-cover-wrap {
           display: block;
@@ -412,11 +412,12 @@ const Style = () => {
           border-bottom-color: ${mutedDark};
         }
 
-        /* 小屏幕：略微缩小标题，条目之间的呼吸标点收紧一点 */
+        /* 小屏幕：略微缩小标题，条目之间的分隔线收紧一点 */
         @media (max-width: 640px) {
           #theme-atelier .atelier-stream-title { font-size: 30px; }
           #theme-atelier .atelier-stream-item:not(:last-child)::after {
-            margin: 64px 0;
+            margin: 64px auto;
+            width: 70%;
           }
         }
 
