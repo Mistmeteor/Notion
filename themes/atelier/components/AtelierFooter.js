@@ -1,5 +1,6 @@
 import DarkModeButton from '@/components/DarkModeButton'
 import SmartLink from '@/components/SmartLink'
+import { siteConfig } from '@/lib/config'
 import SiteInfo from './SiteInfo'
 import SocialButton from './SocialButton'
 import { tr, useAtelierLang } from '../lib/i18n'
@@ -25,8 +26,8 @@ const AtelierFooter = ({ className = '', onToggleSidebar, onToggleLang }) => {
             title='收起侧栏'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
-              width='18'
-              height='18'
+              width='20'
+              height='20'
               viewBox='0 0 24 24'
               fill='none'
               stroke='currentColor'
@@ -69,6 +70,31 @@ const AtelierFooter = ({ className = '', onToggleSidebar, onToggleLang }) => {
           </button>
         )}
         <SocialButton />
+        {siteConfig('ENABLE_RSS') && (
+          <a
+            href='/rss/feed.xml'
+            target='_blank'
+            rel='noreferrer'
+            className='atelier-footer-rss'
+            aria-label='RSS'
+            title='RSS'>
+            {/* Feather-style 20px stroke SVG, 与 collapse/home 一套画风 */}
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              width='20'
+              height='20'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'>
+              <path d='M4 11a9 9 0 0 1 9 9' />
+              <path d='M4 4a16 16 0 0 1 16 16' />
+              <circle cx='5' cy='19' r='1' />
+            </svg>
+          </a>
+        )}
         <DarkModeButton />
       </div>
       <SiteInfo />

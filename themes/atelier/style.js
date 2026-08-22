@@ -159,13 +159,21 @@ const Style = () => {
           color: ${text};
           font-size: 17px;
           line-height: 1.45;
-          text-decoration: underline;
-          text-underline-offset: 3px;
-          text-decoration-thickness: 1px;
+          /* 用 border-bottom 撑满每项宽度, 保证 N 条细线等宽 (原 text-decoration
+             的下划线只到文字末尾, 标题长短不一时视觉参差) */
+          text-decoration: none;
+          border-bottom: 1px solid ${border};
+          padding-bottom: 8px;
           margin-bottom: 10px;
         }
         .dark #theme-atelier .atelier-latest-list a {
           color: ${textDark};
+          border-bottom-color: rgba(255,255,255,0.14);
+        }
+        /* 最后一项不需要底线, 避免和它下方的分组间距重复 */
+        #theme-atelier .atelier-latest-list a:last-child {
+          border-bottom: 0;
+          padding-bottom: 0;
         }
         #theme-atelier .atelier-latest-list a:hover {
           opacity: 0.6;
@@ -331,8 +339,8 @@ const Style = () => {
           width: 60%;
           max-width: 320px;
           height: 1px;
-          /* 上 90 下 40: 上面接文字 meta 视觉分量轻, 下面接图分量重, 拉不等间距才平衡 */
-          margin: 90px auto 40px auto;
+          /* 上 90 下 30: 上面接文字 meta 视觉分量轻, 下面接图分量重, 拉不等间距才平衡 */
+          margin: 90px auto 30px auto;
           background: linear-gradient(to right, transparent, ${border}, transparent);
         }
         .dark #theme-atelier .grid-container > .grid-item + .grid-item::before {
@@ -621,10 +629,16 @@ const Style = () => {
           }
         }
 
-        /* ============= Footer 里的"收起侧栏"按钮 ============= */
+        /* ============= Footer 图标：统一 Feather 线描风 20px ============= */
+        /* 隐藏 SocialButton 内自带的 FontAwesome RSS —— 我们在
+           AtelierFooter 里画了同款 SVG，避免出现两个 RSS 且风格不一致 */
+        #theme-atelier .atelier-footer-icons a[title='RSS'] {
+          display: none !important;
+        }
         #theme-atelier .atelier-footer-collapse,
         #theme-atelier .atelier-footer-home,
-        #theme-atelier .atelier-footer-lang {
+        #theme-atelier .atelier-footer-lang,
+        #theme-atelier .atelier-footer-rss {
           background: transparent;
           border: 0;
           padding: 0;
@@ -638,18 +652,21 @@ const Style = () => {
         }
         #theme-atelier .atelier-footer-collapse:hover,
         #theme-atelier .atelier-footer-home:hover,
-        #theme-atelier .atelier-footer-lang:hover {
+        #theme-atelier .atelier-footer-lang:hover,
+        #theme-atelier .atelier-footer-rss:hover {
           color: ${text};
           transform: scale(1.1);
         }
         .dark #theme-atelier .atelier-footer-collapse,
         .dark #theme-atelier .atelier-footer-home,
-        .dark #theme-atelier .atelier-footer-lang {
+        .dark #theme-atelier .atelier-footer-lang,
+        .dark #theme-atelier .atelier-footer-rss {
           color: ${mutedDark};
         }
         .dark #theme-atelier .atelier-footer-collapse:hover,
         .dark #theme-atelier .atelier-footer-home:hover,
-        .dark #theme-atelier .atelier-footer-lang:hover {
+        .dark #theme-atelier .atelier-footer-lang:hover,
+        .dark #theme-atelier .atelier-footer-rss:hover {
           color: ${textDark};
         }
         /* 语言按钮的字形样式：小号无衬线，模拟"图标"的紧凑观感 */
@@ -933,11 +950,13 @@ const Style = () => {
           opacity: 0.6;
         }
 
-        /* ============= 文章正文列宽与首页保持一致（780px）============= */
-        /* 侧栏 fix 出流后，主内容里的 container-inner 用 max-w-4xl（896px），
-           压到 780px 让文章封面和标题的左右边界与首页流式条目对齐 */
+        /* ============= 文章正文列宽 ============= */
+        /* 列表/归档页压 780 与首页流式条目对齐；文章详情页交给 ArticleDetail
+           自己决定 (max-w-5xl 或 fullWidth px-10)，允许 Notion 里"全宽"生效。
+           :has(#container) 用于识别详情页 (ArticleDetail 会给最外层 <div>
+           这个 id)。若详情页并存在，就不再对 #container-inner 加宽度上限。 */
         @media (min-width: 1024px) {
-          #theme-atelier #container-inner {
+          #theme-atelier #container-inner:not(:has(#container)) {
             max-width: 780px !important;
           }
           /* ArticleDetail 原本 md:px-32（128px）内边距太宽，收窄到 24px */
@@ -945,6 +964,11 @@ const Style = () => {
             padding-left: 24px !important;
             padding-right: 24px !important;
             padding-top: 24px !important;
+          }
+          /* 全宽文章：右侧留够空气感，不要贴到浏览器边缘 */
+          #theme-atelier #container-inner:has(#container) {
+            max-width: none !important;
+            padding-right: 32px;
           }
         }
 
