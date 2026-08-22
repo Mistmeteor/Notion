@@ -476,27 +476,24 @@ const Style = () => {
             background: ${border};
           }
           /* 内层 flex 列: top / middle / bottom 都是自然流式布局,
-             和 Logo 走同一套 non-positioned 规则。
-             footer 不再 position:fixed / sticky / GPU 层——那些方案
-             各自有 iOS 副作用 (地址栏抖 / 亚像素漂移 / 层间跳)。
-             代价: 目录很长时 footer 会跟着 sidebar 内滚出视口, 但
-             位置永远和 Logo 一样"钉"死在 sidebar 里, 不受任何浏览器
-             viewport 动画影响。
-             用 margin-top:auto 让 footer 在内容不满时贴到 sidebar 底,
-             这是 flex 布局而非 position, 不引入合成层。 */
+             和 Logo 走同一套 non-positioned 规则, 不引入 GPU 层。
+             justify-content: space-between 让三段在 sidebar 内自动
+             等距分布 —— top 顶到最上, bottom 顶到最下, middle 恰好
+             在中间; 换到 iPad 等不同视口比例也自动保持上下等距。
+             内容超过一屏时 (文章页长 Catalog), space-between 无剩余
+             空间可分配, 自然回退到顺序堆叠, sidebar 用 overflow-y:auto
+             独立滚, 不出问题。 */
           #theme-atelier .sideLeft > div {
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             min-height: 100%;
             box-sizing: border-box;
           }
           #theme-atelier .sideLeft .atelier-sidebar-top,
-          #theme-atelier .sideLeft .atelier-sidebar-middle {
-            flex: 0 0 auto;
-          }
+          #theme-atelier .sideLeft .atelier-sidebar-middle,
           #theme-atelier .sideLeft .atelier-sidebar-bottom {
             flex: 0 0 auto;
-            margin-top: auto;    /* 内容不满时推到 sidebar 底部 */
           }
           #theme-atelier .sideLeft .atelier-sidebar-footer {
             position: static;
