@@ -24,7 +24,8 @@ const T = {
     tocTitle: '目录',
     lastEdited: '最后更新',
     langLabel: '中', // 按钮显示当前语言：正在中文时显示"中"
-    langAriaLabel: '当前中文，点击切换到英文'
+    langAriaLabel: '当前中文，点击切换到英文',
+    homeAriaLabel: '返回首页'
   },
   'en-US': {
     latestPosts: 'Latest Posts',
@@ -35,7 +36,8 @@ const T = {
     tocTitle: 'Contents',
     lastEdited: 'Last edited',
     langLabel: 'EN',
-    langAriaLabel: 'Currently English, click to switch to Chinese'
+    langAriaLabel: 'Currently English, click to switch to Chinese',
+    homeAriaLabel: 'Back to home'
   }
 }
 

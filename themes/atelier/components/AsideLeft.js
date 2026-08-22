@@ -17,35 +17,35 @@ function AsideLeft(props) {
 
   return (
     <div className='sideLeft relative w-full lg:w-[360px] lg:min-h-screen block z-20'>
-      <div className='px-10 pt-12 pb-14'>
-        {/* 头像 + 站点标题 + 副标题 */}
-        <Logo {...props} />
-
-        {/* 菜单：KONTAKT / ÜBER MICH 等 */}
-        <section className='mt-2'>
-          <MenuList {...props} />
-        </section>
-
-        {/* 近期文章：只在列表页显示；进入文章后让位给目录 */}
-        {!post && <LatestPosts {...props} />}
-
-        {/* 文章目录：只在文章详情页出现；上紧下留白，与 footer 保持距离 */}
-        {post && (
-          <section className='atelier-toc mt-2 mb-10'>
-            <Catalog post={post} />
+      <div className='px-10 pt-12 pb-6'>
+        {/* 顶部组：头像 + 站点标题 + 副标题 + 菜单 */}
+        <div className='atelier-sidebar-top'>
+          <Logo {...props} />
+          <section className='mt-2'>
+            <MenuList {...props} />
           </section>
-        )}
+        </div>
 
-        {/* 桌面版 footer：margin-top: auto 顶到侧栏底部 = 初始视口底部
-            带 onToggleSidebar 使 footer 里出现"收起侧栏"按钮 */}
-        <AtelierFooter
-          className='hidden lg:flex'
-          onToggleSidebar={onToggleSidebar}
-          onToggleLang={onToggleLang}
-        />
+        {/* 中段组（近期文章 / 文章目录）—— 桌面上通过外层 justify-content:
+            space-between，与顶部组、底部组三等分侧栏高度，中段自然居中 */}
+        <div className='atelier-sidebar-middle'>
+          {!post && <LatestPosts {...props} />}
+          {post && (
+            <section className='atelier-toc mt-2 mb-10'>
+              <Catalog post={post} />
+            </section>
+          )}
+        </div>
 
-        {/* 主题预留插槽（如 Live2D 之类）*/}
-        {slot && <div className='mt-4'>{slot}</div>}
+        {/* 底部组：footer + 可选 slot（Live2D 之类）*/}
+        <div className='atelier-sidebar-bottom'>
+          <AtelierFooter
+            className='hidden lg:flex'
+            onToggleSidebar={onToggleSidebar}
+            onToggleLang={onToggleLang}
+          />
+          {slot && <div className='mt-4'>{slot}</div>}
+        </div>
       </div>
     </div>
   )

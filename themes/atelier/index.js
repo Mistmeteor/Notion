@@ -63,28 +63,28 @@ const LayoutBaseInner = props => {
   const searchModal = useRef(null)
   const { toggleLang } = useAtelierLang()
 
-  // 侧栏开关状态：桌面默认打开，手机默认关闭；localStorage 记住用户选择
+  // 侧栏开关：文章页记住用户选择；列表页（主页/归档/分类/标签）永远默认展开
+  const isPostPage = !!props.post
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    if (!isPostPage) {
+      setSidebarOpen(true)
+      return
+    }
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('atelier-sidebar-open')
-      if (saved !== null) {
-        setSidebarOpen(saved === 'true')
-      } else {
-        // 首次访问：桌面和手机都默认展开
-        setSidebarOpen(true)
-      }
+      setSidebarOpen(saved === null ? true : saved === 'true')
     }
-  }, [])
+  }, [isPostPage])
 
   useEffect(() => {
-    if (mounted && typeof window !== 'undefined') {
+    if (mounted && isPostPage && typeof window !== 'undefined') {
       localStorage.setItem('atelier-sidebar-open', String(sidebarOpen))
     }
-  }, [sidebarOpen, mounted])
+  }, [sidebarOpen, mounted, isPostPage])
 
   const toggleSidebar = () => setSidebarOpen(v => !v)
 

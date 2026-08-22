@@ -312,7 +312,7 @@ const Style = () => {
         /* ---- 单条流式文章条目 ---- */
         #theme-atelier .atelier-stream-item {
           max-width: 100%;
-          margin: 0 auto 96px auto;
+          margin: 0 auto;
           background: transparent;
           box-shadow: none;
           border: 0;
@@ -320,6 +320,19 @@ const Style = () => {
         }
         #theme-atelier .atelier-stream-item:last-child {
           margin-bottom: 40px;
+        }
+        /* 条目之间用居中的三点做"呼吸标点"，比横线柔和 */
+        #theme-atelier .atelier-stream-item:not(:last-child)::after {
+          content: '· · ·';
+          display: block;
+          text-align: center;
+          color: ${muted};
+          font-size: 14px;
+          letter-spacing: 0.6em;
+          margin: 90px 0;
+        }
+        .dark #theme-atelier .atelier-stream-item:not(:last-child)::after {
+          color: ${mutedDark};
         }
         #theme-atelier .atelier-stream-cover-wrap {
           display: block;
@@ -399,10 +412,12 @@ const Style = () => {
           border-bottom-color: ${mutedDark};
         }
 
-        /* 小屏幕：略微缩小标题 */
+        /* 小屏幕：略微缩小标题，条目之间的呼吸标点收紧一点 */
         @media (max-width: 640px) {
           #theme-atelier .atelier-stream-title { font-size: 30px; }
-          #theme-atelier .atelier-stream-item { margin-bottom: 64px; }
+          #theme-atelier .atelier-stream-item:not(:last-child)::after {
+            margin: 64px 0;
+          }
         }
 
         /* ============= 桌面端默认（列表页）：侧栏作为整体模块固定 ============= */
@@ -417,34 +432,52 @@ const Style = () => {
             overflow-y: auto;
             background: ${bg};
             z-index: 20;
-            /* 隐藏侧栏原生滚动条，保持视觉干净 */
+            /* 默认隐藏滚动条：鼠标 hover/focus 时才淡入
+               Firefox 用 scrollbar-color 控制 */
             scrollbar-width: thin;
-            scrollbar-color: ${border} transparent;
+            scrollbar-color: transparent transparent;
+            transition: scrollbar-color 0.2s ease;
           }
           .dark #theme-atelier .sideLeft {
             background: ${bgDark};
           }
+          #theme-atelier .sideLeft:hover,
+          #theme-atelier .sideLeft:focus-within {
+            scrollbar-color: ${border} transparent;
+          }
+          /* WebKit（Chrome/Safari/Edge）：thumb 透明，hover/focus 才显现 */
           #theme-atelier .sideLeft::-webkit-scrollbar {
             width: 4px;
           }
           #theme-atelier .sideLeft::-webkit-scrollbar-thumb {
-            background: ${border};
+            background: transparent;
             border-radius: 2px;
+            transition: background 0.2s ease;
           }
-          /* 内层排成 flex 列，底部 footer 用 margin-top:auto 顶到底 */
+          #theme-atelier .sideLeft:hover::-webkit-scrollbar-thumb,
+          #theme-atelier .sideLeft:focus-within::-webkit-scrollbar-thumb {
+            background: ${border};
+          }
+          /* 内层排成 flex 列，三组子元素（top / middle / bottom）用
+             justify-content: space-between 三等分侧栏高度。
+             比 margin-top: auto 更稳定 —— iOS Safari 曾有 auto margin
+             在 min-height 容器里失效的边缘 bug */
           #theme-atelier .sideLeft > div {
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             min-height: 100%;
             box-sizing: border-box;
           }
-          /* footer 是整体模块的一部分，不再 position:fixed
-             margin-top: auto 保底把 footer 顶到侧栏底部；
-             同时 min-margin 保证即使内容很长时，Catalog / LatestPosts 到 footer
-             之间至少留 40px 呼吸空间 —— 用 padding-top 撑出这段空隙 */
+          /* 单独把中段限定住，避免它 flex-grow 拉伸把间距吃光 */
+          #theme-atelier .sideLeft .atelier-sidebar-top,
+          #theme-atelier .sideLeft .atelier-sidebar-middle,
+          #theme-atelier .sideLeft .atelier-sidebar-bottom {
+            flex: 0 0 auto;
+          }
+          /* footer 是整体模块的一部分，不再 position:fixed */
           #theme-atelier .sideLeft .atelier-sidebar-footer {
             position: static;
-            margin-top: auto;
             width: auto;
             background: transparent;
             border-top: 1px solid ${border};
@@ -585,6 +618,7 @@ const Style = () => {
 
         /* ============= Footer 里的"收起侧栏"按钮 ============= */
         #theme-atelier .atelier-footer-collapse,
+        #theme-atelier .atelier-footer-home,
         #theme-atelier .atelier-footer-lang {
           background: transparent;
           border: 0;
@@ -598,15 +632,18 @@ const Style = () => {
           transition: color 0.15s ease, transform 0.15s ease;
         }
         #theme-atelier .atelier-footer-collapse:hover,
+        #theme-atelier .atelier-footer-home:hover,
         #theme-atelier .atelier-footer-lang:hover {
           color: ${text};
           transform: scale(1.1);
         }
         .dark #theme-atelier .atelier-footer-collapse,
+        .dark #theme-atelier .atelier-footer-home,
         .dark #theme-atelier .atelier-footer-lang {
           color: ${mutedDark};
         }
         .dark #theme-atelier .atelier-footer-collapse:hover,
+        .dark #theme-atelier .atelier-footer-home:hover,
         .dark #theme-atelier .atelier-footer-lang:hover {
           color: ${textDark};
         }
