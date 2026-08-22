@@ -321,8 +321,11 @@ const Style = () => {
         #theme-atelier .atelier-stream-item:last-child {
           margin-bottom: 40px;
         }
-        /* 条目之间用两端淡出的细线做分隔：明确"新章节开始"但避免硬线的死板感 */
-        #theme-atelier .atelier-stream-item:not(:last-child)::after {
+        /* 条目之间用两端淡出的细线做分隔：明确"新章节开始"但避免硬线的死板感。
+           绑到 wrapper 层的相邻兄弟上，而不是 .atelier-stream-item —— 因为
+           BlogCard 被 .grid-item 包了一层，:not(:last-child) 在 article 本身
+           上永远不成立（它是自己 wrapper 里唯一的子元素） */
+        #theme-atelier .grid-container > .grid-item + .grid-item::before {
           content: '';
           display: block;
           width: 60%;
@@ -331,7 +334,7 @@ const Style = () => {
           margin: 90px auto;
           background: linear-gradient(to right, transparent, ${border}, transparent);
         }
-        .dark #theme-atelier .atelier-stream-item:not(:last-child)::after {
+        .dark #theme-atelier .grid-container > .grid-item + .grid-item::before {
           background: linear-gradient(to right, transparent, rgba(255,255,255,0.14), transparent);
         }
         #theme-atelier .atelier-stream-cover-wrap {
@@ -415,7 +418,7 @@ const Style = () => {
         /* 小屏幕：略微缩小标题，条目之间的分隔线收紧一点 */
         @media (max-width: 640px) {
           #theme-atelier .atelier-stream-title { font-size: 30px; }
-          #theme-atelier .atelier-stream-item:not(:last-child)::after {
+          #theme-atelier .grid-container > .grid-item + .grid-item::before {
             margin: 64px auto;
             width: 70%;
           }
