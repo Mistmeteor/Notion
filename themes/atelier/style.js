@@ -946,6 +946,14 @@ const Style = () => {
             text-align: center;
           }
         }
+        /* 平板端 (含 iPad 竖屏 768-820px, iPad Mini 横屏 1024 也压这里):
+           保持两列布局, 只补上左右边距, 避免链接文字贴着屏幕两边 */
+        @media (min-width: 641px) and (max-width: 1023px) {
+          #theme-atelier .atelier-around {
+            padding-left: 24px;
+            padding-right: 24px;
+          }
+        }
 
         /* ============= 相关推荐 ============= */
         #theme-atelier .atelier-recommend {
