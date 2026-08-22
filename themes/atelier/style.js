@@ -438,6 +438,10 @@ const Style = () => {
             left: 0;
             width: 360px;
             height: 100vh;
+            /* iOS Safari 收/展地址栏时 vh 会变化, 导致侧栏和 footer 抖动。
+               改用 svh (小视口高度): 恒定使用"地址栏可见"那档的最小视口
+               高度, 完全不随 URL 栏动画变化。旧浏览器 fallback 到 100vh */
+            height: 100svh;
             overflow-y: auto;
             background: ${bg};
             z-index: 20;
@@ -489,7 +493,14 @@ const Style = () => {
           /* footer: 桌面端锁死视口左下角, 与侧栏同宽 (360px) */
           #theme-atelier .sideLeft .atelier-sidebar-bottom {
             position: fixed;
+            /* 旧浏览器: bottom:0 直接贴视口底沿 */
             bottom: 0;
+            /* 新浏览器 (支持 svh): bottom = 视口和小视口的差值。
+               URL 栏可见时 100vh == 100svh, 差值为 0, footer 在底沿;
+               URL 栏收起时 100vh > 100svh, 差值 = 涨出的高度, footer
+               上移相应距离, 相当于恒定停在"小视口底沿"这个绝对位置,
+               彻底不受地址栏动画影响 */
+            bottom: calc(100vh - 100svh);
             left: 0;
             width: 360px;
             box-sizing: border-box;
