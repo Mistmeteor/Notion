@@ -29,7 +29,7 @@ const Style = () => {
           <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='' />
           <link
             rel='stylesheet'
-            href='https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Noto+Serif+SC:wght@400;500;600&display=swap'
+            href='https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Noto+Serif+SC:wght@400;500;600&display=optional'
           />
         </>
       )}
@@ -331,7 +331,8 @@ const Style = () => {
           width: 60%;
           max-width: 320px;
           height: 1px;
-          margin: 90px auto;
+          /* 上 90 下 40: 上面接文字 meta 视觉分量轻, 下面接图分量重, 拉不等间距才平衡 */
+          margin: 90px auto 40px auto;
           background: linear-gradient(to right, transparent, ${border}, transparent);
         }
         .dark #theme-atelier .grid-container > .grid-item + .grid-item::before {
