@@ -467,43 +467,49 @@ const Style = () => {
           #theme-atelier .sideLeft:focus-within::-webkit-scrollbar-thumb {
             background: ${border};
           }
-          /* 内层排成 flex 列。
-             早期用 justify-content: space-between 想让 top/middle/bottom
-             "三等分侧栏高度"，但一旦中段（文章页的 Catalog）撑得比视口
-             还高，flex 空隙被完全吃光，footer 就从视口底沿被顶到滚动
-             区中段——切换首页 ↔ 文章页时视觉上位移明显。
-             改成：margin-top:auto 让 footer 在内容不满时贴底，
-             position:sticky bottom:0 保证内容超过一屏时 footer 仍固定
-             在侧栏可视底沿。 */
+          /* 内层排成 flex 列, top / middle 保持自然堆叠。
+             底部 footer 单独拉出 flex 流, 用 position:fixed 咬死视口
+             左下角 —— 不管 Catalog 有多长, footer 位置恒定, 目录随
+             侧栏内部 overflow-y:auto 自己上下滚。
+             早前用 sticky 时, flex 列超过容器高度会让 sticky 元素
+             不稳; 直接 fixed 是最稳的方案。 */
           #theme-atelier .sideLeft > div {
             display: flex;
             flex-direction: column;
             min-height: 100%;
             box-sizing: border-box;
+            /* 给底部 fixed footer 预留空间, 避免 Catalog 的最后几条
+               永远藏在 footer 底下滚不到 */
+            padding-bottom: 200px;
           }
           #theme-atelier .sideLeft .atelier-sidebar-top,
           #theme-atelier .sideLeft .atelier-sidebar-middle {
             flex: 0 0 auto;
           }
+          /* footer: 桌面端锁死视口左下角, 与侧栏同宽 (360px) */
           #theme-atelier .sideLeft .atelier-sidebar-bottom {
-            flex: 0 0 auto;
-            margin-top: auto;             /* 内容不满时推到底 */
-            position: sticky;             /* 内容超一屏时钉在可视底沿 */
+            position: fixed;
             bottom: 0;
-            background: ${bg};            /* sticky 需要不透明底色遮盖上层 */
-            padding-top: 8px;
-            z-index: 1;
+            left: 0;
+            width: 360px;
+            box-sizing: border-box;
+            padding: 0 40px;              /* 与侧栏 px-10 对齐 */
+            background: ${bg};
+            z-index: 21;                  /* 高于侧栏内容 (z-index: 20) */
           }
           .dark #theme-atelier .sideLeft .atelier-sidebar-bottom {
             background: ${bgDark};
           }
-          /* footer 是整体模块的一部分，不再 position:fixed */
+          /* footer 里的图标条 + SiteInfo 板块本身样式 */
           #theme-atelier .sideLeft .atelier-sidebar-footer {
             position: static;
             width: auto;
             background: transparent;
             border-top: 1px solid ${border};
-            padding: 32px 0 8px 0;
+            padding: 24px 0 12px 0;
+          }
+          .dark #theme-atelier .sideLeft .atelier-sidebar-footer {
+            border-top-color: rgba(255,255,255,0.08);
           }
           /* 侧栏 fix 出流后，主内容左侧留出 360px 空位 */
           #theme-atelier main#wrapper {
