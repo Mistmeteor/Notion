@@ -159,21 +159,17 @@ const Style = () => {
           color: ${text};
           font-size: 17px;
           line-height: 1.45;
-          /* 用 border-bottom 撑满每项宽度, 保证 N 条细线等宽 (原 text-decoration
-             的下划线只到文字末尾, 标题长短不一时视觉参差) */
-          text-decoration: none;
-          border-bottom: 1px solid ${border};
-          padding-bottom: 8px;
-          margin-bottom: 10px;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-thickness: 1px;
+          /* 比纯换行间距 (~7px) 稍多一点空气，但不至于像分栏 */
+          margin-bottom: 14px;
         }
         .dark #theme-atelier .atelier-latest-list a {
           color: ${textDark};
-          border-bottom-color: rgba(255,255,255,0.14);
         }
-        /* 最后一项不需要底线, 避免和它下方的分组间距重复 */
         #theme-atelier .atelier-latest-list a:last-child {
-          border-bottom: 0;
-          padding-bottom: 0;
+          margin-bottom: 0;
         }
         #theme-atelier .atelier-latest-list a:hover {
           opacity: 0.6;
@@ -631,8 +627,9 @@ const Style = () => {
 
         /* ============= Footer 图标：统一 Feather 线描风 20px ============= */
         /* 隐藏 SocialButton 内自带的 FontAwesome RSS —— 我们在
-           AtelierFooter 里画了同款 SVG，避免出现两个 RSS 且风格不一致 */
-        #theme-atelier .atelier-footer-icons a[title='RSS'] {
+           AtelierFooter 里画了同款 SVG (带 .atelier-footer-rss 类) 顶替，
+           避免出现两个 RSS 且风格不一致；:not() 排除自己那个 SVG 版 */
+        #theme-atelier .atelier-footer-icons a[title='RSS']:not(.atelier-footer-rss) {
           display: none !important;
         }
         #theme-atelier .atelier-footer-collapse,
