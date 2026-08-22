@@ -478,14 +478,15 @@ const Style = () => {
           #theme-atelier .sideLeft:focus-within::-webkit-scrollbar-thumb {
             background: ${border};
           }
-          /* 内层 flex 列: top 顶到最上, bottom 顶到最下, middle 拉伸
-             填满中间的剩余空间, 内部再 justify-content: center 把 Latest
-             Posts 视觉居中 —— 这样无论 top / bottom 内容量差多少, middle
-             到 top 和 middle 到 bottom 的视觉距离始终相等。
+          /* 内层 flex 列: top 顶到最上, bottom 顶到最下, middle 用
+             margin-top/bottom: auto 把剩余空间均分到自己上下, 这样无论
+             top / bottom 内容量差多少, middle 到 top 段的距离始终等于
+             middle 到 bottom 段的距离 (跟文章页 Catalog 的表现一致).
              用 100svh 而不是 100% (原来依赖父级 height, 在 iOS fixed +
-             overflow-y:auto 上下文里不稳定, 会导致 middle 被挤到底部)。
-             内容超过一屏时 (文章页长 Catalog), middle 因 flex-grow 也不
-             会溢出兄弟, sidebar 用 overflow-y:auto 独立滚, 不出问题。 */
+             overflow-y:auto 上下文里不稳定, 会导致 middle 被挤到底部).
+             内容超过一屏时 (文章页长 Catalog), auto margin 无剩余空间可
+             分配, 自然回退到顺序堆叠, sidebar 用 overflow-y:auto 独立滚,
+             不出问题. */
           #theme-atelier .sideLeft > div {
             display: flex;
             flex-direction: column;
@@ -494,15 +495,13 @@ const Style = () => {
             box-sizing: border-box;
           }
           #theme-atelier .sideLeft .atelier-sidebar-top,
+          #theme-atelier .sideLeft .atelier-sidebar-middle,
           #theme-atelier .sideLeft .atelier-sidebar-bottom {
             flex: 0 0 auto;
           }
           #theme-atelier .sideLeft .atelier-sidebar-middle {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 0;
+            margin-top: auto;
+            margin-bottom: auto;
           }
           #theme-atelier .sideLeft .atelier-sidebar-footer {
             position: static;
