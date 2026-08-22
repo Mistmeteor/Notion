@@ -467,22 +467,35 @@ const Style = () => {
           #theme-atelier .sideLeft:focus-within::-webkit-scrollbar-thumb {
             background: ${border};
           }
-          /* 内层排成 flex 列，三组子元素（top / middle / bottom）用
-             justify-content: space-between 三等分侧栏高度。
-             比 margin-top: auto 更稳定 —— iOS Safari 曾有 auto margin
-             在 min-height 容器里失效的边缘 bug */
+          /* 内层排成 flex 列。
+             早期用 justify-content: space-between 想让 top/middle/bottom
+             "三等分侧栏高度"，但一旦中段（文章页的 Catalog）撑得比视口
+             还高，flex 空隙被完全吃光，footer 就从视口底沿被顶到滚动
+             区中段——切换首页 ↔ 文章页时视觉上位移明显。
+             改成：margin-top:auto 让 footer 在内容不满时贴底，
+             position:sticky bottom:0 保证内容超过一屏时 footer 仍固定
+             在侧栏可视底沿。 */
           #theme-atelier .sideLeft > div {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             min-height: 100%;
             box-sizing: border-box;
           }
-          /* 单独把中段限定住，避免它 flex-grow 拉伸把间距吃光 */
           #theme-atelier .sideLeft .atelier-sidebar-top,
-          #theme-atelier .sideLeft .atelier-sidebar-middle,
+          #theme-atelier .sideLeft .atelier-sidebar-middle {
+            flex: 0 0 auto;
+          }
           #theme-atelier .sideLeft .atelier-sidebar-bottom {
             flex: 0 0 auto;
+            margin-top: auto;             /* 内容不满时推到底 */
+            position: sticky;             /* 内容超一屏时钉在可视底沿 */
+            bottom: 0;
+            background: ${bg};            /* sticky 需要不透明底色遮盖上层 */
+            padding-top: 8px;
+            z-index: 1;
+          }
+          .dark #theme-atelier .sideLeft .atelier-sidebar-bottom {
+            background: ${bgDark};
           }
           /* footer 是整体模块的一部分，不再 position:fixed */
           #theme-atelier .sideLeft .atelier-sidebar-footer {
