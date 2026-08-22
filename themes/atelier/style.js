@@ -142,12 +142,15 @@ const Style = () => {
           color: ${textDark};
         }
 
-        /* ============= 侧栏：近期文章 ============= */
+        /* ============= 侧栏：近期文章 =============
+           层级: heading 17px bold ≥ 下面列表标题 15px 常规;
+           heading 不超过 Logo 下 tagline (17px), 靠加粗做分量差. */
         #theme-atelier .atelier-latest-title {
           font-family: ${serif};
           color: ${text};
           font-size: 17px;
-          font-weight: 400;
+          font-weight: 700;
+          letter-spacing: -0.005em;
           margin: 44px 0 18px 0;
         }
         .dark #theme-atelier .atelier-latest-title {
@@ -157,12 +160,11 @@ const Style = () => {
           display: block;
           font-family: ${serif};
           color: ${text};
-          font-size: 17px;
+          font-size: 15px;
           line-height: 1.45;
           text-decoration: underline;
           text-underline-offset: 3px;
           text-decoration-thickness: 1px;
-          /* 比纯换行间距 (~7px) 稍多一点空气，但不至于像分栏 */
           margin-bottom: 14px;
         }
         .dark #theme-atelier .atelier-latest-list a {
@@ -495,11 +497,8 @@ const Style = () => {
             position: fixed;
             /* 旧浏览器: bottom:0 直接贴视口底沿 */
             bottom: 0;
-            /* 新浏览器 (支持 svh): bottom = 视口和小视口的差值。
-               URL 栏可见时 100vh == 100svh, 差值为 0, footer 在底沿;
-               URL 栏收起时 100vh > 100svh, 差值 = 涨出的高度, footer
-               上移相应距离, 相当于恒定停在"小视口底沿"这个绝对位置,
-               彻底不受地址栏动画影响 */
+            /* 新浏览器 (支持 svh): bottom = 视口和小视口的差值,
+               恒定停在小视口底沿, 不受地址栏动画影响 */
             bottom: calc(100vh - 100svh);
             left: 0;
             width: 360px;
@@ -507,14 +506,11 @@ const Style = () => {
             padding: 0 40px;              /* 与侧栏 px-10 对齐 */
             background: ${bg};
             z-index: 21;                  /* 高于侧栏内容 (z-index: 20) */
-            /* iOS Safari fix: 提到独立 GPU 合成层, 防止动量滚动/
-               橡皮筋回弹时 fixed 元素跟着主滚轴短暂位移。桌面
-               Chrome/FF 也顺便走 compositor, 无副作用 */
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
-            will-change: transform;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
+            /* 早前用 transform:translateZ(0) 想做 GPU 层加速, 结果
+               iOS 在滚动/动画时 GPU 层会亚像素漂移, footer 横向抖。
+               Logo 和 sidebar 内其它元素稳, 是因为都在同一 non-
+               composited 层。这里保持 non-composited, 才能横向也
+               和 Logo 一样纹丝不动。 */
           }
           .dark #theme-atelier .sideLeft .atelier-sidebar-bottom {
             background: ${bgDark};
