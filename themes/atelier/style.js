@@ -1027,62 +1027,19 @@ const Style = () => {
           }
         }
 
-        /* ============= 长 LaTeX 公式水平滚动（手机端友好）============= */
-        /* Notion 的公式块渲染结构：figure.notion-asset-wrapper-equation
-           > .notion-equation.notion-equation-block > .katex-display > .katex
-           块级公式在窄屏下超出容器时，让它可以像 obsidian 一样左右拖动 */
-        #theme-atelier .notion-asset-wrapper-equation,
-        #theme-atelier .notion-equation-block,
+        /* ============= 长 LaTeX 公式水平滚动（隐藏滚动条）=============
+           行为：短公式无变化；长公式超出容器时，手指/鼠标可横向滑动查看，
+           但不显示任何滚动条 UI（跟 iOS 应用里的滚动区域一样静默）。
+           桌面端可用 Shift+滚轮 / 触控板双指横滑；手机端直接手指滑。 */
         #theme-atelier .katex-display {
-          max-width: 100%;
           overflow-x: auto;
           overflow-y: hidden;
-          padding-bottom: 6px;
           -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;   /* Firefox */
+          -ms-overflow-style: none; /* 老 Edge / IE */
         }
-        /* KaTeX 内部结构默认允许换行，公式超长时会被换掉；改成 nowrap 才能真正滚动 */
-        #theme-atelier .katex-display > .katex {
-          white-space: nowrap;
-        }
-        /* 内联公式也保护一下，避免撑破段落宽度 */
-        #theme-atelier .notion-equation-inline {
-          max-width: 100%;
-          overflow-x: auto;
-          vertical-align: middle;
-        }
-        /* 滚动条样式：细、克制、与主题色协调 */
-        #theme-atelier .notion-asset-wrapper-equation::-webkit-scrollbar,
-        #theme-atelier .notion-equation-block::-webkit-scrollbar,
         #theme-atelier .katex-display::-webkit-scrollbar {
-          height: 6px;
-        }
-        #theme-atelier .notion-asset-wrapper-equation::-webkit-scrollbar-thumb,
-        #theme-atelier .notion-equation-block::-webkit-scrollbar-thumb,
-        #theme-atelier .katex-display::-webkit-scrollbar-thumb {
-          background: rgba(0, 0, 0, 0.2);
-          border-radius: 3px;
-        }
-        #theme-atelier .notion-asset-wrapper-equation::-webkit-scrollbar-track,
-        #theme-atelier .notion-equation-block::-webkit-scrollbar-track,
-        #theme-atelier .katex-display::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .dark #theme-atelier .notion-asset-wrapper-equation::-webkit-scrollbar-thumb,
-        .dark #theme-atelier .notion-equation-block::-webkit-scrollbar-thumb,
-        .dark #theme-atelier .katex-display::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.25);
-        }
-        /* Firefox */
-        #theme-atelier .notion-asset-wrapper-equation,
-        #theme-atelier .notion-equation-block,
-        #theme-atelier .katex-display {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-        }
-        .dark #theme-atelier .notion-asset-wrapper-equation,
-        .dark #theme-atelier .notion-equation-block,
-        .dark #theme-atelier .katex-display {
-          scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+          display: none;           /* Chrome / Safari / iOS */
         }
 
         /* ============= 文章内 H2/H3 依次缩进（H1 不缩）============= */
