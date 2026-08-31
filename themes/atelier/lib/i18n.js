@@ -25,7 +25,9 @@ const T = {
     lastEdited: '最后更新',
     langLabel: '中', // 按钮显示当前语言：正在中文时显示"中"
     langAriaLabel: '当前中文，点击切换到英文',
-    homeAriaLabel: '返回首页'
+    homeAriaLabel: '返回首页',
+    darkModeAriaLabel: '切换到深色模式',
+    lightModeAriaLabel: '切换到浅色模式'
   },
   'en-US': {
     latestPosts: 'Latest Posts',
@@ -37,7 +39,9 @@ const T = {
     lastEdited: 'Last edited',
     langLabel: 'EN',
     langAriaLabel: 'Currently English, click to switch to Chinese',
-    homeAriaLabel: 'Back to home'
+    homeAriaLabel: 'Back to home',
+    darkModeAriaLabel: 'Switch to dark mode',
+    lightModeAriaLabel: 'Switch to light mode'
   }
 }
 

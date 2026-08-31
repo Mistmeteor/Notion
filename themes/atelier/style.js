@@ -279,7 +279,7 @@ const Style = () => {
         #theme-atelier .atelier-footer-icons > * {
           flex: 0 0 auto !important;
         }
-        /* 只中和 SocialButton 外层的 w-full（DarkModeButton 里的 w-5 保持不动） */
+        /* 中和 SocialButton 外层的 w-full，避免把整行撑开 */
         #theme-atelier .atelier-footer-icons .w-full {
           width: auto !important;
           flex-grow: 0 !important;
@@ -684,7 +684,8 @@ const Style = () => {
         #theme-atelier .atelier-footer-collapse,
         #theme-atelier .atelier-footer-home,
         #theme-atelier .atelier-footer-lang,
-        #theme-atelier .atelier-footer-rss {
+        #theme-atelier .atelier-footer-rss,
+        #theme-atelier .atelier-footer-darkmode {
           background: transparent;
           border: 0;
           padding: 0;
@@ -699,20 +700,23 @@ const Style = () => {
         #theme-atelier .atelier-footer-collapse:hover,
         #theme-atelier .atelier-footer-home:hover,
         #theme-atelier .atelier-footer-lang:hover,
-        #theme-atelier .atelier-footer-rss:hover {
+        #theme-atelier .atelier-footer-rss:hover,
+        #theme-atelier .atelier-footer-darkmode:hover {
           color: ${text};
           transform: scale(1.1);
         }
         .dark #theme-atelier .atelier-footer-collapse,
         .dark #theme-atelier .atelier-footer-home,
         .dark #theme-atelier .atelier-footer-lang,
-        .dark #theme-atelier .atelier-footer-rss {
+        .dark #theme-atelier .atelier-footer-rss,
+        .dark #theme-atelier .atelier-footer-darkmode {
           color: ${mutedDark};
         }
         .dark #theme-atelier .atelier-footer-collapse:hover,
         .dark #theme-atelier .atelier-footer-home:hover,
         .dark #theme-atelier .atelier-footer-lang:hover,
-        .dark #theme-atelier .atelier-footer-rss:hover {
+        .dark #theme-atelier .atelier-footer-rss:hover,
+        .dark #theme-atelier .atelier-footer-darkmode:hover {
           color: ${textDark};
         }
         /* 语言按钮的字形样式：无衬线加粗, 尺寸和高度与相邻 SVG 图标对齐 */
