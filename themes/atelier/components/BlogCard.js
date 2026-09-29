@@ -78,11 +78,6 @@ const BlogCard = ({ post, showAnimate, variant = 'hero' }) => {
           <ReadingTime post={post} className='atelier-stream-date-sep' />
         </div>
       )}
-
-      {/* 摘要 */}
-      {post?.summary && (
-        <div className='atelier-stream-summary'>{post.summary}</div>
-      )}
     </article>
   )
 }
