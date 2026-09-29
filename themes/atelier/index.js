@@ -15,6 +15,7 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import ArticleDetail from './components/ArticleDetail'
 import ArticleLock from './components/ArticleLock'
 import AsideLeft from './components/AsideLeft'
+import AtelierArchive from './components/AtelierArchive'
 import AtelierFooter from './components/AtelierFooter'
 import BackToBottom from './components/BackToBottom'
 import BackToTop from './components/BackToTop'
@@ -23,7 +24,6 @@ import SidebarToggle from './components/SidebarToggle'
 import { AtelierLangProvider, useAtelierLang } from './lib/i18n'
 import BlogListPage from './components/BlogListPage'
 import BlogListScroll from './components/BlogListScroll'
-import BlogArchiveItem from './components/BlogPostArchive'
 import TagItemMini from './components/TagItemMini'
 import CONFIG from './config'
 import { Style } from './style'
@@ -249,23 +249,12 @@ const LayoutSearch = props => {
 }
 
 /**
- * 归档页面
+ * 归档页面 —— 走 atelier 自己的方案 D（按年份分组的极简 index），
+ * 不再用 fukasawa 默认的 BlogArchiveItem
  */
 const LayoutArchive = props => {
   const { archivePosts } = props
-  return (
-    <>
-      <div className='mb-10 pb-20 bg-white md:p-12 p-3 dark:bg-gray-800 shadow-md min-h-full'>
-        {Object.keys(archivePosts).map(archiveTitle => (
-          <BlogArchiveItem
-            key={archiveTitle}
-            posts={archivePosts[archiveTitle]}
-            archiveTitle={archiveTitle}
-          />
-        ))}
-      </div>
-    </>
-  )
+  return <AtelierArchive archivePosts={archivePosts} />
 }
 
 /**

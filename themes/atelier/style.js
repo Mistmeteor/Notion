@@ -432,7 +432,6 @@ const Style = () => {
            其余条目 (variant='card') 走 3 列 grid, 图收窄, 标题 20px,
            摘要 clamp 2 行. 两块之间用一条细分割线过渡. */
         #theme-atelier .atelier-b-wrapper {
-          max-width: 780px;
           margin: 0 auto;
           padding: 0 20px;
         }
@@ -502,6 +501,168 @@ const Style = () => {
           }
           #theme-atelier .atelier-stream-card .atelier-stream-title {
             font-size: 22px;
+          }
+        }
+
+        /* ============= 侧栏：归档入口 =============
+           复用 .atelier-latest-title 的 heading 视觉,
+           heading 本身就是链接, 直接跳 /archive.
+           顶部加 margin 与上面的 Latest Posts 拉开距离. */
+        #theme-atelier .atelier-archive-link {
+          margin-top: 28px;
+        }
+        #theme-atelier .atelier-archive-heading {
+          display: block;
+          text-decoration: none;
+          cursor: pointer;
+          transition: opacity 0.15s ease;
+        }
+        #theme-atelier .atelier-archive-heading:hover {
+          opacity: 0.6;
+        }
+
+        /* ============= 归档页方案 D：Archive Index · 年历式 =============
+           按年份分组的极简 index, 每行 [MM-DD | 标题 | 分类 | 阅读时长].
+           无缩略图, 靠排版取胜. */
+        #theme-atelier .atelier-archive {
+          margin: 0 auto;
+          padding: 0 20px 60px;
+        }
+        #theme-atelier .atelier-d-topstats {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          padding-bottom: 16px;
+          border-bottom: 1px solid ${border};
+          margin-bottom: 20px;
+        }
+        .dark #theme-atelier .atelier-d-topstats {
+          border-bottom-color: rgba(255,255,255,0.14);
+        }
+        #theme-atelier .atelier-d-heading {
+          font-family: ${serif};
+          font-size: 26px;
+          font-weight: 500;
+          color: ${text};
+          margin: 0;
+        }
+        .dark #theme-atelier .atelier-d-heading {
+          color: ${textDark};
+        }
+        #theme-atelier .atelier-d-total {
+          font-family: ${sans};
+          font-size: 13px;
+          color: ${muted};
+          letter-spacing: 0.02em;
+        }
+        .dark #theme-atelier .atelier-d-total {
+          color: ${mutedDark};
+        }
+        #theme-atelier .atelier-d-yr {
+          font-family: ${serif};
+          font-size: 20px;
+          color: ${muted};
+          font-weight: 500;
+          margin: 28px 0 4px;
+          padding-bottom: 4px;
+          border-bottom: 1px dashed ${border};
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+        }
+        .dark #theme-atelier .atelier-d-yr {
+          color: ${mutedDark};
+          border-bottom-color: rgba(255,255,255,0.14);
+        }
+        #theme-atelier .atelier-d-yr .cnt {
+          font-family: ${sans};
+          font-size: 12px;
+          color: ${muted};
+          letter-spacing: 0.02em;
+        }
+        .dark #theme-atelier .atelier-d-yr .cnt {
+          color: ${mutedDark};
+        }
+        #theme-atelier .atelier-d-row {
+          display: grid;
+          grid-template-columns: 64px 1fr 140px 80px;
+          gap: 16px;
+          padding: 8px 0;
+          align-items: baseline;
+          border-bottom: 1px dotted ${border};
+        }
+        .dark #theme-atelier .atelier-d-row {
+          border-bottom-color: rgba(255,255,255,0.10);
+        }
+        #theme-atelier .atelier-d-row:hover {
+          background: rgba(0,0,0,0.03);
+        }
+        .dark #theme-atelier .atelier-d-row:hover {
+          background: rgba(255,255,255,0.04);
+        }
+        /* 每行的三个元信息 (日期/分类/阅读时长) 走跟主页 hero 日期一致的
+           sans + muted + letter-spacing 0.02em 朴素风: 不 uppercase 不加粗,
+           密集列表所以字号收到 13px. */
+        #theme-atelier .atelier-d-date {
+          font-family: ${sans};
+          font-size: 13px;
+          color: ${muted};
+          font-variant-numeric: tabular-nums;
+          letter-spacing: 0.02em;
+        }
+        .dark #theme-atelier .atelier-d-date {
+          color: ${mutedDark};
+        }
+        #theme-atelier .atelier-d-title {
+          font-family: ${serif};
+          font-size: 16px;
+          line-height: 1.35;
+          color: ${text};
+          min-width: 0;
+        }
+        .dark #theme-atelier .atelier-d-title {
+          color: ${textDark};
+        }
+        #theme-atelier .atelier-d-title a {
+          color: inherit;
+          text-decoration: none;
+        }
+        #theme-atelier .atelier-d-title a:hover {
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-thickness: 1px;
+        }
+        #theme-atelier .atelier-d-cat {
+          font-family: ${sans};
+          font-size: 13px;
+          color: ${muted};
+          letter-spacing: 0.02em;
+        }
+        .dark #theme-atelier .atelier-d-cat {
+          color: ${mutedDark};
+        }
+        #theme-atelier .atelier-d-len {
+          font-family: ${sans};
+          font-size: 13px;
+          color: ${muted};
+          text-align: right;
+          font-variant-numeric: tabular-nums;
+          letter-spacing: 0.02em;
+        }
+        .dark #theme-atelier .atelier-d-len {
+          color: ${mutedDark};
+        }
+        /* 手机端: cat 和 len 挤位置, 收窄一点, 隐藏 cat 可选 */
+        @media (max-width: 640px) {
+          #theme-atelier .atelier-d-row {
+            grid-template-columns: 52px 1fr 60px;
+            gap: 10px;
+          }
+          #theme-atelier .atelier-d-cat {
+            display: none;
+          }
+          #theme-atelier .atelier-d-title {
+            font-size: 15px;
           }
         }
 
@@ -1113,6 +1274,14 @@ const Style = () => {
         @media (min-width: 1024px) {
           #theme-atelier #container-inner:not(:has(#container)) {
             max-width: 780px !important;
+          }
+          /* 首页方案 B / 归档页方案 D: 撑满主区宽度（跟全宽文章同款处理),
+             让 hero 图、3 列 grid、归档表格充分利用横向空间;
+             右侧留 32px padding 避免贴到浏览器边. */
+          #theme-atelier #container-inner:has(.atelier-b-wrapper),
+          #theme-atelier #container-inner:has(.atelier-archive) {
+            max-width: none !important;
+            padding-right: 32px;
           }
           /* ArticleDetail 原本 md:px-32（128px）内边距太宽，收窄到 24px */
           #theme-atelier article {

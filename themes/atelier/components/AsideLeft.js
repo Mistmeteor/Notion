@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+import ArchiveLink from './ArchiveLink'
 import AtelierFooter from './AtelierFooter'
 import Catalog from './Catalog'
 import LatestPosts from './LatestPosts'
@@ -6,7 +8,7 @@ import { MenuList } from './MenuList'
 
 /**
  * Atelier 侧栏（桌面固定 360px 宽 / 手机全宽堆叠）
- * 排序：头像 → 站点标题 → 副标题（Logo 内）→ 菜单 → 近期文章 → [文章目录] → [footer]
+ * 排序：头像 → 站点标题 → 副标题（Logo 内）→ 菜单 → 近期文章 → [归档入口, 仅首页] → [文章目录] → [footer]
  *
  * 主动去掉了 fukasawa 原本的折叠机制：atelier 是编辑器/画册风格，
  * 侧栏固定宽度不受 fullWidth / localStorage / 折叠按钮 影响，
@@ -14,6 +16,10 @@ import { MenuList } from './MenuList'
  */
 function AsideLeft(props) {
   const { post, slot, onToggleSidebar, onToggleLang } = props
+  const router = useRouter()
+  // "主页"含首页 / 分页首页；分类、标签、归档、搜索、文章页都不算
+  const isHome =
+    router.pathname === '/' || router.pathname.startsWith('/page/')
 
   return (
     <div className='sideLeft relative w-full lg:w-[360px] lg:min-h-screen block z-20'>
@@ -26,10 +32,12 @@ function AsideLeft(props) {
           </section>
         </div>
 
-        {/* 中段组（近期文章 / 文章目录）—— 桌面上通过外层 justify-content:
-            space-between，与顶部组、底部组三等分侧栏高度，中段自然居中 */}
+        {/* 中段组（近期文章 / 归档入口 / 文章目录）—— 桌面上通过外层
+            justify-content: space-between，与顶部组、底部组三等分侧栏高度，
+            中段自然居中 */}
         <div className='atelier-sidebar-middle'>
           {!post && <LatestPosts {...props} />}
+          {!post && isHome && <ArchiveLink />}
           {post && (
             <section className='atelier-toc mt-2 mb-10'>
               <Catalog post={post} />
