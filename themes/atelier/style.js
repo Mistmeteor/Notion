@@ -362,7 +362,12 @@ const Style = () => {
         #theme-atelier .atelier-stream-cover {
           width: 100%;
           height: auto;
-          aspect-ratio: 16 / 10;
+          /* hero 卡的封面裁成 5:2 横向宽带; 撑满主区后已经很宽,
+             再把高度压扁能显著减少滚动、更接近 mockup B 的杂志感.
+             object-fit: cover 自然裁掉图片上下, 主体在中间的画作
+             (Signac / 印象派海景) 效果最好. 若原图主体偏上或偏下,
+             可以在 Notion 里裁好再传. Card variant 保持 16/10 不动. */
+          aspect-ratio: 5 / 2;
           object-fit: cover;
           display: block;
           transition: transform 0.6s ease;
@@ -1284,6 +1289,12 @@ const Style = () => {
           #theme-atelier #container-inner.atelier-list-wide {
             max-width: none !important;
             padding-right: 32px;
+          }
+          /* sidebar 关闭时 main padding-left=0, wide-list 只有右 32
+             padding 会让内容整体左偏 (iPad 2018 上尤其明显). 补一个
+             对称的左侧 padding, 视觉回到居中. */
+          #theme-atelier.atelier-sidebar-closed #container-inner.atelier-list-wide {
+            padding-left: 32px;
           }
           /* ArticleDetail 原本 md:px-32（128px）内边距太宽，收窄到 24px */
           #theme-atelier article {

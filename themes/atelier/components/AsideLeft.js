@@ -20,6 +20,9 @@ function AsideLeft(props) {
   // "主页"含首页 / 分页首页；分类、标签、归档、搜索、文章页都不算
   const isHome =
     router.pathname === '/' || router.pathname.startsWith('/page/')
+  // 归档页本身就是"所有帖子"的完整列表, sidebar 里再放 Latest Posts 视觉冗余.
+  // 手机端 sidebar 堆到内容上方, 更是浪费首屏空间 → 用 lg:block 只桌面留.
+  const isArchive = router.pathname === '/archive'
 
   return (
     <div className='sideLeft relative w-full lg:w-[360px] lg:min-h-screen block z-20'>
@@ -36,7 +39,11 @@ function AsideLeft(props) {
             justify-content: space-between，与顶部组、底部组三等分侧栏高度，
             中段自然居中 */}
         <div className='atelier-sidebar-middle'>
-          {!post && <LatestPosts {...props} />}
+          {!post && (
+            <div className={isArchive ? 'hidden lg:block' : ''}>
+              <LatestPosts {...props} />
+            </div>
+          )}
           {!post && isHome && <ArchiveLink />}
           {post && (
             <section className='atelier-toc mt-2 mb-10'>
