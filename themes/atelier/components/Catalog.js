@@ -152,6 +152,8 @@ const Catalog = ({ post }) => {
         // 下滑打架，出现"来回拉扯"的观感，所以手机端只做高亮不做滚动
         if (window.innerWidth < 1024) return
 
+        // block: 'nearest' —— 只在 active item 快离开侧栏视口时才轻微滚动
+        // 到最近可见位置; 用 'center' 会每次高亮切换都强推到中间, 观感"跳"
         requestAnimationFrame(() => {
           const activeAnchor = document.querySelector(
             `.atelier-toc-item.atelier-toc-active`
@@ -159,7 +161,7 @@ const Catalog = ({ post }) => {
           if (activeAnchor && typeof activeAnchor.scrollIntoView === 'function') {
             activeAnchor.scrollIntoView({
               behavior: scrollBehavior,
-              block: 'center',
+              block: 'nearest',
               inline: 'nearest'
             })
           }
@@ -215,6 +217,11 @@ const Catalog = ({ post }) => {
                 e.preventDefault()
                 clickLockRef.current = true
 
+                // 立即高亮点击的目录项 —— 之前是等 smooth scroll 结束 500ms
+                // 后再更新, 会让目录看起来"迟一拍才跳一下". 立即 set 让
+                // 高亮跟正文滚动同步发生, 视觉上是一个整体动作.
+                setActiveSection(id)
+
                 const target = document.querySelector(`[data-id="${id}"]`)
                 if (target) {
                   const targetRect = target.getBoundingClientRect()
@@ -225,9 +232,10 @@ const Catalog = ({ post }) => {
                   })
                 }
 
-                const delay = scrollBehavior === 'smooth' ? 500 : 50
+                // clickLock 期间阻止 scroll spy 抢过高亮 (smooth scroll 过程中
+                // 会经过很多中间 heading, 不希望它们被临时标 active)
+                const delay = scrollBehavior === 'smooth' ? 600 : 50
                 setTimeout(() => {
-                  setActiveSection(id)
                   clickLockRef.current = false
                 }, delay)
               }}

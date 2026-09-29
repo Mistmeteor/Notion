@@ -13,10 +13,11 @@ function SiteInfo({ title }) {
       <span>
         © {`${copyrightDate}`}
         <span>
-          <a href={siteConfig('LINK')}>
+          {/* 心跳图标 + 站长名: 保留视觉, 不跳转 */}
+          <span>
             <i className='mx-1 animate-pulse fas fa-heart' />
             {siteConfig('AUTHOR')}
-          </a>
+          </span>
           . <br />
         </span>
         {siteConfig('BEI_AN') && (
