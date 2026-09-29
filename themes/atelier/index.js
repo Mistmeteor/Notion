@@ -62,9 +62,19 @@ const LayoutBaseInner = props => {
   const { onLoading, fullWidth } = useGlobal()
   const searchModal = useRef(null)
   const { toggleLang } = useAtelierLang()
+  const router = useRouter()
 
   // 侧栏开关：文章页记住用户选择；列表页（主页/归档/分类/标签）永远默认展开
   const isPostPage = !!props.post
+  // 首页方案 B 和归档页方案 D 的容器需要撑满主区（放弃 Tailwind
+  // md:max-w-4xl / 2xl:max-w-6xl 的居中限制），走 .atelier-list-wide
+  // 覆盖 —— 不依赖 :has() 以兼容旧版 Firefox / Safari.
+  const isWideList =
+    !isPostPage && (
+      router.pathname === '/' ||
+      router.pathname.startsWith('/page/') ||
+      router.pathname === '/archive'
+    )
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [mounted, setMounted] = useState(false)
 
@@ -123,7 +133,7 @@ const LayoutBaseInner = props => {
             className='relative flex w-full pt-12 pb-8 justify-center bg-day dark:bg-night'>
             <div
               id='container-inner'
-              className={`${fullWidth ? '' : '2xl:max-w-6xl md:max-w-4xl'} w-full relative z-10`}>
+              className={`${fullWidth ? '' : '2xl:max-w-6xl md:max-w-4xl'} ${isWideList ? 'atelier-list-wide' : ''} w-full relative z-10`}>
               <Transition
                 show={!onLoading}
                 appear={true}

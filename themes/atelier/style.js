@@ -1277,9 +1277,11 @@ const Style = () => {
           }
           /* 首页方案 B / 归档页方案 D: 撑满主区宽度（跟全宽文章同款处理),
              让 hero 图、3 列 grid、归档表格充分利用横向空间;
-             右侧留 32px padding 避免贴到浏览器边. */
-          #theme-atelier #container-inner:has(.atelier-b-wrapper),
-          #theme-atelier #container-inner:has(.atelier-archive) {
+             右侧留 32px padding 避免贴到浏览器边.
+             用 container-inner 上挂的 .atelier-list-wide class 触发,
+             不用 :has() —— 旧版 Firefox/Safari 不支持 :has(),
+             会让规则完全失效. LayoutBaseInner 里根据 router.pathname 挂. */
+          #theme-atelier #container-inner.atelier-list-wide {
             max-width: none !important;
             padding-right: 32px;
           }
