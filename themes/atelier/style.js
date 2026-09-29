@@ -427,12 +427,81 @@ const Style = () => {
           border-bottom-color: ${mutedDark};
         }
 
+        /* ============= 首页方案 B：Hero + Grid 杂志式 =============
+           第一条 (variant='hero') 保留原有的大图 + 40px 标题 + 摘要 布局；
+           其余条目 (variant='card') 走 3 列 grid, 图收窄, 标题 20px,
+           摘要 clamp 2 行. 两块之间用一条细分割线过渡. */
+        #theme-atelier .atelier-b-wrapper {
+          max-width: 780px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+        #theme-atelier .atelier-b-hero .atelier-stream-item {
+          margin-bottom: 0;
+        }
+        #theme-atelier .atelier-b-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 40px 24px;
+          margin-top: 56px;
+          padding-top: 40px;
+          border-top: 1px solid ${border};
+        }
+        .dark #theme-atelier .atelier-b-grid {
+          border-top-color: rgba(255,255,255,0.14);
+        }
+        #theme-atelier .atelier-b-grid-item {
+          min-width: 0;
+        }
+        /* ---- Card variant: 覆盖 stream 默认(hero)的尺寸 ---- */
+        #theme-atelier .atelier-stream-card .atelier-stream-cover-wrap {
+          margin-bottom: 14px;
+        }
+        #theme-atelier .atelier-stream-card .atelier-stream-cover {
+          aspect-ratio: 16 / 10;
+        }
+        #theme-atelier .atelier-stream-card .atelier-stream-title {
+          font-size: 20px;
+          line-height: 1.25;
+          margin-bottom: 8px;
+        }
+        #theme-atelier .atelier-stream-card .atelier-stream-date {
+          font-size: 13px;
+          margin-bottom: 10px;
+        }
+        #theme-atelier .atelier-stream-card .atelier-stream-summary {
+          font-size: 14.5px;
+          line-height: 1.55;
+          margin-bottom: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        /* 平板端: grid 收成 2 列, 手机: 1 列(相当于回到单栏流) */
+        @media (max-width: 1023px) {
+          #theme-atelier .atelier-b-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px 20px;
+          }
+        }
+
         /* 小屏幕：略微缩小标题，条目之间的分隔线收紧一点 */
         @media (max-width: 640px) {
           #theme-atelier .atelier-stream-title { font-size: 30px; }
           #theme-atelier .grid-container > .grid-item + .grid-item::before {
             margin: 64px auto;
             width: 70%;
+          }
+          #theme-atelier .atelier-b-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 32px;
+          }
+          #theme-atelier .atelier-stream-card .atelier-stream-title {
+            font-size: 22px;
           }
         }
 
@@ -838,6 +907,33 @@ const Style = () => {
           content: ' · ';
           margin: 0 4px;
           color: ${muted};
+        }
+
+        /* ============= 文章详情页 meta 行：字体与主页 hero 日期统一 =============
+           截图那行 "2026-8-21 | Last edited: 2026-8-22 | 2 min read" 里,
+           日期/lastEdited 继承 body 的衬线体, 但 ReadingTime 用 .atelier-reading-time
+           走 sans 13px, 视觉混排. 这里全统一到 sans 15px + muted, 与
+           .atelier-stream-date (首页 hero 日期) 一致. */
+        #theme-atelier .atelier-post-meta,
+        #theme-atelier .atelier-post-meta a,
+        #theme-atelier .atelier-post-meta span,
+        #theme-atelier .atelier-post-meta .atelier-reading-time {
+          font-family: ${sans};
+          font-size: 15px;
+          letter-spacing: 0.02em;
+          color: ${muted};
+        }
+        .dark #theme-atelier .atelier-post-meta,
+        .dark #theme-atelier .atelier-post-meta a,
+        .dark #theme-atelier .atelier-post-meta span,
+        .dark #theme-atelier .atelier-post-meta .atelier-reading-time {
+          color: ${mutedDark};
+        }
+        #theme-atelier .atelier-post-meta a:hover {
+          color: ${text};
+        }
+        .dark #theme-atelier .atelier-post-meta a:hover {
+          color: ${textDark};
         }
 
         /* ============= 分享栏居中（覆盖 ShareBar 默认 md:justify-end）============= */

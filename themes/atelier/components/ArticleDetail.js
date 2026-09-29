@@ -52,7 +52,7 @@ export default function ArticleDetail(props) {
             {post.title}
           </div>
 
-          <section className='flex-wrap flex mt-2 text-gray-400 dark:text-gray-400 font-light leading-8'>
+          <section className='atelier-post-meta flex-wrap flex mt-2 text-gray-400 dark:text-gray-400 font-light leading-8'>
             <div>
               {post?.category && (
                 <>

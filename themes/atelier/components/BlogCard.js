@@ -7,12 +7,13 @@ import CONFIG from '../config'
 import ReadingTime from './ReadingTime'
 
 /**
- * Atelier 首页文章条目 —— 编辑器/画册风格的单栏流
- * 无卡片、无阴影、无边框，纯排版：封面图 + 大标题 + 日期 + 摘要
- * 一整条占满右主内容区宽度（由父容器约束），条目之间用大留白隔开
+ * Atelier 首页文章条目 —— 编辑器/画册风格
+ * variant='hero'（默认）：全宽大图卡，用于首页首屏第一条
+ * variant='card'：3 列 grid 里的小卡，图小、标题小
  */
-const BlogCard = ({ post, showAnimate }) => {
+const BlogCard = ({ post, showAnimate, variant = 'hero' }) => {
   const { siteInfo } = useGlobal()
+  const isCard = variant === 'card'
 
   // 封面强制回退到站点默认背景
   if (
@@ -44,7 +45,9 @@ const BlogCard = ({ post, showAnimate }) => {
     : {}
 
   return (
-    <article {...aosProps} className='atelier-stream-item'>
+    <article
+      {...aosProps}
+      className={`atelier-stream-item ${isCard ? 'atelier-stream-card' : 'atelier-stream-hero'}`}>
       {/* 封面图（占满宽度，点击进入文章） */}
       {showCover && (
         <SmartLink href={post?.href} passHref legacyBehavior>
