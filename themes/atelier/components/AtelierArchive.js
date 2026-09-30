@@ -7,8 +7,8 @@ import ReadingTime from './ReadingTime'
  * 按年份分组的极简 index：每行 [MM-DD | 标题 | 分类 | 阅读时长]
  * 无缩略图, 靠排版取胜.
  *
- * NotionNext 传的 archivePosts 是按 "YYYY-MM" 分组的对象;
- * 这里再按年份聚合, 组内保持原有的时间倒序.
+ * 排序: 年份倒序 (新年份在上), 同年内按发布日期正序 (1 月→12 月),
+ * 读起来像"翻年历": 年份从新往老, 每年内从年初往年末.
  */
 const AtelierArchive = ({ archivePosts }) => {
   const { lang } = useAtelierLang()
@@ -56,6 +56,14 @@ function groupByYear(archivePosts) {
     const year = String(ym).split('-')[0]
     if (!grouped[year]) grouped[year] = []
     grouped[year] = grouped[year].concat(posts)
+  })
+  // 年内按发布日期升序 (1 月→12 月); NotionNext 默认传的是倒序, 在这里翻正
+  Object.values(grouped).forEach(list => {
+    list.sort((a, b) => {
+      const da = a?.publishDay || a?.date?.start_date || ''
+      const db = b?.publishDay || b?.date?.start_date || ''
+      return da.localeCompare(db)
+    })
   })
   return Object.entries(grouped).sort((a, b) => b[0].localeCompare(a[0]))
 }
