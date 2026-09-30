@@ -1273,13 +1273,16 @@ const Style = () => {
         }
 
         /* ============= 文章正文列宽 ============= */
-        /* 列表/归档页压 780 与首页流式条目对齐；文章详情页交给 ArticleDetail
-           自己决定 (max-w-5xl 或 fullWidth px-10)，允许 Notion 里"全宽"生效。
-           :has(#container) 用于识别详情页 (ArticleDetail 会给最外层 <div>
-           这个 id)。若详情页并存在，就不再对 #container-inner 加宽度上限。 */
+        /* 关键坑: 原版 780 默认规则写成 #container-inner:not(:has(#container))
+           以排除详情页. 但 :has(#container) 里包了一个 ID, 会把整条规则的
+           specificity 拉高到 3 个 ID (0,3,0,0). 而 .atelier-list-wide 覆盖
+           只有 2 ID + 1 class (0,2,1,0), 两个都 !important 时 specificity
+           高的赢 —— 结果 wide 规则永远压不过 780, 首页/归档宽度改不动.
+           修复: 780 默认规则去掉 :has(), 只留 2 ID; wide 规则和详情页
+           规则各自 specificity 都比它高, 自然覆盖. */
         @media (min-width: 1024px) {
-          #theme-atelier #container-inner:not(:has(#container)) {
-            max-width: 780px !important;
+          #theme-atelier #container-inner {
+            max-width: 780px;
           }
           /* 首页方案 B / 归档页方案 D: 撑满主区宽度（跟全宽文章同款处理),
              让 hero 图、3 列 grid、归档表格充分利用横向空间;
@@ -1288,7 +1291,7 @@ const Style = () => {
              不用 :has() —— 旧版 Firefox/Safari 不支持 :has(),
              会让规则完全失效. LayoutBaseInner 里根据 router.pathname 挂. */
           #theme-atelier #container-inner.atelier-list-wide {
-            max-width: none !important;
+            max-width: none;
             padding-right: 32px;
           }
           /* sidebar 关闭时 main padding-left=0, wide-list 只有右 32
@@ -1305,7 +1308,7 @@ const Style = () => {
           }
           /* 全宽文章：右侧留够空气感，不要贴到浏览器边缘 */
           #theme-atelier #container-inner:has(#container) {
-            max-width: none !important;
+            max-width: none;
             padding-right: 32px;
           }
         }
