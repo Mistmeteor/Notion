@@ -167,9 +167,7 @@ const Style = () => {
           color: ${text};
           font-size: 16px;
           line-height: 1.55;
-          text-decoration: underline;
-          text-underline-offset: 3px;
-          text-decoration-thickness: 1px;
+          text-decoration: none;
           margin-bottom: 10px;
         }
         .dark #theme-atelier .atelier-latest-list a {
@@ -362,12 +360,11 @@ const Style = () => {
         #theme-atelier .atelier-stream-cover {
           width: 100%;
           height: auto;
-          /* hero 卡的封面裁成 5:2 横向宽带; 撑满主区后已经很宽,
-             再把高度压扁能显著减少滚动、更接近 mockup B 的杂志感.
-             object-fit: cover 自然裁掉图片上下, 主体在中间的画作
-             (Signac / 印象派海景) 效果最好. 若原图主体偏上或偏下,
-             可以在 Notion 里裁好再传. Card variant 保持 16/10 不动. */
-          aspect-ratio: 5 / 2;
+          /* 智能裁剪 (参考文章页 hero 的 object-cover + max-h-[60vh] 逻辑):
+             撑满主区宽度不变, 高度按视口自适应 —— 视口越矮图片越矮,
+             超出部分靠 object-fit: cover 从中间裁掉上下. 40vh 让首页
+             hero 明显比文章页 60vh 更扁, 视觉上像杂志封面横带. */
+          max-height: 40vh;
           object-fit: cover;
           display: block;
           transition: transform 0.6s ease;
@@ -462,7 +459,11 @@ const Style = () => {
           margin-bottom: 14px;
         }
         #theme-atelier .atelier-stream-card .atelier-stream-cover {
-          aspect-ratio: 16 / 10;
+          /* 卡片也走 hero 同款视口自适应裁剪, 用 max-height 而不是
+             aspect-ratio 覆盖. 22vh 让卡片跟 hero 一个"横带"体系,
+             不会一大三方的比例撕裂. width 100% + object-cover 已经
+             从父规则继承, 这里只补高度上限. */
+          max-height: 22vh;
         }
         #theme-atelier .atelier-stream-card .atelier-stream-title {
           font-size: 20px;
