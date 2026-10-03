@@ -359,12 +359,11 @@ const Style = () => {
         }
         #theme-atelier .atelier-stream-cover {
           width: 100%;
-          height: auto;
-          /* 智能裁剪 (参考文章页 hero 的 object-cover + max-h-[60vh] 逻辑):
-             撑满主区宽度不变, 高度按视口自适应 —— 视口越矮图片越矮,
-             超出部分靠 object-fit: cover 从中间裁掉上下. 40vh 让首页
-             hero 明显比文章页 60vh 更扁, 视觉上像杂志封面横带. */
-          max-height: 40vh;
+          /* 全设备统一"杂志封面横带"视觉: 横向吃满宽度, 纵向按 aspect-ratio
+             固定裁剪成扁横带. 原来用 max-height: 40vh 在竖屏设备 (iPad / 手机)
+             上会变成接近正方形, 失去横带感. 现在用 10/3 ≈ 3.33:1, 跟桌面
+             16:9 显示器下 vh 推出来的 ratio 对齐, 手机/iPad 也能复刻这个版式. */
+          aspect-ratio: 10 / 3;
           object-fit: cover;
           display: block;
           transition: transform 0.6s ease;
@@ -374,7 +373,9 @@ const Style = () => {
         }
         #theme-atelier .atelier-stream-title {
           font-family: ${serif};
-          font-size: 40px;
+          /* hero 标题比 Haruki Shi (atelier-logo-title: 40px) 小一档,
+             保持品牌名是页面最大字号, 避免跟 hero 标题打架 */
+          font-size: 32px;
           font-weight: 500;
           line-height: 1.15;
           letter-spacing: -0.005em;
@@ -459,11 +460,9 @@ const Style = () => {
           margin-bottom: 14px;
         }
         #theme-atelier .atelier-stream-card .atelier-stream-cover {
-          /* 卡片也走 hero 同款视口自适应裁剪, 用 max-height 而不是
-             aspect-ratio 覆盖. 22vh 让卡片跟 hero 一个"横带"体系,
-             不会一大三方的比例撕裂. width 100% + object-cover 已经
-             从父规则继承, 这里只补高度上限. */
-          max-height: 22vh;
+          /* 卡片走稍微没那么极端的横带: 2:1. 跟 hero 的 10/3 (≈3.33:1)
+             同体系但略方一点, 保留主次区分. 覆盖父规则的 10/3. */
+          aspect-ratio: 2 / 1;
         }
         #theme-atelier .atelier-stream-card .atelier-stream-title {
           font-size: 20px;
@@ -1076,24 +1075,30 @@ const Style = () => {
           color: ${muted};
         }
 
-        /* ============= 文章详情页 meta 行：字体与主页 hero 日期统一 =============
-           截图那行 "2026-8-21 | Last edited: 2026-8-22 | 2 min read" 里,
-           日期/lastEdited 继承 body 的衬线体, 但 ReadingTime 用 .atelier-reading-time
-           走 sans 13px, 视觉混排. 这里全统一到 sans 15px + muted, 与
-           .atelier-stream-date (首页 hero 日期) 一致. */
+        /* ============= 文章详情页标题 =============
+           h1 本身已经被 article h1 规则给了 serif + weight 500 + line-height 1.2,
+           这里只补 font-size 和 margin. 用 32px 跟首页 hero 标题
+           (.atelier-stream-title) 保持一致, 全站标题体系统一. */
+        #theme-atelier .atelier-article-title {
+          font-size: 32px;
+          margin: 0 0 16px 0;
+        }
+
+        /* ============= 文章详情页 meta 行：全站字体统一到 serif =============
+           以前 meta 走 sans (系统无衬线), 跟标题/正文的 serif 混排看着像两种
+           字体打架. 统一到 serif + muted + 15px, 视觉上与正文同体系, 只靠
+           颜色/字号拉出次级信息层级, 不再靠切字体族. */
         #theme-atelier .atelier-post-meta,
         #theme-atelier .atelier-post-meta a,
-        #theme-atelier .atelier-post-meta span,
-        #theme-atelier .atelier-post-meta .atelier-reading-time {
-          font-family: ${sans};
+        #theme-atelier .atelier-post-meta span {
+          font-family: ${serif};
           font-size: 15px;
           letter-spacing: 0.02em;
           color: ${muted};
         }
         .dark #theme-atelier .atelier-post-meta,
         .dark #theme-atelier .atelier-post-meta a,
-        .dark #theme-atelier .atelier-post-meta span,
-        .dark #theme-atelier .atelier-post-meta .atelier-reading-time {
+        .dark #theme-atelier .atelier-post-meta span {
           color: ${mutedDark};
         }
         #theme-atelier .atelier-post-meta a:hover {
