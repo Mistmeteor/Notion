@@ -10,15 +10,21 @@ const CONFIG = {
   ATELIER_COLOR_TEXT_DARK: '#e8e2d6',
   ATELIER_COLOR_MUTED_DARK: '#a09a8f',
 
-  // 字体：正文和标题共用 Source Serif 4；中文回退 Noto Serif SC；系统字体做保底
+  // 字体：首选 Source Serif 4 (本地若装了直接命中), 否则英文走 Georgia,
+  // 中文走 Noto Serif SC / Songti SC / Source Han Serif SC。
+  // 关键: Georgia 必须排在中文字体前面, 否则英文会被 Noto Serif SC 的
+  // 简陋 Latin 字型接管, 看着像中文宋体里的罗马字。
   ATELIER_FONT_SERIF:
-    "'Source Serif 4', 'Noto Serif SC', 'Songti SC', 'Source Han Serif SC', Georgia, serif",
+    "'Source Serif 4', Georgia, 'Noto Serif SC', 'Songti SC', 'Source Han Serif SC', serif",
   ATELIER_FONT_SANS:
     "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif",
 
-  // 是否从 Google Fonts CDN 加载字体（国内节点访问差可以关掉，走系统字体）
+  // 是否从 Google Fonts CDN 加载 Source Serif 4。默认关 —— 远程字体首次
+  // 访问会造成 FOUT (fallback 字体先渲, 字体到达后替换导致字跳一下)。
+  // 直接走系统 Georgia + Noto Serif SC 可以彻底消除跳动, 字型差异极小。
+  // 想开: 设 NEXT_PUBLIC_ATELIER_LOAD_GOOGLE_FONTS=true。
   ATELIER_LOAD_GOOGLE_FONTS:
-    process.env.NEXT_PUBLIC_ATELIER_LOAD_GOOGLE_FONTS !== 'false',
+    process.env.NEXT_PUBLIC_ATELIER_LOAD_GOOGLE_FONTS === 'true',
 
   // ================= 侧栏内容 =================
   // 头像：留空则回退到全站 AVATAR / siteInfo.icon

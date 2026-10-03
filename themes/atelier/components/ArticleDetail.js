@@ -57,13 +57,7 @@ export default function ArticleDetail(props) {
             <div>
               {post?.category && (
                 <>
-                  <SmartLink
-                    href={`/category/${post.category}`}
-                    passHref
-                    className='cursor-pointer text-md mr-2 hover:text-black dark:hover:text-white border-b dark:border-gray-500 border-dashed'>
-                    <i className='mr-1 fas fa-folder-open' />
-                    {post.category}
-                  </SmartLink>
+                  <span className='mr-2'>{post.category}</span>
                   <span className='mr-2'>|</span>
                 </>
               )}
