@@ -240,18 +240,22 @@ const Style = () => {
           border-bottom-color: rgba(255, 255, 255, 0.1) !important;
         }
 
-        /* ============= 文章详情页：白底改成同底色 ============= */
-        /* ArticleDetail 的 article 和评论区都写死了 bg-white，一并覆盖 */
+        /* ============= 文章详情页：白底改成同底色 =============
+           直接给 <article> 落 CONFIG 色; .bg-white / dark:bg-hexo-black-gray
+           覆盖是兜底 (ArticleLock、评论区等其他写死 bg-white 的位置) */
+        #theme-atelier article {
+          background-color: ${bg} !important;
+          box-shadow: none !important;
+        }
+        .dark #theme-atelier article {
+          background-color: ${bgDark} !important;
+        }
         #theme-atelier .bg-white {
           background-color: ${bg} !important;
         }
         .dark #theme-atelier .bg-white,
         .dark #theme-atelier .dark\\:bg-hexo-black-gray {
           background-color: ${bgDark} !important;
-        }
-        /* 文章框也去掉阴影 */
-        #theme-atelier article {
-          box-shadow: none !important;
         }
 
         /* ============= 页脚：图标 + 版权，居中排版 ============= */
@@ -859,13 +863,22 @@ const Style = () => {
             transition: transform 0.25s ease;
           }
           #theme-atelier main#wrapper {
-            transition: padding-left 0.25s ease;
+            transition: padding 0.25s ease;
           }
           #theme-atelier.atelier-sidebar-closed .sideLeft {
             transform: translateX(-100%);
           }
           #theme-atelier.atelier-sidebar-closed main#wrapper {
             padding-left: 0;
+          }
+          /* 文章页侧栏打开时，右侧对称留出和侧栏同宽的空位，让正文视觉上
+             居中于视口（而不是居中于"视口 - 侧栏"的剩余区域）。
+             用 clamp 平滑过渡：
+               视口 ≤ 1140px —— 没有空间可让，不动（padding-right: 0）
+               1140-1500px   —— 从 0 线性增长到 360px
+               视口 ≥ 1500px —— 稳定在 360px，正文严格视觉居中 */
+          #theme-atelier.atelier-sidebar-open.atelier-post-mode main#wrapper {
+            padding-right: clamp(0px, calc(100vw - 1140px), 360px);
           }
           /* 桌面只在侧栏可见时用 footer 里的按钮收起 —— 顶部汉堡包这里隐藏，
              改用 index.js 的条件渲染控制何时显示 */
@@ -1311,9 +1324,13 @@ const Style = () => {
             padding-right: 24px !important;
             padding-top: 24px !important;
           }
-          /* 全宽文章：右侧留够空气感，不要贴到浏览器边缘 */
+          /* 全宽文章：左右都留 32px，避免 sidebar 收起后内容左偏不居中
+             (iPad 上尤其明显: wrapper padding-left=0, 只有右 32px 的话
+             article 会贴着视口左边. 对称 padding 让 .max-w-5xl.mx-auto 的
+             container 回到视口几何中心) */
           #theme-atelier #container-inner:has(#container) {
             max-width: none;
+            padding-left: 32px;
             padding-right: 32px;
           }
         }
