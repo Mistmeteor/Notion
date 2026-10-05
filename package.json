@@ -17,6 +17,9 @@
     "url": "http://tangly1024.com"
   },
   "scripts": {
+    "postinstall": "node scripts/fetch-fallback-covers.js",
+    "prebuild": "node scripts/fetch-fallback-covers.js",
+    "predev": "node scripts/fetch-fallback-covers.js",
     "dev": "next dev",
     "build": "cross-env BUILD_MODE=true next build",
     "start": "next start",
