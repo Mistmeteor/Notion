@@ -13,6 +13,7 @@ import ArticleAround from './ArticleAround'
 import RecommendPosts from './RecommendPosts'
 import TagItemMini from './TagItemMini'
 import { tr, useAtelierLang } from '../lib/i18n'
+import { useInlineTeX } from '../lib/inlineTeX'
 
 /**
  *
@@ -23,6 +24,7 @@ export default function ArticleDetail(props) {
   const { post, prev, next } = props
   const { fullWidth } = useGlobal()
   const { lang } = useAtelierLang()
+  useInlineTeX([post?.id])
 
   if (!post) {
     return <></>

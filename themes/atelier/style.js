@@ -1350,6 +1350,20 @@ const Style = () => {
           display: none;           /* Chrome / Safari / iOS */
         }
 
+        /* ============= 文本内 $...$ / $$...$$ 的客户端 KaTeX 回退 =============
+           Notion text block 里直接写的 TeX（非 equation block）由
+           lib/inlineTeX.js 扫描 DOM 后用 KaTeX 渲染，包一层
+           .atelier-tex-rendered 作为识别标记。
+           - block: 独占一行、上下留白，适配 ol/li 内的 $$ ... $$。
+           - inline: 跟随行内文字。*/
+        #theme-atelier .atelier-tex-block {
+          display: block;
+          margin: 0.6em 0;
+        }
+        #theme-atelier .atelier-tex-inline {
+          display: inline;
+        }
+
         /* ============= 文章内 H2/H3 依次缩进（H1 不缩）============= */
         /* Notion 一级标题（H1）保持左对齐；二级 20px；三级 40px */
         #theme-atelier article .notion-h2 {
