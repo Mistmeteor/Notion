@@ -1,6 +1,6 @@
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
-import { useGlobal } from '@/lib/global'
+import { tr, useAtelierLang } from '../lib/i18n'
 
 /**
  * 简易翻页插件
@@ -10,7 +10,7 @@ import { useGlobal } from '@/lib/global'
  * @constructor
  */
 const PaginationSimple = ({ page, showNext }) => {
-  const { locale } = useGlobal()
+  const { lang } = useAtelierLang()
   const router = useRouter()
   const currentPage = +page
   const pagePrefix =  router.asPath.split('?')[0].replace(/\/page\/[1-9]\d*/, '').replace(/\/$/, '')
@@ -30,7 +30,7 @@ const PaginationSimple = ({ page, showNext }) => {
         className={`${
           currentPage === 1 ? 'invisible' : 'visible'
         } text-center w-full duration-200 px-4 py-2 hover:border-black border-b-2 hover:font-bold`}>
-        ←{locale.PAGINATION.PREV}
+        ←{tr(lang, 'prevPage')}
 
       </SmartLink>
       <SmartLink
@@ -44,7 +44,7 @@ const PaginationSimple = ({ page, showNext }) => {
           showNext ? 'visible' : 'invisible'
         } text-center w-full duration-200 px-4 py-2 hover:border-black border-b-2 hover:font-bold`}>
 
-        {locale.PAGINATION.NEXT}→
+        {tr(lang, 'nextPage')}→
       </SmartLink>
     </div>
   )

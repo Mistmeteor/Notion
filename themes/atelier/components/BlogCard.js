@@ -11,7 +11,7 @@ import ReadingTime from './ReadingTime'
  * variant='hero'（默认）：全宽大图卡，用于首页首屏第一条
  * variant='card'：3 列 grid 里的小卡，图小、标题小
  */
-const BlogCard = ({ post, showAnimate, variant = 'hero' }) => {
+const BlogCard = ({ post, showAnimate, variant = 'hero', fallbackCover }) => {
   const { siteInfo } = useGlobal()
   const isCard = variant === 'card'
 
@@ -23,9 +23,11 @@ const BlogCard = ({ post, showAnimate, variant = 'hero' }) => {
   ) {
     post.pageCoverThumbnail = siteInfo?.pageCover
   }
+  // 优先 post 自己的 cover; 没有再用 BlogListPage 传下来的 fallback
+  // (fallback = 当前 posts 里第一个有 cover 的帖子的图)
+  const effectiveCover = post?.pageCoverThumbnail || fallbackCover
   const showCover =
-    siteConfig('ATELIER_POST_LIST_COVER', null, CONFIG) &&
-    post?.pageCoverThumbnail
+    siteConfig('ATELIER_POST_LIST_COVER', null, CONFIG) && effectiveCover
 
   // 日期：优先 publishDay，退回到 date.start_date / lastEditedDay
   const dateText =
@@ -53,7 +55,7 @@ const BlogCard = ({ post, showAnimate, variant = 'hero' }) => {
         <SmartLink href={post?.href} passHref legacyBehavior>
           <div className='atelier-stream-cover-wrap cursor-pointer'>
             <LazyImage
-              src={post?.pageCoverThumbnail}
+              src={effectiveCover}
               alt={post?.title || siteConfig('TITLE')}
               className='atelier-stream-cover'
             />
