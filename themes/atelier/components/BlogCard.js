@@ -4,7 +4,7 @@ import SmartLink from '@/components/SmartLink'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import CONFIG from '../config'
-import { pickFallbackCoverForPost } from '../lib/fallbackCover'
+import { getEffectiveCover } from '../lib/fallbackCover'
 import ReadingTime from './ReadingTime'
 
 /**
@@ -12,7 +12,7 @@ import ReadingTime from './ReadingTime'
  * variant='hero'（默认）：全宽大图卡，用于首页首屏第一条
  * variant='card'：3 列 grid 里的小卡，图小、标题小
  */
-const BlogCard = ({ post, showAnimate, variant = 'hero', fallbackCover }) => {
+const BlogCard = ({ post, showAnimate, variant = 'hero' }) => {
   const { siteInfo } = useGlobal()
   const isCard = variant === 'card'
 
@@ -24,14 +24,9 @@ const BlogCard = ({ post, showAnimate, variant = 'hero', fallbackCover }) => {
   ) {
     post.pageCoverThumbnail = siteInfo?.pageCover
   }
-  // 封面兜底顺序:
-  //  1. post 自己的 pageCoverThumbnail
-  //  2. BlogListPage 传下来的 fallback (当前页首个有 cover 的帖子的图)
-  //  3. notion-images 仓库里按 post.id hash 稳定挑的随机图
-  const effectiveCover =
-    post?.pageCoverThumbnail ||
-    fallbackCover ||
-    pickFallbackCoverForPost(post?.id)
+
+  // 优先保留非模板的自定义封面，否则使用 notion-images 对应油画
+  const effectiveCover = getEffectiveCover(post)
   const showCover =
     siteConfig('ATELIER_POST_LIST_COVER', null, CONFIG) && effectiveCover
 

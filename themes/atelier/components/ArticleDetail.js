@@ -14,6 +14,7 @@ import RecommendPosts from './RecommendPosts'
 import TagItemMini from './TagItemMini'
 import { tr, useAtelierLang } from '../lib/i18n'
 import { useInlineTeX } from '../lib/inlineTeX'
+import { getEffectiveCover } from '../lib/fallbackCover'
 
 /**
  *
@@ -29,15 +30,17 @@ export default function ArticleDetail(props) {
   if (!post) {
     return <></>
   }
+  const cover = getEffectiveCover(post)
+
   return (
     <div
       id='container'
       className={`${fullWidth ? 'px-10' : 'max-w-5xl '} overflow-x-auto flex-grow mx-auto w-screen md:w-full`}>
-      {post?.type && !post?.type !== 'Page' && post?.pageCover && (
+      {post?.type && !post?.type !== 'Page' && cover && (
         <div className='w-full relative md:flex-shrink-0 overflow-hidden'>
           <LazyImage
             alt={post.title}
-            src={post?.pageCover}
+            src={cover}
             className='object-cover max-h-[60vh] w-full'
           />
         </div>

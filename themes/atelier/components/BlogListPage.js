@@ -1,6 +1,7 @@
 import { AdSlot } from '@/components/GoogleAdsense'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
+import { assignUniqueCovers } from '../lib/fallbackCover'
 import BlogCard from './BlogCard'
 import BlogPostListEmpty from './BlogListEmpty'
 import PaginationSimple from './PaginationSimple'
@@ -20,11 +21,9 @@ const BlogListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
     return <BlogPostListEmpty />
   }
 
-  const [hero, ...rest] = posts
-  // 没自己 pageCover 的卡回退到"posts 里第一个有 cover 的那张"
-  // (而不是严格 posts[0], 否则 posts[0] 无图时整页都没图)
-  const fallbackCover =
-    posts.find(p => p?.pageCoverThumbnail)?.pageCoverThumbnail || null
+  // 保证当前页每篇文章均分配独立的油画封面，互不重复
+  const uniquePosts = assignUniqueCovers(posts)
+  const [hero, ...rest] = uniquePosts
 
   return (
     <div>
@@ -34,7 +33,6 @@ const BlogListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
             post={hero}
             siteInfo={siteInfo}
             variant='hero'
-            fallbackCover={fallbackCover}
           />
         </div>
 
@@ -46,7 +44,6 @@ const BlogListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
                   post={post}
                   siteInfo={siteInfo}
                   variant='card'
-                  fallbackCover={fallbackCover}
                 />
               </div>
             ))}
