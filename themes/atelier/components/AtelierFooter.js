@@ -72,13 +72,10 @@ const AtelierFooter = ({ className = '', onToggleSidebar, onToggleLang }) => {
         )}
         <SocialButton />
         {siteConfig('ENABLE_RSS') && (
-          <a
-            href='/rss/feed.xml'
-            target='_blank'
-            rel='noreferrer'
+          <span
             className='atelier-footer-rss'
-            aria-label='RSS'
-            title='RSS'>
+            role='img'
+            aria-label='RSS'>
             {/* Feather-style 20px stroke SVG, 与 collapse/home 一套画风 */}
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -94,7 +91,7 @@ const AtelierFooter = ({ className = '', onToggleSidebar, onToggleLang }) => {
               <path d='M4 4a16 16 0 0 1 16 16' />
               <circle cx='5' cy='19' r='1' />
             </svg>
-          </a>
+          </span>
         )}
         <button
           type='button'

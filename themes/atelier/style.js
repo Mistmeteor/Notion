@@ -945,10 +945,13 @@ const Style = () => {
           justify-content: center;
           transition: color 0.15s ease, transform 0.15s ease;
         }
+        #theme-atelier .atelier-footer-rss {
+          cursor: default;
+          transition: none;
+        }
         #theme-atelier .atelier-footer-collapse:hover,
         #theme-atelier .atelier-footer-home:hover,
         #theme-atelier .atelier-footer-lang:hover,
-        #theme-atelier .atelier-footer-rss:hover,
         #theme-atelier .atelier-footer-darkmode:hover {
           color: ${text};
           transform: scale(1.1);
@@ -963,7 +966,6 @@ const Style = () => {
         .dark #theme-atelier .atelier-footer-collapse:hover,
         .dark #theme-atelier .atelier-footer-home:hover,
         .dark #theme-atelier .atelier-footer-lang:hover,
-        .dark #theme-atelier .atelier-footer-rss:hover,
         .dark #theme-atelier .atelier-footer-darkmode:hover {
           color: ${textDark};
         }
