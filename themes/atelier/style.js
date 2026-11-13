@@ -487,11 +487,83 @@ const Style = () => {
           overflow: hidden;
         }
 
+        /* ---- 分组模式 (ATELIER_HOME_GROUP_BY_CATEGORY) ---- */
+        #theme-atelier .atelier-b-group {
+          margin-top: 72px;
+        }
+        #theme-atelier .atelier-b-group-head {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          padding-bottom: 14px;
+          border-bottom: 1px solid ${border};
+          margin-bottom: 32px;
+        }
+        .dark #theme-atelier .atelier-b-group-head {
+          border-bottom-color: rgba(255,255,255,0.14);
+        }
+        #theme-atelier .atelier-b-group-title {
+          font-family: ${serif};
+          font-size: 26px;
+          font-weight: 600;
+          letter-spacing: 0.01em;
+          margin: 0;
+          color: ${text};
+        }
+        .dark #theme-atelier .atelier-b-group-title {
+          color: ${textDark};
+        }
+        #theme-atelier .atelier-b-group-count {
+          font-family: ${sans};
+          font-size: 13px;
+          color: ${muted};
+          letter-spacing: 0.04em;
+        }
+        .dark #theme-atelier .atelier-b-group-count {
+          color: ${mutedDark};
+        }
+        /* 分组内部的 grid: 去掉原本 atelier-b-grid 的顶部分割线和大 margin,
+           分割线已经由 group-head 提供 */
+        #theme-atelier .atelier-b-grid.atelier-b-grid-inline {
+          margin-top: 0;
+          padding-top: 0;
+          border-top: none;
+        }
+        #theme-atelier .atelier-b-group-more {
+          margin-top: 28px;
+          text-align: right;
+          font-family: ${sans};
+          font-size: 14px;
+          letter-spacing: 0.02em;
+        }
+        #theme-atelier .atelier-b-group-more a {
+          color: ${muted};
+          border-bottom: 1px solid transparent;
+          transition: color 0.15s ease, border-color 0.15s ease;
+        }
+        #theme-atelier .atelier-b-group-more a:hover {
+          color: ${text};
+          border-bottom-color: ${text};
+        }
+        .dark #theme-atelier .atelier-b-group-more a {
+          color: ${mutedDark};
+        }
+        .dark #theme-atelier .atelier-b-group-more a:hover {
+          color: ${textDark};
+          border-bottom-color: ${textDark};
+        }
+
         /* 平板端: grid 收成 2 列, 手机: 1 列(相当于回到单栏流) */
         @media (max-width: 1023px) {
           #theme-atelier .atelier-b-grid {
             grid-template-columns: repeat(2, 1fr);
             gap: 32px 20px;
+          }
+          #theme-atelier .atelier-b-group {
+            margin-top: 56px;
+          }
+          #theme-atelier .atelier-b-group-title {
+            font-size: 22px;
           }
         }
 
