@@ -106,8 +106,8 @@ export default function ArticleDetail(props) {
 
         <section className='atelier-article-actions'>
           <AdSlot type='in-article' />
-          {/* 分享 */}
-          <ShareBar post={post} />
+          {/* 社交分享条暂时隐藏——需要时去掉下面的 false && 即可恢复 */}
+          {false && <ShareBar post={post} />}
         </section>
       </article>
 
