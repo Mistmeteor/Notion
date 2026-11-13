@@ -1389,6 +1389,20 @@ const Style = () => {
             padding-right: 24px !important;
             padding-top: 24px !important;
           }
+          /* 文章页主容器 + 内层 ArticleDetail：Tailwind 默认 md:max-w-4xl
+             (896) + 内层 max-w-5xl (1024) 在 16:9 桌面下右侧浪费太多。
+             bump 两层到 ≈ max-w-5xl / max-w-7xl，依旧保留 justify-center
+             让正文居中于右半区 */
+          #theme-atelier.atelier-post-mode #container-inner,
+          #theme-atelier.atelier-post-mode #container {
+            max-width: 1024px;
+          }
+        }
+        @media (min-width: 1536px) {
+          #theme-atelier.atelier-post-mode #container-inner,
+          #theme-atelier.atelier-post-mode #container {
+            max-width: 1280px;
+          }
         }
 
         /* ============= 长 LaTeX 公式水平滚动（隐藏滚动条）=============

@@ -13,6 +13,7 @@ import ArticleAround from './ArticleAround'
 import RecommendPosts from './RecommendPosts'
 import TagItemMini from './TagItemMini'
 import { tr, useAtelierLang } from '../lib/i18n'
+import { useInlineBold } from '../lib/inlineBold'
 import { useInlineTeX } from '../lib/inlineTeX'
 import { getEffectiveCover } from '../lib/fallbackCover'
 
@@ -26,6 +27,7 @@ export default function ArticleDetail(props) {
   const { fullWidth } = useGlobal()
   const { lang } = useAtelierLang()
   useInlineTeX([post?.id])
+  useInlineBold([post?.id])
 
   if (!post) {
     return <></>
