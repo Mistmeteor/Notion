@@ -32,25 +32,13 @@ const ArchiveIndex = props => {
 
 export async function getStaticProps({ locale }) {
   const props = await fetchGlobalAllData({ from: 'archive-index', locale })
-  const publishedPosts = props.allPages?.filter(
-    page => page.type === 'Post' && page.status === 'Published'
+  // 年历只收普通文章；folders 已由 fetchGlobalAllData 全局返回
+  props.posts = props.allPages?.filter(
+    page =>
+      page.type === 'Post' &&
+      page.status === 'Published' &&
+      !page._isFolder
   ) || []
-  // 文件夹单独拎出来挂顶部，年历只收普通文章
-  props.folders = publishedPosts
-    .filter(p => p._isFolder)
-    .map(p => ({
-      id: p.id,
-      title: p.title,
-      slug: p.slug,
-      href: p.href,
-      pageCover: p.pageCover,
-      pageCoverThumbnail: p.pageCoverThumbnail,
-      category: p.category || '',
-      publishDay: p.publishDay,
-      publishDate: p.publishDate,
-      _childCount: p._childCount || 0
-    }))
-  props.posts = publishedPosts.filter(p => !p._isFolder)
   delete props.allPages
 
   const postsSortByDate = Object.create(props.posts)

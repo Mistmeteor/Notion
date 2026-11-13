@@ -2,13 +2,14 @@ import SmartLink from '@/components/SmartLink'
 import { tr, useAtelierLang } from '../lib/i18n'
 
 /**
- * 侧栏"归档"入口
- * - 只在首页展示（AsideLeft 里控制何时渲染）
- * - 复用 .atelier-latest-title 的 heading 视觉，整块本身就是链接
- * - 点击直接跳转到 /archive
+ * 侧栏"归档"板块（仅首页渲染，由 AsideLeft 控制）
+ * 标题走 `.atelier-latest-title`，整个标题文字点击即跳 /archive；
+ * 标题下方按 LatestPosts 同款列表样式列出全站 folder 名字，每条链接
+ * 对应 folder 落地页（/<folder-slug>），保持视觉与近期文章一致。
  */
-const ArchiveLink = () => {
+const ArchiveLink = ({ folders }) => {
   const { lang } = useAtelierLang()
+  const list = Array.isArray(folders) ? folders.filter(f => f?.title) : []
 
   return (
     <section className='atelier-archive-link'>
@@ -17,6 +18,18 @@ const ArchiveLink = () => {
         className='atelier-latest-title atelier-archive-heading'>
         {tr(lang, 'archive')}
       </SmartLink>
+      {list.length > 0 && (
+        <div className='atelier-latest-list'>
+          {list.map(folder => (
+            <SmartLink
+              key={folder.id}
+              href={folder.href || `/${folder.slug}`}
+              title={folder.title}>
+              {folder.title}
+            </SmartLink>
+          ))}
+        </div>
+      )}
     </section>
   )
 }

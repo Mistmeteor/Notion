@@ -44,7 +44,7 @@ function AsideLeft(props) {
               <LatestPosts {...props} />
             </div>
           )}
-          {!post && isHome && <ArchiveLink />}
+          {!post && isHome && <ArchiveLink folders={props.folders} />}
           {post && (
             <section className='atelier-toc mt-2 mb-10'>
               <Catalog post={post} />
