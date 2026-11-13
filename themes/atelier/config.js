@@ -53,17 +53,6 @@ const CONFIG = {
   ATELIER_POST_LIST_PREVIEW: false,
   ATELIER_POST_LIST_ANIMATION: false,
 
-  // ================= 首页按分类分组 =================
-  // 开启后首页从"统一 grid"变成"Hero + 分类板块"：每个 category 一个独立
-  // 容器，各露 N 篇预览 + "查看全部"链接。取消首页分页。
-  ATELIER_HOME_GROUP_BY_CATEGORY: true,
-  // 手写分类排序：数组里的 category 名严格按此顺序置顶；未列出的分类排在
-  // 后面，按"该组首篇 publishDate"降序。留空 = 全部按最新日期降序。
-  // 示例: ['Econometrics', '顶刊推送', '模板']
-  ATELIER_HOME_CATEGORY_ORDER: [],
-  // 每个分类在首页显示的预览文章数
-  ATELIER_HOME_POSTS_PER_CATEGORY: 6,
-
   // ================= 阅读体验 =================
   // 顶部阅读进度条（仅文章页显示）
   ATELIER_READING_PROGRESS: true,

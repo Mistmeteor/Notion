@@ -77,23 +77,8 @@ export async function getStaticProps(req) {
     'page',
     props?.NOTION_CONFIG
   )
-  // atelier 分组模式需要全量 posts 才能按分类切片；SSG 阶段 siteConfig
-  // 读不到主题 CONFIG 默认值，直接 require 主题 config
-  const resolvedTheme = siteConfig('THEME', BLOG.THEME, props?.NOTION_CONFIG)
-  let atelierGroupByCategory = false
-  if (resolvedTheme === 'atelier') {
-    try {
-      const atelierCfg = require('@/themes/atelier/config').default
-      atelierGroupByCategory =
-        props?.NOTION_CONFIG?.ATELIER_HOME_GROUP_BY_CATEGORY ??
-        atelierCfg?.ATELIER_HOME_GROUP_BY_CATEGORY ??
-        false
-    } catch (e) {
-      // 主题缺失 config 时静默回退
-    }
-  }
-  if (POST_LIST_STYLE === 'scroll' || atelierGroupByCategory) {
-    // 滚动列表 / atelier 分组默认给前端返回所有数据
+  if (POST_LIST_STYLE === 'scroll') {
+    // 滚动列表默认给前端返回所有数据
   } else if (POST_LIST_STYLE === 'page') {
     props.posts = props.posts?.slice(
       0,

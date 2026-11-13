@@ -487,11 +487,10 @@ const Style = () => {
           overflow: hidden;
         }
 
-        /* ---- 分组模式 (ATELIER_HOME_GROUP_BY_CATEGORY) ---- */
+        /* ---- 归档页 / folder 落地页：复用首页 hero 同系的衬线大号 ---- */
         #theme-atelier .atelier-b-group {
           margin-top: 72px;
         }
-        /* folder 落地页：标题走和首页 hero title 同系的衬线大号 */
         #theme-atelier .atelier-folder-title {
           font-family: ${serif};
           font-size: 32px;
@@ -504,37 +503,7 @@ const Style = () => {
         .dark #theme-atelier .atelier-folder-title {
           color: ${textDark};
         }
-        /* 分组底部的 "下一页 →"，右对齐，无衬线 */
-        #theme-atelier .atelier-b-next {
-          margin-top: 56px;
-          padding-top: 24px;
-          border-top: 1px solid ${border};
-          text-align: right;
-          font-family: ${sans};
-          font-size: 14px;
-          letter-spacing: 0.04em;
-          text-transform: uppercase;
-        }
-        .dark #theme-atelier .atelier-b-next {
-          border-top-color: rgba(255,255,255,0.14);
-        }
-        #theme-atelier .atelier-b-next a {
-          color: ${muted};
-          border-bottom: 1px solid transparent;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-        #theme-atelier .atelier-b-next a:hover {
-          color: ${text};
-          border-bottom-color: ${text};
-        }
-        .dark #theme-atelier .atelier-b-next a {
-          color: ${mutedDark};
-        }
-        .dark #theme-atelier .atelier-b-next a:hover {
-          color: ${textDark};
-          border-bottom-color: ${textDark};
-        }
-        /* card meta 行里 folder 名的分隔样式 */
+        /* card meta 行里 folder 名跟日期并排的分隔样式 */
         #theme-atelier .atelier-stream-folder {
           color: ${muted};
         }
@@ -572,35 +541,12 @@ const Style = () => {
         .dark #theme-atelier .atelier-b-group-count {
           color: ${mutedDark};
         }
-        /* 分组内部的 grid: 去掉原本 atelier-b-grid 的顶部分割线和大 margin,
+        /* folder 板块内部的 grid: 去掉顶部分割线和大 margin，
            分割线已经由 group-head 提供 */
         #theme-atelier .atelier-b-grid.atelier-b-grid-inline {
           margin-top: 0;
           padding-top: 0;
           border-top: none;
-        }
-        #theme-atelier .atelier-b-group-more {
-          margin-top: 28px;
-          text-align: right;
-          font-family: ${sans};
-          font-size: 14px;
-          letter-spacing: 0.02em;
-        }
-        #theme-atelier .atelier-b-group-more a {
-          color: ${muted};
-          border-bottom: 1px solid transparent;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-        #theme-atelier .atelier-b-group-more a:hover {
-          color: ${text};
-          border-bottom-color: ${text};
-        }
-        .dark #theme-atelier .atelier-b-group-more a {
-          color: ${mutedDark};
-        }
-        .dark #theme-atelier .atelier-b-group-more a:hover {
-          color: ${textDark};
-          border-bottom-color: ${textDark};
         }
 
         /* 平板端: grid 收成 2 列, 手机: 1 列(相当于回到单栏流) */
