@@ -491,6 +491,56 @@ const Style = () => {
         #theme-atelier .atelier-b-group {
           margin-top: 72px;
         }
+        /* folder 落地页：标题走和首页 hero title 同系的衬线大号 */
+        #theme-atelier .atelier-folder-title {
+          font-family: ${serif};
+          font-size: 32px;
+          font-weight: 500;
+          letter-spacing: -0.005em;
+          color: ${text};
+          margin: 0 0 32px 0;
+          padding: 24px 0 0 0;
+        }
+        .dark #theme-atelier .atelier-folder-title {
+          color: ${textDark};
+        }
+        /* 分组底部的 "下一页 →"，右对齐，无衬线 */
+        #theme-atelier .atelier-b-next {
+          margin-top: 56px;
+          padding-top: 24px;
+          border-top: 1px solid ${border};
+          text-align: right;
+          font-family: ${sans};
+          font-size: 14px;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+        .dark #theme-atelier .atelier-b-next {
+          border-top-color: rgba(255,255,255,0.14);
+        }
+        #theme-atelier .atelier-b-next a {
+          color: ${muted};
+          border-bottom: 1px solid transparent;
+          transition: color 0.15s ease, border-color 0.15s ease;
+        }
+        #theme-atelier .atelier-b-next a:hover {
+          color: ${text};
+          border-bottom-color: ${text};
+        }
+        .dark #theme-atelier .atelier-b-next a {
+          color: ${mutedDark};
+        }
+        .dark #theme-atelier .atelier-b-next a:hover {
+          color: ${textDark};
+          border-bottom-color: ${textDark};
+        }
+        /* card meta 行里 folder 名的分隔样式 */
+        #theme-atelier .atelier-stream-folder {
+          color: ${muted};
+        }
+        .dark #theme-atelier .atelier-stream-folder {
+          color: ${mutedDark};
+        }
         #theme-atelier .atelier-b-group-head {
           display: flex;
           align-items: baseline;

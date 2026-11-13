@@ -74,10 +74,16 @@ const BlogCard = ({ post, showAnimate, variant = 'hero' }) => {
         </SmartLink>
       </h2>
 
-      {/* 日期 + 阅读时长（小号无衬线体） */}
-      {dateText && (
+      {/* 日期 + folder 名 + 阅读时长（小号无衬线体） */}
+      {(dateText || post?._folderTitle) && (
         <div className='atelier-stream-date'>
           {dateText}
+          {post?._folderTitle && (
+            <span className='atelier-stream-folder'>
+              {dateText ? ' · ' : ''}
+              {post._folderTitle}
+            </span>
+          )}
           <ReadingTime post={post} className='atelier-stream-date-sep' />
         </div>
       )}

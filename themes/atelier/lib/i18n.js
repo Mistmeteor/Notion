@@ -28,6 +28,7 @@ const T = {
     archive: '归档',
     archiveTotal: '共 {n} 篇',
     archiveYearCount: '{n} 篇',
+    folders: '文件夹',
     langLabel: '中', // 按钮显示当前语言：正在中文时显示"中"
     langAriaLabel: '当前中文，点击切换到英文',
     homeAriaLabel: '返回首页',
@@ -47,6 +48,7 @@ const T = {
     archive: 'Archive',
     archiveTotal: '{n} posts total',
     archiveYearCount: '{n} posts',
+    folders: 'Folders',
     langLabel: 'EN',
     langAriaLabel: 'Currently English, click to switch to Chinese',
     homeAriaLabel: 'Back to home',

@@ -41,7 +41,10 @@ export async function getStaticProps({ params: { page }, locale }) {
   )
 
   const allPosts = allPages?.filter(
-    page => page.type === 'Post' && page.status === 'Published'
+    page =>
+      page.type === 'Post' &&
+      page.status === 'Published' &&
+      !page._isFolder
   )
   const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 12, props?.NOTION_CONFIG)
   // 处理分页

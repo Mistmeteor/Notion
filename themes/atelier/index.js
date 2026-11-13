@@ -19,6 +19,7 @@ import AtelierArchive from './components/AtelierArchive'
 import AtelierFooter from './components/AtelierFooter'
 import BackToBottom from './components/BackToBottom'
 import BackToTop from './components/BackToTop'
+import FolderGrid from './components/FolderGrid'
 import ReadingProgress from './components/ReadingProgress'
 import SidebarToggle from './components/SidebarToggle'
 import { AtelierLangProvider, useAtelierLang } from './lib/i18n'
@@ -225,11 +226,17 @@ const LayoutSlug = props => {
     }
   }, [post])
   const showProgress = siteConfig('ATELIER_READING_PROGRESS', true, CONFIG)
+  const { siteInfo } = useGlobal()
   return (
     <>
-      {post && showProgress && <ReadingProgress />}
+      {post && showProgress && !post._isFolder && <ReadingProgress />}
       {lock ? (
         <ArticleLock validPassword={validPassword} />
+      ) : post && post._isFolder ? (
+        <div id='posts-wrapper' className='atelier-b-wrapper'>
+          <h1 className='atelier-folder-title'>{post.title}</h1>
+          <FolderGrid posts={props.folderChildren || []} siteInfo={siteInfo} />
+        </div>
       ) : post && (
         <ArticleDetail {...props} />
       )}
@@ -263,8 +270,8 @@ const LayoutSearch = props => {
  * 不再用 fukasawa 默认的 BlogArchiveItem
  */
 const LayoutArchive = props => {
-  const { archivePosts } = props
-  return <AtelierArchive archivePosts={archivePosts} />
+  const { archivePosts, folders } = props
+  return <AtelierArchive archivePosts={archivePosts} folders={folders} />
 }
 
 /**

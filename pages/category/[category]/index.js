@@ -19,7 +19,10 @@ export async function getStaticProps({ params: { category }, locale }) {
 
   // 过滤状态
   props.posts = props.allPages?.filter(
-    page => page.type === 'Post' && page.status === 'Published'
+    page =>
+      page.type === 'Post' &&
+      page.status === 'Published' &&
+      !page._isFolder
   )
   // 处理过滤
   props.posts = props.posts.filter(

@@ -1,5 +1,7 @@
 import SmartLink from '@/components/SmartLink'
+import { useGlobal } from '@/lib/global'
 import { tr, useAtelierLang } from '../lib/i18n'
+import FolderGrid from './FolderGrid'
 import ReadingTime from './ReadingTime'
 
 /**
@@ -10,8 +12,9 @@ import ReadingTime from './ReadingTime'
  * 排序: 年份倒序 (新年份在上), 同年内按发布日期正序 (1 月→12 月),
  * 读起来像"翻年历": 年份从新往老, 每年内从年初往年末.
  */
-const AtelierArchive = ({ archivePosts }) => {
+const AtelierArchive = ({ archivePosts, folders = [] }) => {
   const { lang } = useAtelierLang()
+  const { siteInfo } = useGlobal()
   const grouped = groupByYear(archivePosts)
   const total = grouped.reduce((sum, [, posts]) => sum + posts.length, 0)
 
@@ -23,6 +26,14 @@ const AtelierArchive = ({ archivePosts }) => {
           {tr(lang, 'archiveTotal', { n: total })}
         </div>
       </div>
+
+      {folders.length > 0 && (
+        <FolderGrid
+          title={tr(lang, 'folders')}
+          posts={folders}
+          siteInfo={siteInfo}
+        />
+      )}
 
       {grouped.map(([year, posts]) => (
         <div key={year}>

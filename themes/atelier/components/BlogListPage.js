@@ -2,7 +2,9 @@ import { AdSlot } from '@/components/GoogleAdsense'
 import SmartLink from '@/components/SmartLink'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
+import { useRouter } from 'next/router'
 import { assignUniqueCovers } from '../lib/fallbackCover'
+import { tr, useAtelierLang } from '../lib/i18n'
 import CONFIG from '../config'
 import BlogCard from './BlogCard'
 import BlogPostListEmpty from './BlogListEmpty'
@@ -22,11 +24,16 @@ const UNCATEGORIZED_LABEL = '未分类'
  */
 const BlogListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
   const { NOTION_CONFIG } = useGlobal()
-  const groupByCategory = siteConfig(
-    'ATELIER_HOME_GROUP_BY_CATEGORY',
-    false,
-    { ...CONFIG, ...NOTION_CONFIG }
-  )
+  const router = useRouter()
+  // 分组模式只在首页 `/` 开启；分类/分页/标签等列表页仍走原扁平布局，
+  // 避免 /category/<name> 再次按 category 分组形成循环入口
+  const isHome = router.pathname === '/'
+  const groupByCategory =
+    isHome &&
+    siteConfig('ATELIER_HOME_GROUP_BY_CATEGORY', false, {
+      ...CONFIG,
+      ...NOTION_CONFIG
+    })
 
   if (!posts || posts.length === 0) {
     return <BlogPostListEmpty />
@@ -39,6 +46,7 @@ const BlogListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
       <GroupedByCategory
         posts={uniquePosts}
         siteInfo={siteInfo}
+        postCount={postCount}
         NOTION_CONFIG={NOTION_CONFIG}
       />
     )
@@ -85,7 +93,8 @@ const BlogListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
   )
 }
 
-const GroupedByCategory = ({ posts, siteInfo, NOTION_CONFIG }) => {
+const GroupedByCategory = ({ posts, siteInfo, postCount, NOTION_CONFIG }) => {
+  const { lang } = useAtelierLang()
   const perCategory = Number(
     siteConfig('ATELIER_HOME_POSTS_PER_CATEGORY', 6, {
       ...CONFIG,
@@ -97,6 +106,8 @@ const GroupedByCategory = ({ posts, siteInfo, NOTION_CONFIG }) => {
       ...CONFIG,
       ...NOTION_CONFIG
     }) || []
+  const postsPerPage = siteConfig('POSTS_PER_PAGE', 12, NOTION_CONFIG)
+  const hasNextPage = Number(postCount || 0) > Number(postsPerPage || 0)
 
   const [hero, ...rest] = posts
 
@@ -133,13 +144,12 @@ const GroupedByCategory = ({ posts, siteInfo, NOTION_CONFIG }) => {
         const groupPosts = groupMap.get(key)
         const label = key === UNCATEGORIZED_KEY ? UNCATEGORIZED_LABEL : key
         const shown = groupPosts.slice(0, perCategory)
-        const hasMore = groupPosts.length > perCategory
         return (
           <section key={key} className='atelier-b-group'>
             <header className='atelier-b-group-head'>
               <h2 className='atelier-b-group-title'>{label}</h2>
               <span className='atelier-b-group-count'>
-                {groupPosts.length} 篇
+                {tr(lang, 'archiveYearCount', { n: groupPosts.length })}
               </span>
             </header>
             <div className='atelier-b-grid atelier-b-grid-inline'>
@@ -149,16 +159,17 @@ const GroupedByCategory = ({ posts, siteInfo, NOTION_CONFIG }) => {
                 </div>
               ))}
             </div>
-            {hasMore && key !== UNCATEGORIZED_KEY && (
-              <div className='atelier-b-group-more'>
-                <SmartLink href={`/category/${encodeURIComponent(label)}`}>
-                  查看全部 {label} →
-                </SmartLink>
-              </div>
-            )}
           </section>
         )
       })}
+
+      {hasNextPage && (
+        <div className='atelier-b-next'>
+          <SmartLink href='/page/2'>
+            {tr(lang, 'nextPage')} →
+          </SmartLink>
+        </div>
+      )}
 
       {siteConfig('ADSENSE_GOOGLE_ID') && (
         <div className='p-3'>

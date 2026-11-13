@@ -65,7 +65,10 @@ export async function getStaticProps(req) {
     props?.NOTION_CONFIG
   )
   props.posts = props.allPages?.filter(
-    page => page.type === 'Post' && page.status === 'Published'
+    page =>
+      page.type === 'Post' &&
+      page.status === 'Published' &&
+      !page._isFolder
   )
 
   // 处理分页
