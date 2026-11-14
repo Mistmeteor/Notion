@@ -29,9 +29,8 @@ const PaginationSimple = ({ page, showNext }) => {
         rel="prev"
         className={`${
           currentPage === 1 ? 'invisible' : 'visible'
-        } text-center w-full duration-200 px-4 py-2 hover:border-black border-b-2 hover:font-bold`}>
-        ←{tr(lang, 'prevPage')}
-
+        } text-center w-full duration-200 px-4 py-2 hover:font-bold`}>
+        <span className="border-b-2 hover:border-black pb-0.5">←{tr(lang, 'prevPage')}</span>
       </SmartLink>
       <SmartLink
         href={{
@@ -42,9 +41,8 @@ const PaginationSimple = ({ page, showNext }) => {
         rel="next"
         className={`${
           showNext ? 'visible' : 'invisible'
-        } text-center w-full duration-200 px-4 py-2 hover:border-black border-b-2 hover:font-bold`}>
-
-        {tr(lang, 'nextPage')}→
+        } text-center w-full duration-200 px-4 py-2 hover:font-bold`}>
+        <span className="border-b-2 hover:border-black pb-0.5">{tr(lang, 'nextPage')}→</span>
       </SmartLink>
     </div>
   )
