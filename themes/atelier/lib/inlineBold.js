@@ -14,9 +14,10 @@ const SKIP_SELECTOR = [
   '.atelier-bold-rendered'
 ].join(',')
 
-// **text** on a single line, no nested asterisks. Non-greedy so adjacent
-// bold runs stay distinct. Requires at least one non-space char.
-const BOLD_RE = /\*\*([^*\n]+?)\*\*/g
+// **text** on a single line. Inner content may contain single `*` (e.g.
+// `**s* ≥ 0**`) but not `**`. Non-greedy so adjacent bold runs stay
+// distinct. Requires at least one char.
+const BOLD_RE = /\*\*((?:[^*\n]|\*(?!\*))+?)\*\*/g
 
 /**
  * Convert raw markdown-style **bold** inside Notion text blocks into
